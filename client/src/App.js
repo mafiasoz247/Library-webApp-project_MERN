@@ -95,6 +95,7 @@ function App(props) {
               <PrivateRoute exact path='/' component={HomeAdmin} />  
               <Route  path="*" component={PageNotFound} />
               </Switch>
+              
               :
               
               <Switch>

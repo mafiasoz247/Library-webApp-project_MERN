@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { setUserSession, setUserIDSession, getUser, removeUserSession, removeUserIDSession } from "../Utils/Common";
 import ReactDOM from 'react-dom';
-import LoginForm from '../Components/LoginForm';
 import '../Components/LoginForm.css'
 
 const Login = (props) => {
