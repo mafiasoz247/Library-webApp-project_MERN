@@ -91,6 +91,7 @@ function App(props) {
             <PublicRoute exact path='/register' component={Register} />
             <PrivateRoute exact path='/dashboard' component={Dashboard} />
             <Route exact path='/events' component={Events} />
+            
           </Switch>
           </Suspense>
 

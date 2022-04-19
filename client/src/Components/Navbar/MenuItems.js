@@ -9,6 +9,11 @@ export const MenuItems = [
         url: '/dashboard',
         cName: 'nav-links'
     },
+    {
+        title: 'Books',
+        url: '/dashboard',
+        cName: 'nav-links'
+    },
     
 ]
 export const LoggedIn = [
