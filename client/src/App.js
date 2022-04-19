@@ -6,13 +6,15 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import PublicRoute from "./Utils/PublicRoute";
 import PrivateRoute from "./Utils/PrivateRoute";
-import { getToken, removeUserSession, setUserSession, removeUserIDSession, setUserIDSession } from './Utils/Common';
+import { checkAdmin,getToken, removeUserSession, setUserSession, removeUserIDSession, setUserIDSession } from './Utils/Common';
 import Spinner from "./Components/Spinner";
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Navbar from './Components/Navbar/Navbar.js';
 import Dashboard from './pages/Dashboard';
+import HomeAdmin from './pages/HomeAdmin';
+import PageNotFound from './pages/pagenotfound';
 // const Home = lazy(() => import("./pages/Home"));
 // const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
@@ -22,7 +24,7 @@ import Dashboard from './pages/Dashboard';
 function App(props) {
 
   const [authLoading, setAuthLoading] = useState(true);
-
+  const admin = checkAdmin();
   useEffect(() => {
     const token = getToken();
     if (!token) {
@@ -62,7 +64,7 @@ function App(props) {
   return (
 
     <div className="App">
-      <BrowserRouter>
+      
         {/* <div className="header">
           <NavLink exact activeClassName="active" to="/">Home</NavLink> */}
 
@@ -84,19 +86,36 @@ function App(props) {
         
           <Navbar />
       
-          <Switch>
-          <Route exact path='/Home' component={Home} />
-            <Route exact path='/' component={Home} />
-            <PublicRoute exact path='/login' component={Login} />
-            <PublicRoute exact path='/register' component={Register} />
-            <PrivateRoute exact path='/dashboard' component={Dashboard} />
-            <Route exact path='/events' component={Events} />
+          
+            {
+              admin ? 
+              <Switch>
+              
+              <PrivateRoute exact path='/admin/home' component={HomeAdmin} />
+              <PrivateRoute exact path='/' component={HomeAdmin} />  
+              <Route  path="*" component={PageNotFound} />
+              </Switch>
+              :
+              
+              <Switch>
+              
+              <Route exact path='/Home' component={Home} />
+              <Route exact path='/' component={Home} />
+              <PublicRoute exact path='/login' component={Login} />
+              <PublicRoute exact path='/register' component={Register} />
+              <PrivateRoute exact path='/dashboard' component={Dashboard} />
+              <Route exact path='/events' component={Events} />
+              <Route  path="*" component={PageNotFound} />
+              </Switch>
+            }
             
-          </Switch>
+            
+            
+          
           </Suspense>
 
         </div>
-      </BrowserRouter>
+      
     </div>
   );
 }

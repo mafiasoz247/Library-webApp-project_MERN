@@ -43,10 +43,10 @@
 // export default NavBar;
 
 import React, { Component, useState } from 'react';
-import { MenuItems, LoggedIn, LoggedOut } from './MenuItems';
+import { MenuItemsAdmin,MenuItems, LoggedIn, LoggedOut } from './MenuItems';
 import './Navbar.css'
 import { Button } from './Button';
-import { checkToken, setUserIDSession, getUser, removeUserSession, removeUserIDSession, getToken } from "../../Utils/Common";
+import { checkAdmin,checkToken, setUserIDSession, getUser, removeUserSession, removeUserIDSession, getToken } from "../../Utils/Common";
 import axios from 'axios';
 
 
@@ -54,6 +54,7 @@ class Navbar extends Component {
 
   state = { clicked: false }
   token = checkToken()
+  admin = checkAdmin();
   handleClick = () => {
     this.setState({ clicked: !this.state.clicked })
   }
@@ -88,15 +89,31 @@ class Navbar extends Component {
         <h1 className="navbar-logo">Library{/*<i className="fab fa-react"></i>*/}</h1>
 
         <ul className={this.state.clicked ? 'nav-menu active' : 'nav-menu'}>
-          {MenuItems.map((item, index) => {
+          {
+          
+          this.admin ? 
+          
+          MenuItemsAdmin.map((item, index) => {
             return (
               <li key={index}>
                 <a className={item.cName}  href={item.url} >
                   {item.title}
                 </a>
               </li>
-            )
-          })}</ul>
+            )}
+          ) : 
+          MenuItems.map((item, index) => {
+            return (
+              <li key={index}>
+                <a className={item.cName}  href={item.url} >
+                  {item.title}
+                </a>
+              </li>
+            )}
+           )
+      
+          }
+          </ul>
         <ul className='nav-menu-right'>
           {
             this.token ? (

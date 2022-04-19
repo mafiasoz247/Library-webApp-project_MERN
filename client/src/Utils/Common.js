@@ -5,6 +5,18 @@ export const checkToken = () => {
   else return false;
 }
 
+export const checkAdmin = () => {
+  const userStr = JSON.parse(sessionStorage.getItem('user'));
+  if(userStr){
+  if (userStr.Type == 0){ 
+    return true;
+  }
+  else return false;
+}
+
+  else return false;
+}
+
 export const getUser = () => {
     const userStr = sessionStorage.getItem('user');
     if (userStr) return JSON.parse(userStr);
