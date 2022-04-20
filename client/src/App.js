@@ -15,6 +15,7 @@ import Navbar from './Components/Navbar/Navbar.js';
 import Dashboard from './pages/Dashboard';
 import HomeAdmin from './pages/HomeAdmin';
 import PageNotFound from './pages/pagenotfound';
+import PageNotFoundhello from './pages/pagenotfound';
 // const Home = lazy(() => import("./pages/Home"));
 // const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
