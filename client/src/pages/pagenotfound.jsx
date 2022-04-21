@@ -10,7 +10,7 @@ const PageNotFound = () => {
             </div>
             <div id='container'>
             <p>Oops! Something is wrong.</p>
-            <a class="button" href="/"><i class="icon-home"></i> Click here to go to Home Page!</a>
+            <a className="button" href="/"><i className="icon-home"></i> Click here to go to Home Page!</a>
             </div>
         </div>
     )

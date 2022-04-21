@@ -3,20 +3,20 @@
     font-family: Arial;
 }
 .HomeAdmin .box h1{
-    color: #fff;
+    color: #000;
     /* padding-right: 30px; */
     margin-left: 155px;
     /* margin-top: 40px; */
 }
 .HomeAdmin .boxfirst h1{
-    color: #fff;
+    color: #000;
     /* padding-right: 30px; */
     margin-left: 70px;
     padding-right: 40px;
     margin-top: 20px;
 }
 .HomeAdmin .boxlast h1{
-    color: #fff;
+    color: #000;
     /* padding-right: 30px; */
     margin-left: 130px;
     margin-top: 20px;
@@ -32,7 +32,50 @@
     border:1px solid #bbb;
     transition: all 0.3s linear;
 }
+.zone a {
+    text-decoration: none;
+    
+}
 
+.mylink3 img {
+     /* padding-right: 10px; */
+     width:174px;
+     height: 174px;
+     margin-top: 180px;
+     margin-left: 140px;
+     
+     /* height: 50%; */
+   
+}
+.mylink img{
+     /* padding-right: 10px; */
+     width:174px;
+     height: 174px;
+     margin-top: 180px;
+     margin-left: 125px;
+     /* margin-bottom: 40px; */
+     
+     /* height: 50%; */
+}
+.mylink:hover img{
+    opacity: 50%;
+}
+.mylink2:hover img{
+    opacity: 50%;
+}
+.mylink3:hover img{
+    opacity: 50%;
+}
+.mylink2 > img {
+    /* padding-right: 10px; */
+    width:220px;
+    height: 220px; 
+    margin-top: 145px;
+    margin-left: 105px;
+    
+    /* height: 50%; */
+   
+}
 /* .zone:hover {
     -webkit-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
     -moz-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
@@ -79,7 +122,7 @@
 
 .box {
     cursor:pointer;
-    background-color: #777;
+    background: linear-gradient(90deg, white 0%, rgb(200,200,200) 100%);
     
     
     min-width: 100%;
@@ -93,7 +136,8 @@
 }
 .boxlast {
     cursor:pointer;
-    background-color: #777;
+    background: linear-gradient(90deg, white 0%, rgb(200,200,200) 100%);
+    /* background-color: #fff; */
     min-width: 100%;
     /* padding-top: 200px ;
     padding-bottom: 200px ;
@@ -108,7 +152,7 @@
 }
 .boxfirst {
     cursor:pointer;
-    background-color: #777;
+    background: linear-gradient(90deg, white 0%, rgb(200,200,200) 100%);
     min-width: 100%;
     /* padding-top: 200px ;
     padding-bottom: 200px ;
@@ -150,51 +194,7 @@
     
 }
 
-.box > img {
-     /* padding-right: 10px; */
-     width:220px;
-     height: 220px; 
-     margin-top: 145px;
-     margin-left: 105px;
-     
-     /* height: 50%; */
-    
-}
 
-.boxlast > img {
-     /* padding-right: 10px; */
-     width:174px;
-     height: 174px;
-     margin-top: 180px;
-     margin-left: 140px;
-     
-     /* height: 50%; */
-    
-}
-
-.boxfirst > img {
-    /* padding-right: 10px; */
-    width:174px;
-    height: 174px;
-    margin-top: 180px;
-    margin-left: 125px;
-    /* margin-bottom: 40px; */
-    
-    /* height: 50%; */
-    
-}
-.box > img:hover {
-    opacity: 50%;
-    
-}
-.boxlast > img:hover {
-    opacity: 50%;
-    
-}
-.boxfirst > img:hover {
-    opacity: 50%;
-    
-}
 
 
 /*https://paulund.co.uk/how-to-create-shiny-css-buttons*/

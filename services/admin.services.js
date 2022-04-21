@@ -77,7 +77,7 @@ async function CreateLibrary({ req, token }, callback) {
                                 }
                                 else {
                                     let flag = '0';
-                                    db.query(`INSERT INTO LIBRARIES(Manager_ID, Name, Block_Flag)VALUES (?, ?, ?)`, [req.body.manager, req.body.name, flag ],
+                                    db.query(`INSERT INTO LIBRARIES(Manager_ID, Name, Block_Flag)VALUES (?, ?, ?)`, [req.body.manager, req.body.name, flag],
                                         (error, results, fields) => {
                                             if (error) {
                                                 return callback(error);
@@ -109,6 +109,11 @@ async function RegisterManager({ req, token }, callback) {
     if (req.body.contact === undefined) {
         return callback({ message: "Contact Required!" });
     }
+    if (req.body.password === undefined) {
+        return callback({ message: "Password Required!" });
+    }
+
+
 
     let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
     let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
@@ -162,8 +167,23 @@ async function RegisterManager({ req, token }, callback) {
                                     if (error) {
                                         return callback(error);
                                     }
+                                    else {
+                                        let q = 'SELECT ?? FROM ?? WHERE ?? = ? LIMIT 1';
+                                        let q2 = mysql.format(q, [
+                                            "User_ID",
+                                            "USERS",
+                                            "Email",
+                                            req.body.email,
+                                        ]);
 
-                                    return callback(null, "Library Manager registered Successfully!")
+                                        db.query(q2, (err, info2) => {
+                                            if (err){
+                                                return callback(err);
+                                            }
+                                            return callback(null, {info2})
+                                        })
+                                        
+                                    }
                                 });
                         }
                     });
@@ -215,7 +235,7 @@ async function viewUsers({ token }, callback) {
 
                     let type = 2;
                     db.query('SELECT User_ID, Name, Email, Address, Contact, Delete_Flag  FROM ?? WHERE ?? = ?',
-                        ["USERS", "Type",  type],
+                        ["USERS", "Type", type],
                         (error, Customers, fields) => {
                             if (error) {
                                 return callback(error);
@@ -332,9 +352,9 @@ async function UpdateCustomerFlag({ req, token }, callback) {
                             });
                         }
                         else {
-                           
+
                             db.query(`UPDATE ?? SET ?? = ? Where ?? = ?`,
-                        ["USERS","Delete_Flag", req.body.flag , "User_ID", req.body.user],
+                                ["USERS", "Delete_Flag", req.body.flag, "User_ID", req.body.user],
                                 (error, results, fields) => {
                                     if (error) {
                                         return callback(error);
