@@ -58,13 +58,14 @@ const Login = (props) => {
     return (
 
         <div>
+            <br/> <br/> <br/>
              <div className="login-form py-4">
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-lg-5">
                             <div className="card shadow-sm">
                                 <span className="shape"></span>
-                                <div className="card-header text-center bg-transparent">
+                                <div className="card-header text-center ">
                                     <br/>
                                     <h2>Login</h2>
                                 </div>

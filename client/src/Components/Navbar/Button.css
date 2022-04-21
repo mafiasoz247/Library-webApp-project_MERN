@@ -1,5 +1,5 @@
 :root {
-    --primary:#666;
+    --primary:#f6f5fc;
 }
 .btn {
     padding: 8px 20px;
@@ -8,6 +8,8 @@
     outline: none;
     border: none;
     cursor:pointer;
+    color: #000;
+    
 
 }
 
@@ -36,12 +38,12 @@
     padding: 8px 20px;
     border-radius: 4px;
     font-size: 18px;
-    color: #fff;
+    color: #000;
 }
 
 .btn--large {
     padding: 12px 26px;
     border-radius: 4px;
     font-size: 20px;
-    color: #fff;
+    color: #000;
 }

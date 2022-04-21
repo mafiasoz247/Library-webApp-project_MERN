@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:600|Work+Sans:400,500,600,700&display=swap');
 
 body{
-  background: rgb(204, 203, 203);
+  background: white;
   /* background: linear-gradient(135deg, rgba(34,193,195,1) 0%,     rgba(253,187,45,1) 100%); */
   font-family: "work sans";
 }
@@ -9,6 +9,7 @@ body{
 html{
   font-size: 100%;
 }
+
 
 #loginform{
   max-width: 500px;
@@ -18,8 +19,9 @@ html{
   width: 30%;
   height: 60%;
   margin: 100px auto;
-  background-color: #FFFFFF;
-  border-radius: 25px;
+  background-color: #000;
+  border-radius: 50px;
+  border-color: #000;
 }
 
 #headerTitle{
@@ -84,7 +86,8 @@ html{
   color: white;
   font-weight: 700;
   background: rgb(34,193,195);
-  background: linear-gradient(90deg, #666 0%,     #000 100%);
+  /* background: linear-gradient(90deg, #666 0%,     #000 100%); */
+  background: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);
   border: 0px;
   cursor: pointer;
   transition: opacity 0.25s ease-out;
