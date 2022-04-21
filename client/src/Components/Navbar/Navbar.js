@@ -48,6 +48,7 @@ import './Navbar.css'
 import { Button } from './Button';
 import { checkAdmin,checkToken, setUserIDSession, getUser, removeUserSession, removeUserIDSession, getToken } from "../../Utils/Common";
 import axios from 'axios';
+import Notification from '../Notifications';
 
 
 class Navbar extends Component {
@@ -64,6 +65,7 @@ class Navbar extends Component {
     
     const user = getUser();
     const token = getToken();
+    
 
     const handleLogout = async () => {
   

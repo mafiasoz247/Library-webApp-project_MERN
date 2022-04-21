@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { setUserSession, setUserIDSession, getUser, removeUserSession, removeUserIDSession } from "../Utils/Common";
+import { setUserSession, setUserIDSession,getToken, getUser, removeUserSession, removeUserIDSession } from "../Utils/Common";
 import ReactDOM from 'react-dom';
 import '../Components/Registerform.css'
+import Notification from '../Components/Notifications';
 
-const Register = (props) => {
+const RegisterManager = (props) => {
+    const user = getUser();
+    const token = getToken();
+    
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -14,6 +18,7 @@ const Register = (props) => {
     const [cpassword,setcpass] = useState('');
     const [address,setAddress] = useState('');
     const [contact,setContact] = useState(''); 
+    const [notify, setNotify] = useState({isOpen: false, message:'', type:''});
 
     const handleRegister = async() => {
         if(email === "" ){
@@ -37,18 +42,45 @@ const Register = (props) => {
         else{
         setError(null);
         setLoading(true);
-         axios.post("http://localhost:4000/users/register", {
+        let config = {
+            headers: {
+                Authorization: "basic " + token
+            },
             name: name,
             email: email,
             password: password,
             address: address,
             contact : contact
-         }).then(async response => {
-            window.location.assign("/login");
+        }
+         axios.post("http://localhost:4000/users/RegisterManager", config, {
+            headers: {
+                Authorization: "basic " + token
+            },
+            name: name,
+            email: email,
+            password: password,
+            address: address,
+            contact : contact
+         }).then(response => {
+             sessionStorage.setItem('Manager_ID', response.data.data.message.info2[0].User_ID);
+             window.location.assign("/admin/CreateLibrary");
+             setNotify({
+                 isOpen: true,
+                 message: 'Manager Registered Successfully!',
+                 type: 'success'
+             })
+            
+            
          }).catch(error => {
+            // console.log("lol");
             setLoading(false);
             if (error.response.status === 500) {
                 setError(error.response.data.data.message || "Enter a valid email");
+                setNotify({
+                    isOpen: true,
+                    message: error.response.data.data.message || "Enter a valid email",
+                    type: 'error'
+                })
             }
         })
         // axios.post("http://localhost:4000/users/login", {
@@ -102,8 +134,8 @@ const Register = (props) => {
                             <div className="card shadow-sm">
                                 <span className="shape"></span>
                                 <div className="card-header text-center bg-transparent">
-                                    <i className="fas fa-user-circle"></i>
-                                    <h2>Register</h2>
+                                    
+                                    <h2>Make Manager for new library!</h2>
                                 </div>
                                 <div className="card-body py-4">
                                     <form action="#">
@@ -141,15 +173,16 @@ const Register = (props) => {
                                         <div className="form-group">    
                                         <div className="error"> 
                                             {error && <><h5 style={{ color: 'red' }}>{error}</h5></>} </div>
-                                            <button type="button" id="button" className="row" onClick={handleRegister} value={loading ? 'Loading...' : 'Register'} disabled={loading} >Register</button>
+                                            
+                                            <button type="button"id="button" className="row" onClick={handleRegister} value={loading ? 'Loading...' : 'Register'} disabled={loading} >Create Manager</button>
                                         </div>
                                         
                                         <div className="form-group">
                                         
 
-                                        <div id="alternativeLogin" className="container">
-                                        <a href="/login"><small>Already a user?</small> </a>     
-                                        </div>
+                                        <Notification 
+                                            notify={notify}
+                                            setNotify={setNotify}/>
                                         </div> 
                                         
                                     </form>
@@ -163,4 +196,4 @@ const Register = (props) => {
     )
 }
 
-export default Register;
+export default RegisterManager;

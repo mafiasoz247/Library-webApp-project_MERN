@@ -15,7 +15,10 @@ import Navbar from './Components/Navbar/Navbar.js';
 import Dashboard from './pages/Dashboard';
 import HomeAdmin from './pages/HomeAdmin';
 import PageNotFound from './pages/pagenotfound';
-import PageNotFoundhello from './pages/pagenotfound';
+import RegisterManager from './pages/RegisterManager';
+import ViewUsers from './pages/ViewUsers';
+import ViewLibraries from './pages/ViewLibraries';
+import CreateLibrary from './pages/CreateLibrary';
 // const Home = lazy(() => import("./pages/Home"));
 // const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
@@ -36,7 +39,7 @@ function App(props) {
       //setUserIDSession(response.data.user);
       let config = {
         headers: {
-          Authorization: "basic " + token
+          authorization: "basic " + token
         }
       }
       await axios.get("http://localhost:4000/users/user-profile", config, {
@@ -72,9 +75,7 @@ function App(props) {
           {/* <NavLink activeClassName="active" to="/events"> Events </NavLink> */}
           
           {/* <NavLink activeClassName="active" to="/login">Login <small> Access without token only </small></NavLink>
-
           <NavLink activeClassName="active" to="/register">Register<small> Access without token only </small></NavLink>
-
           <NavLink activeClassName="active" to="/dashboard">Dashboard <small> Access with token only </small></NavLink>
         </div> */}
 
@@ -94,6 +95,10 @@ function App(props) {
               
               <PrivateRoute exact path='/admin/home' component={HomeAdmin} />
               <PrivateRoute exact path='/' component={HomeAdmin} />  
+              <PrivateRoute exact path='/admin/RegisterManager' component={RegisterManager} />
+              <PrivateRoute exact path='/admin/Users' component={ViewUsers} />
+              <PrivateRoute exact path='/admin/Libraries' component={ViewLibraries} /> 
+              <PrivateRoute exact path='/admin/CreateLibrary' component={CreateLibrary} />   
               <Route  path="*" component={PageNotFound} />
               </Switch>
               
