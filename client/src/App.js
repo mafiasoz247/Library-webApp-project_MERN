@@ -75,9 +75,7 @@ function App(props) {
           {/* <NavLink activeClassName="active" to="/events"> Events </NavLink> */}
           
           {/* <NavLink activeClassName="active" to="/login">Login <small> Access without token only </small></NavLink>
-
           <NavLink activeClassName="active" to="/register">Register<small> Access without token only </small></NavLink>
-
           <NavLink activeClassName="active" to="/dashboard">Dashboard <small> Access with token only </small></NavLink>
         </div> */}
 
