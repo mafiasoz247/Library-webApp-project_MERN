@@ -18,22 +18,7 @@ exports.CreateBook = (req, res, next) => {
     });
 };
 
-exports.CreateCategory = (req, res, next) => {
 
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(' ')[1];
-    userService.CreateCategory({ req, token }, (error, result) => {
-        if (error) {
-            return next(error);
-        }
-        return res.status(200).send({
-            Status: "Success",
-            data: {
-                message: result
-            },
-        });
-    });
-};
 
 exports.updateBook = (req, res, next) => {
 

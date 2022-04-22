@@ -116,3 +116,74 @@ exports.UpdateCustomerFlag = (req, res, next) => {
         });
     });
 };
+
+exports.CreateCategory = (req, res, next) => {
+
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(' ')[1];
+    userService.CreateCategory({ req, token }, (error, result) => {
+        if (error) {
+            return next(error);
+        }
+        return res.status(200).send({
+            Status: "Success",
+            data: {
+                message: result
+            },
+        });
+    });
+};
+
+exports.getQueriesManager = (req, res, next) => {
+
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    userService.getQueriesManager({  token }, (error, result) => {
+        if (error) {
+            return next(error);
+        }
+        return res.status(200).send({
+            Status: "Success",
+            data: {
+                message: result
+            },
+        });
+    });
+};
+
+exports.getCategory = (req, res, next) => {
+
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    userService.getCategory({ token }, (error, result) => {
+        if (error) {
+            return next(error);
+        }
+        return res.status(200).json({
+            Status: "Success",
+            data: {
+                result
+            },
+        });
+    })
+};
+
+exports.statusQueryManager = (req, res, next) => {
+
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    userService.statusQueryManager({ req, token }, (error, result) => {
+        if (error) {
+            return next(error);
+        }
+        return res.status(200).send({
+            Status: "Success",
+            data: {
+                message: result
+            },
+        });
+    });
+};

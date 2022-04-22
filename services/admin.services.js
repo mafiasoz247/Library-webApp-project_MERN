@@ -468,6 +468,301 @@ async function UpdateLibraryFlag({ req, token }, callback) {
 
 };
 
+async function CreateCategory({ req, token }, callback) {
+
+    if (req.body.name === undefined) {
+        return callback({ message: "Name Required!" });
+    }
+    if (req.body.parent === undefined) {
+        return callback({ message: "Parent Category ID Required!" });
+    }
+
+    let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
+    let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
+    db.query(query, (err, data) => {
+        if (err) {
+            return callback(err);
+        }
+
+        if (data[0].total == 0) {
+            return callback({
+                message: "Deleted Token, Cannot add a new book"
+            });
+        }
+        else {
+
+            let selectQuery = 'SELECT Type FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
+            let query = mysql.format(selectQuery, ["USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
+
+            db.query(query, (err, info) => {
+
+                if (err) {
+                    return callback(err);
+                }
+                if (info[0].Type != 1) {
+                    return callback({
+                        message: "Access Violation, unable to add Category"
+                    });
+                }
+
+                else {
+
+                    let lib = 'SELECT Library_ID FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??   WHERE ?? = ?';
+                    let querylib = mysql.format(lib, ["Libraries", "TOKENS_USER", "Manager_ID", "User_ID", "Token", token]);
+
+                    db.query(querylib, (err, info) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        else {
+
+                            let library = info[0].Library_ID;
+
+
+                            let selectQuery2 = 'SELECT Count(*) as "total" FROM ??  WHERE ?? = ? AND ?? = ? ;';
+                            let query2 = mysql.format(selectQuery2, [
+                                "CATEGORY",
+                                "Name",
+                                req.body.name,
+                                "Library_ID",
+                                library,
+                            ]);
+
+                            db.query(query2, (err, info) => {
+                                if (err) {
+                                    return callback(err);
+                                }
+                                if (info[0].total > 0) {
+                                    return callback({
+                                        message: "Category already exists in this library"
+                                    });
+                                }
+                                else {
+                                    db.query(`INSERT INTO CATEGORY(Name, Parent_Category, Library_ID) VALUES (?, ?, ?)`, [req.body.name, req.body.parent, library],
+                                        (error, results, fields) => {
+                                            if (error) {
+                                                return callback(error);
+                                            }
+
+                                            return callback(null, "Category Created Successfully!")
+                                        });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+        }
+    });
+};
+
+async function getCategory({ token }, callback) {
+
+    let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
+    let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
+    db.query(query, (err, data) => {
+        if (err) {
+            return callback(err);
+        }
+
+        if (data[0].total == 0) {
+            return callback({
+                message: "Deleted Token, Cannot Get Categories"
+            });
+        }
+        else {
+
+            let selectQuery = 'SELECT ??, A1.?? FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
+            let query = mysql.format(selectQuery, ["Type", "User_ID", "USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
+
+            db.query(query, (err, info) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (info[0].Type != 1) {
+                    return callback({
+                        message: "Access Violation!"
+                    });
+                }
+                else {
+                    let lib = 'SELECT Library_ID FROM ?? as A1 INNER JOIN ?? as A2 ON A1.??= A2.??   WHERE ?? = ?';
+                    let querylib = mysql.format(lib, ["Libraries", "TOKENS_USER", "Manager_ID", "User_ID", "Token", token]);
+
+                    db.query(querylib, (err, info) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        else {
+                            let library = info[0].Library_ID;
+
+
+                            let selectQuery3 = 'SELECT  ??, ?? FROM ?? WHERE ?? = ?';
+                            let query3 = mysql.format(selectQuery3, ["Name", "Category_ID", "CATEGORY", "Library_ID", library]);
+                            db.query(query3, (err, Categories) => {
+                                if (err) {
+                                    return callback(err);
+                                }
+                                else {
+
+                                    return callback(null, { Categories });
+                                };
+                            })
+                        }
+                    });
+                }
+            });
+        };
+
+    });
+
+};
+
+async function getQueriesManager({ token }, callback) {
+
+
+    let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
+    let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
+    db.query(query, (err, data) => {
+        if (err) {
+            return callback(err);
+        }
+
+        if (data[0].total == 0) {
+            return callback({
+                message: "Deleted Token, Cannot View Queries"
+            });
+        }
+        else {
+
+            let selectQuery = 'SELECT ??, A1.?? FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
+            let query = mysql.format(selectQuery, ["Type", "User_ID", "USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
+
+            db.query(query, (err, info) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (info[0].Type != 1) {
+                    return callback({
+                        message: "Access Violation!"
+                    });
+                }
+                else {
+                    let lib = 'SELECT Library_ID FROM ?? as A1 INNER JOIN ?? as A2 ON A1.??= A2.??   WHERE ?? = ?';
+                    let querylib = mysql.format(lib, ["Libraries", "TOKENS_USER", "Manager_ID", "User_ID", "Token", token]);
+
+                    db.query(querylib, (err, info) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        else {
+                            let library = info[0].Library_ID;
+
+                         
+                                let selectQuery = 'SELECT ??,??, ??, ??, ?? from ?? as A where A.?? = ?';
+                                let query = mysql.format(selectQuery, ["Query_ID","Viewed_Flag","Subject", "Description", "Name", "CONTACT_US","Library_ID", library]);
+
+                                db.query(query, (err, Queries) => {
+                                    if (err) {
+                                        return callback(err);
+                                    }
+                                    else {
+                                        return callback(null, { Queries });
+                                    }
+                                });
+                            }
+                        
+                    });
+                }
+            });
+        }
+    });
+};
+
+async function statusQueryManager({ req, token }, callback) {
+
+    if (req.body.Query === undefined) {
+        return callback({ message: "Query ID Required!" });
+    }
+
+    let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
+    let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
+    db.query(query, (err, data) => {
+        if (err) {
+            return callback(err);
+        }
+
+        if (data[0].total == 0) {
+            return callback({
+                message: "Deleted Token, Cannot update book"
+            });
+        }
+        else {
+
+            let selectQuery = 'SELECT Type FROM ?? as A1 INNER JOIN ?? as A2 ON A1.??= A2.??  WHERE ?? = ?';
+            let query = mysql.format(selectQuery, ["USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
+
+            db.query(query, (err, info) => {
+                if (err) {
+                    return callback(err);
+                }
+                if (info[0].Type != 1) {
+                    return callback({
+                        message: "Access Violation! Cannot Update Query Status"
+                    });
+                }
+                else {
+                    let lib = 'SELECT Library_ID FROM ?? as A1 INNER JOIN ?? as A2 ON A1.??= A2.??   WHERE ?? = ?';
+                    let querylib = mysql.format(lib, ["Libraries", "TOKENS_USER", "Manager_ID", "User_ID", "Token", token]);
+
+                    db.query(querylib, (err, info) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        else {
+                            let library = info[0].Library_ID;
+
+                                let lib = 'Select COUNT(*) as "total" from ?? where ? IN (select ?? from ?? where ?? = ?)';
+                                let querylib = mysql.format(lib, ["CONTACT_US", req.body.query, "Query_ID", "CONTACT_US", "Library_ID", library]);
+
+                                db.query(querylib, (err, info) => {
+                                    if (err) {
+                                        return callback(err);
+                                    }
+                                    if (data[0].total == 0) {
+                                        return callback({
+                                            message: "Invalid Query ID"
+                                        });
+                                    }
+                                    else {
+                                          // UPDATE Query
+                                          let temp = '1';
+                                          let updateQuery = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
+                                          let query = mysql.format(updateQuery, ["CONTACT_US", "Viewed_Flag", temp, "Query_ID", req.body.query]);
+
+                                          db.query(query, (err, info) => {
+                                              if (err) {
+                                                  return callback(err);
+                                              }
+
+                                              return callback(null, "Query Status Updated Successfully!")
+                                          });
+
+                                    }
+                                });
+                            }
+                        
+                    });
+                }
+            });
+        }
+    });
+};
+
+
 module.exports = {
 
     RegisterManager,
@@ -475,6 +770,11 @@ module.exports = {
     viewUsers,
     UpdateCustomerFlag,
     UpdateLibraryFlag,
-    viewLibraries
+    viewLibraries,
+    CreateCategory,
+    getCategory,
+    getQueriesManager,
+    statusQueryManager
+
 
 };

@@ -16,7 +16,7 @@ router.get("/user-profile", generalController.userProfile);
 router.delete("/logout", generalController.logout);
 router.post("/newsletter", customerController.newsletter);
 
-router.post("/CreateCategory", managerController.CreateCategory);
+
 router.post("/CreateLibrary", adminController.CreateLibrary);
 router.post("/CreateBook", managerController.CreateBook);
 
@@ -37,6 +37,10 @@ router.patch("/updateOrderStatusManager", managerController.updateOrderStatusMan
 router.post("/CustomerContact", customerController.CustomerContact);
 
 router.get("/getUsers", adminController.viewUsers);
+router.get("/getQueriesManager", adminController.getQueriesManager);
+router.post("/createCategory", adminController.CreateCategory);
+router.patch("/setQueryManager", adminController.statusQueryManager);
+router.get("/getCategory", adminController.getCategory);
 router.get("/getLibraries", adminController.viewLibraries);
 router.patch("/setCustomerFlag", adminController.UpdateCustomerFlag);
 router.patch("/setLibraryFlag", adminController.UpdateLibraryFlag);
@@ -57,8 +61,10 @@ router.patch("/updateReview", customerController.updateReview);
 router.delete("/deleteReview", customerController.deleteReview);
 
 router.get("/getQueries", managerController.getQueries);
-router.patch("/statusQuery", managerController.statusQuery)
+router.patch("/statusQuery", managerController.statusQuery);
 router.get("/getOrder_ItemsManager", managerController.getOrder_ItemsManager);
+
+
 
 router.get("/getEvents", customerController.getEvents);
 

@@ -143,95 +143,6 @@ async function CreateBook({ req, token }, callback) {
 
 };
 
-async function CreateCategory({ req, token }, callback) {
-
-    if (req.body.name === undefined) {
-        return callback({ message: "Name Required!" });
-    }
-    if (req.body.parent === undefined) {
-        return callback({ message: "Parent Category ID Required!" });
-    }
-
-    let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
-    let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
-    db.query(query, (err, data) => {
-        if (err) {
-            return callback(err);
-        }
-
-        if (data[0].total == 0) {
-            return callback({
-                message: "Deleted Token, Cannot add a new book"
-            });
-        }
-        else {
-
-            let selectQuery = 'SELECT Type FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
-            let query = mysql.format(selectQuery, ["USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
-
-            db.query(query, (err, info) => {
-
-                if (err) {
-                    return callback(err);
-                }
-                if (info[0].Type != 1) {
-                    return callback({
-                        message: "Access Violation, unable to add Category"
-                    });
-                }
-
-                else {
-
-                    let lib = 'SELECT Library_ID FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??   WHERE ?? = ?';
-                    let querylib = mysql.format(lib, ["Libraries", "TOKENS_USER", "Manager_ID", "User_ID", "Token", token]);
-
-                    db.query(querylib, (err, info) => {
-                        if (err) {
-                            return callback(err);
-                        }
-
-                        else {
-
-                            let library = info[0].Library_ID;
-
-
-                            let selectQuery2 = 'SELECT Count(*) as "total" FROM ??  WHERE ?? = ? AND ?? = ? ;';
-                            let query2 = mysql.format(selectQuery2, [
-                                "CATEGORY",
-                                "Name",
-                                req.body.name,
-                                "Library_ID",
-                                library,
-                            ]);
-
-                            db.query(query2, (err, info) => {
-                                if (err) {
-                                    return callback(err);
-                                }
-                                if (info[0].total > 0) {
-                                    return callback({
-                                        message: "Category already exists in this library"
-                                    });
-                                }
-                                else {
-                                    db.query(`INSERT INTO CATEGORY(Name, Parent_Category, Library_ID) VALUES (?, ?, ?)`, [req.body.name, req.body.parent, library],
-                                        (error, results, fields) => {
-                                            if (error) {
-                                                return callback(error);
-                                            }
-
-                                            return callback(null, "Category Created Successfully!")
-                                        });
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-
-        }
-    });
-};
 
 async function updateBook({ req, token }, callback) {
 
@@ -1242,7 +1153,6 @@ async function statusQuery({ req, token }, callback) {
 
 module.exports = {
     CreateBook,
-    CreateCategory,
     updateBook,
     updateOrderStatusManager,
     getOrdersLibrary,
