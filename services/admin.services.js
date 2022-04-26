@@ -283,7 +283,7 @@ async function viewLibraries({ token }, callback) {
                 }
                 else {
 
-                    db.query('SELECT  A1.Name as "Library Name", A1.Library_ID,  A1.Manager_ID, A2.Name as "Manager Name", A1.Block_Flag   FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.?? ',
+                    db.query('SELECT  A1.Name as "Name", A1.Library_ID,  A1.Manager_ID, A2.Name as "Manager_Name", A1.Block_Flag   FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.?? ',
                         ["Libraries", "USERS", "Manager_ID", "User_ID"],
                         (error, libraries, fields) => {
                             if (error) {

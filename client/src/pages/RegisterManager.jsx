@@ -133,7 +133,7 @@ const RegisterManager = (props) => {
                         <div className="col-lg-5">
                             <div className="card shadow-sm">
                                 <span className="shape"></span>
-                                <div className="card-header text-center bg-transparent">
+                                <div className="card-header text-center ">
                                     
                                     <h2>Make Manager for new library!</h2>
                                 </div>
