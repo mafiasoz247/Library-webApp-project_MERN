@@ -82,7 +82,7 @@ async function register(req, callback) {
         return callback({ message: "Password Required!" });
     }
 
-    
+
     const { password } = req;
     const salt = bcrypt.genSaltSync(10);
 
@@ -211,50 +211,32 @@ async function updateProfile({ req, token }, callback) {
 
 async function userProfile({ req, token }, callback) {
 
-    // if (req.body.library === undefined) {
-    //     return callback({ message: "Library ID Required!" });
-    // }
 
-    // Check if Library_ID actually exists
-    // let lib = 'SELECT COUNT(*) as "total" from ?? where ?? = ?';
-    // let querylib = mysql.format(lib, ["Libraries", "Library_ID", req.body.libary]);
+    let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
+    let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
+    db.query(query, (err, data) => {
+        if (err) {
+            return callback(err);
+        }
 
-    // db.query(querylib, (err, info) => {
-    //     if (err) {
-    //         return callback(err);
-    //     }
-    //     if (info[0].total == 0) {
-    //         return callback({
-    //             message: "Invalid Library ID!"
-    //         });
+        if (data[0].total == 0) {
+            return callback({
+                message: "Deleted Token, Cannot access profile"
+            });
+        }
+        else {
+            let User_ID = data[0].User_ID;
+            db.query('SELECT Name, Email, Address, Contact, Type  FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?',
+                ["USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token],
+                (error, profile, fields) => {
+                    if (error) {
+                        return callback(error);
+                    }
+                    return callback(null, { profile });
+                });
+        }
+    })
 
-    //     } else 
-
-            let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
-            let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
-            db.query(query, (err, data) => {
-                if (err) {
-                    return callback(err);
-                }
-
-                if (data[0].total == 0) {
-                    return callback({
-                        message: "Deleted Token, Cannot access profile"
-                    });
-                }
-                else {
-                    let User_ID = data[0].User_ID;
-                    db.query('SELECT Name, Email, Address, Contact, Type  FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?',
-                        ["USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token],
-                        (error, profile, fields) => {
-                            if (error) {
-                                return callback(error);
-                            }
-                            return callback(null, { profile });
-                        });
-                }
-            })
-        
     //});
 };
 
@@ -328,6 +310,22 @@ async function updatePassword({ req, token }, callback) {
     });
 
 };
+async function getCategory({ req }, callback) {
+
+
+    let selectQuery3 = 'SELECT  ??, ?? FROM ??';
+    let query3 = mysql.format(selectQuery3, ["Name", "Category_ID", "CATEGORY"]);
+    db.query(query3, (err, Categories) => {
+        if (err) {
+            return callback(err);
+        }
+        else {
+
+            return callback(null, { Categories });
+        };
+    })
+};
+
 
 module.exports = {
 
@@ -336,6 +334,7 @@ module.exports = {
     logout,
     userProfile,
     updateProfile,
-    updatePassword
+    updatePassword,
+    getCategory
 
 };

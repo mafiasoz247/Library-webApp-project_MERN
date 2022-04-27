@@ -497,10 +497,10 @@ async function CustomerContact({ req, token }, callback) {
                     });
 
                 } else {
-
+                    let q = '0';
                     let flag = '0';
-                    db.query('INSERT INTO CONTACT_US(Subject, Description, Name, Email, Library_ID, Viewed_Flag) VALUES (?, ?, ?, ?, ?, ?)'
-                        , [req.body.subject, req.body.description, req.body.name, email, req.body.library, flag],   //Inserting into database
+                    db.query('INSERT INTO CONTACT_US(Subject, Description, Name, Email, Library_ID, Viewed_Flag, Manager_Query) VALUES (?,?, ?, ?, ?, ?, ?)'
+                        , [req.body.subject, req.body.description, req.body.name, email, req.body.library, flag, query],   //Inserting into database
                         (error, results, fields) => {
                             if (error) {
                                 return callback(error);

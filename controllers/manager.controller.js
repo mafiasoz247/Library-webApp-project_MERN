@@ -114,23 +114,7 @@ exports.getBooksLibrary = (req, res, next) => {
     })
 };
 
-exports.getCategoryLibrary = (req, res, next) => {
 
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(' ')[1];
-
-    userService.getCategoryLibrary({ token }, (error, result) => {
-        if (error) {
-            return next(error);
-        }
-        return res.status(200).json({
-            Status: "Success",
-            data: {
-                result
-            },
-        });
-    })
-};
 
 exports.getOneBookLibrary = (req, res, next) => {
 
@@ -229,6 +213,25 @@ exports.statusQuery = (req, res, next) => {
     const token = authHeader && authHeader.split(' ')[1];
 
     userService.statusQuery({ req, token }, (error, result) => {
+        if (error) {
+            return next(error);
+        }
+        return res.status(200).send({
+            Status: "Success",
+            data: {
+                message: result
+            },
+        });
+    });
+};
+
+exports.QueryManager = (req, res, next) => {
+
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(' ')[1];
+
+
+    customerService.QueryManager({req, token}, (error, result) => {
         if (error) {
             return next(error);
         }

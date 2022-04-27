@@ -43,7 +43,8 @@ app.use(
             { url: "/users/GetBooks", methods: ["GET"] },
             { url: "/users/getBookCategoryWise", methods: ["GET"] }  ,
             { url: "/users/newsletter", methods: ["POST"] },
-            { url: "/users/getEvents", methods: ["GET"] }
+            { url: "/users/getEvents", methods: ["GET"] },
+            { url: "/users/getCategory", methods: ["GET"] }
 
         ],
     })

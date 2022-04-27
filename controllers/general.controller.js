@@ -118,3 +118,21 @@ exports.updatePassword = (req, res, next) => {
         });
     });
 };
+
+
+exports.getCategory = (req, res, next) => {
+
+  
+
+    userService.getCategory({ req }, (error, result) => {
+        if (error) {
+            return next(error);
+        }
+        return res.status(200).json({
+            Status: "Success",
+            data: {
+                result
+            },
+        });
+    })
+};

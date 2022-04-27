@@ -14,6 +14,9 @@ router.post("/register", generalController.register);
 router.post("/login", generalController.login);
 router.get("/user-profile", generalController.userProfile);
 router.delete("/logout", generalController.logout);
+router.get("/getCategory", generalController.getCategory);
+
+
 router.post("/newsletter", customerController.newsletter);
 
 
@@ -40,7 +43,7 @@ router.get("/getUsers", adminController.viewUsers);
 router.get("/getQueriesManager", adminController.getQueriesManager);
 router.post("/createCategory", adminController.CreateCategory);
 router.patch("/setQueryManager", adminController.statusQueryManager);
-router.get("/getCategory", adminController.getCategory);
+
 router.get("/getLibraries", adminController.viewLibraries);
 router.patch("/setCustomerFlag", adminController.UpdateCustomerFlag);
 router.patch("/setLibraryFlag", adminController.UpdateLibraryFlag);
@@ -51,7 +54,7 @@ router.patch("/updatePassword", generalController.updatePassword);
 
 router.get("/getOneBookLibrary", managerController.getOneBookLibrary);
 router.get("/getBooksLibrary", managerController.getBooksLibrary);
-router.get("/getCategoryLibrary", managerController.getCategoryLibrary);
+
 
 router.get("/getReviews", customerController.getReviews);
 router.post("/giveReview",customerController.giveReview);
