@@ -39,6 +39,9 @@ const CreateLibrary = (props) => {
                 message: response.data.data.message,
                 type: 'success'
             })
+            setTimeout(function () {
+                window.location.assign("/admin/home");
+            }, 1500);
 
             
         }).catch(error => {

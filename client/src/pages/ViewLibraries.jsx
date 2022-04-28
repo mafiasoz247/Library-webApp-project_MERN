@@ -91,10 +91,12 @@ const ViewLibraries = (props) => {
                             <TableCell> {item.Name} </TableCell>
                             <TableCell> {item.Manager_ID} </TableCell>
                             <TableCell> {item.Manager_Name} </TableCell>
-                            <TableCell> {item.Block_Flag} </TableCell>
+                            <TableCell> { item.Block_Flag == '1' ? "Yes" : "No"} </TableCell>
                             <TableCell> 
                             <ResponsiveDialog 
-                                library = {item.Library_ID}>
+                                library = {item.Library_ID}
+                                flag = {item.Block_Flag}
+                                >
                                     <EditOutlinedIcon fontSize="small" /> 
                             </ResponsiveDialog>
                             </TableCell>

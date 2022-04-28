@@ -9,7 +9,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import EditOutlined from '@material-ui/icons/EditOutlined';
 import Notification from '../Components/Notifications';
-import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { getToken } from '../Utils/Common';
 
@@ -23,6 +22,7 @@ export default function ResponsiveDialog(props) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const token = getToken();
     const User = props.user;
+    const Flag = props.flag;
     console.log(User);
     //console.log(Library);
 
@@ -156,12 +156,18 @@ export default function ResponsiveDialog(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus color="error" onClick={handleBlock} >
-                        Block
-                    </Button>
-                    <Button onClick={handleUnblock} autoFocus >
-                        Unblock
-                    </Button>
+                    {Flag == '1' 
+                    ? 
+                    <Button autoFocus color="error" onClick={handleBlock} disabled>Block </Button> 
+                    : 
+                    <Button autoFocus color="error" onClick={handleBlock} >Block </Button> }
+                    
+                    {Flag == '1' 
+                    ? 
+                    <Button onClick={handleUnblock} autoFocus > Unblock </Button> 
+                    : 
+                    <Button onClick={handleUnblock} autoFocus disabled> Unblock </Button>  }
+                    
                 </DialogActions>
             </Dialog>
             <Notification

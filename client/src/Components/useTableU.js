@@ -26,6 +26,7 @@ export default function useTableU(Users, headCells) {
     const pages = [5, 10, 15]
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(pages[page])
+    
     const TblContainer = props => (
         <Table className={classes.table}>
             {props.children}

@@ -69,6 +69,7 @@ const RegisterManager = (props) => {
                  message: 'Manager Registered Successfully!',
                  type: 'success'
              })
+             
             
             
          }).catch(error => {

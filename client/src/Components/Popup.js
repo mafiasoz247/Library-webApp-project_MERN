@@ -23,6 +23,7 @@ export default function ResponsiveDialog(props) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const token = getToken();
     const Library = props.library;
+    const Flag = props.flag;
     //console.log(Library);
 
 
@@ -155,12 +156,17 @@ export default function ResponsiveDialog(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus color="error" onClick={handleBlock} >
-                        Block
-                    </Button>
-                    <Button onClick={handleUnblock} autoFocus >
-                        Unblock
-                    </Button>
+                {Flag == '1' 
+                    ? 
+                    <Button autoFocus color="error" onClick={handleBlock} disabled>Block </Button> 
+                    : 
+                    <Button autoFocus color="error" onClick={handleBlock} >Block </Button> }
+                    
+                    {Flag == '1' 
+                    ? 
+                    <Button onClick={handleUnblock} autoFocus > Unblock </Button> 
+                    : 
+                    <Button onClick={handleUnblock} autoFocus disabled> Unblock </Button>  }
                 </DialogActions>
             </Dialog>
             <Notification

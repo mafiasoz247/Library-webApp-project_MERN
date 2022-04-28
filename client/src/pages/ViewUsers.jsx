@@ -22,8 +22,8 @@ const headCells = [
 const ViewUsers = (props) => {
     const [Users, setUsers] = useState(JSON.parse(sessionStorage.getItem('Users')));
     const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(1);
+    // const [currentPage, setCurrentPage] = useState(1);
+    // const [itemsPerPage] = useState(1);
     const token = getToken();
 
     useEffect(() => {
@@ -77,10 +77,11 @@ const ViewUsers = (props) => {
                             <TableCell> {item.Email} </TableCell>
                             <TableCell> {item.Address} </TableCell>
                             <TableCell> {item.Contact} </TableCell>
-                            <TableCell> {item.Delete_Flag} </TableCell>
+                            <TableCell> {item.Delete_Flag == '1' ? "Yes" : "No"} </TableCell>
                             <TableCell> 
                             <ResponsiveDialog 
-                                user = {item.User_ID}>
+                                user = {item.User_ID}
+                                flag = {item.Delete_Flag}>
                                     <EditOutlinedIcon fontSize="small" /> 
                             </ResponsiveDialog>
                             </TableCell>
