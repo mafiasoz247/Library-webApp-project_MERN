@@ -124,14 +124,14 @@ exports.getCategory = (req, res, next) => {
 
   
 
-    userService.getCategory({ req }, (error, result) => {
+    userService.getCategory({ req }, (error, message) => {
         if (error) {
             return next(error);
         }
         return res.status(200).json({
             Status: "Success",
             data: {
-                result
+                message
             },
         });
     })
