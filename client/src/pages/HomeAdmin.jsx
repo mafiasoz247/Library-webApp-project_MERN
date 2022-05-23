@@ -10,6 +10,7 @@ import { getToken } from '../Utils/Common';
 const HomeAdmin = () => {
   const [libraries, setLibraries] = useState(JSON.parse(sessionStorage.getItem('libraries')));
   const [Users, setUsers] = useState(JSON.parse(sessionStorage.getItem('Users')));
+  const [requests, setRequests] = useState(JSON.parse(sessionStorage.getItem('requests')));
   const [loading, setLoading] = useState(false);
   const token = getToken();
   const fetchUsers = async () => {
@@ -61,8 +62,8 @@ const HomeAdmin = () => {
     }
     await axios.get('http://localhost:4000/users/getQueriesManager', config, {
     }).then(async response => {
-        setLibraries(response.data.data.message.Queries);
-        sessionStorage.setItem('libraries', JSON.stringify(response.data.data.message.Queries));
+        setRequests(response.data.data.message.Queries);
+        sessionStorage.setItem('requests', JSON.stringify(response.data.data.message.Queries));
         setLoading(false);
         window.location.assign('/admin/Requests');
         
@@ -81,22 +82,22 @@ const HomeAdmin = () => {
         
           <div className="boxfirst zone"><a href="/admin/RegisterManager" className="mylink">
           <img src="https://cdn0.iconfinder.com/data/icons/audio-video-industry-1/240/Add_to_library-256.png"></img>
-          <h1>Create Library</h1></a>
+          <h2>Create Library</h2></a>
           </div> 
           
           <div className="box zone"><a  onClick={fetchUsers} className="mylink2">
           <img src="https://cdn2.iconfinder.com/data/icons/linkedin-ui/48/jee-100-256.png"></img>
-          <h1>Users</h1></a>
+          <h2>Users</h2></a>
           </div>
          
           <div className="boxlast zone"><a onClick={fetchlibraries} className="mylink3">
           <img src="https://cdn1.iconfinder.com/data/icons/education-outlines/100/15-256.png"></img>
-          <h1>Libraries</h1></a>
+          <h2>Libraries</h2></a>
           </div>
           
           <div className="boxrequest zone"><a onClick={fetchrequest} className="mylink4">
-          <img src="https://cdn1.iconfinder.com/data/icons/education-outlines/100/15-256.png"></img>
-          <h1>Requests</h1></a>
+          <img src="https://cdn-icons-png.flaticon.com/512/901/901533.png"></img>
+          <h2>Requests</h2></a>
           </div>
           
           

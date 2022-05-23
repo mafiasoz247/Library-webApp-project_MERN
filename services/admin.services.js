@@ -584,7 +584,7 @@ async function getQueriesManager({ token }, callback) {
                     let q = '0';
                     let f = '1';
                     let selectQuery = 'SELECT ??,??, ??, ??, ?? from ?? as A where A.?? = ? and A.?? = ?';
-                    let query = mysql.format(selectQuery, ["Query_ID", "Subject", "Description", "Name", "CONTACT_US", "Viewed_Flag", q, "Manager_Query", f]);
+                    let query = mysql.format(selectQuery, ["Query_ID", "Subject", "Description", "Name", "Email", "CONTACT_US", "Viewed_Flag", q, "Manager_Query", f]);
 
                     db.query(query, (err, Queries) => {
                         if (err) {
@@ -638,7 +638,7 @@ async function statusQueryManager({ req, token }, callback) {
 
 
                     let lib = 'Select COUNT(*) as "total" from ?? where ?? = ?';
-                    let querylib = mysql.format(lib, ["CONTACT_US", "Query_ID", req.body.query]);
+                    let querylib = mysql.format(lib, ["CONTACT_US", "Query_ID", req.body.Query]);
 
                     db.query(querylib, (err, info) => {
                         if (err) {
@@ -653,7 +653,7 @@ async function statusQueryManager({ req, token }, callback) {
                             // UPDATE Query
                             let temp = '1';
                             let updateQuery = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-                            let query = mysql.format(updateQuery, ["CONTACT_US", "Viewed_Flag", temp, "Query_ID", req.body.query]);
+                            let query = mysql.format(updateQuery, ["CONTACT_US", "Viewed_Flag", temp, "Query_ID", req.body.Query]);
 
                             db.query(query, (err, info) => {
                                 if (err) {

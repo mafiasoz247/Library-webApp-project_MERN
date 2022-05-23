@@ -118,8 +118,9 @@ class Navbar extends Component {
           </ul>
         <ul className='nav-menu-right'>
           {
-            this.token ? (
-              <Button onClick={() => window.location.assign('/dashboard')}>MyProfile</Button>
+            this.token ? ( this.admin ?
+              <Button onClick={() => window.location.assign('/admin/home')}>Home</Button> :
+              <Button onClick={() => window.location.assign('/dashboard')}>My Profile</Button>
             )
               : (
                 <Button onClick={() => window.location.assign('/login')}>Login</Button>

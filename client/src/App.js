@@ -19,7 +19,8 @@ import RegisterManager from './pages/RegisterManager';
 import ViewUsers from './pages/ViewUsers';
 import ViewLibraries from './pages/ViewLibraries';
 import CreateLibrary from './pages/CreateLibrary';
-import Requests from './pages/Requests';
+import ViewRequests from './pages/ViewRequests';
+import ViewCategories from './pages/ViewCategories';
 // const Home = lazy(() => import("./pages/Home"));
 // const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
@@ -100,7 +101,8 @@ function App(props) {
               <PrivateRoute exact path='/admin/Users' component={ViewUsers} />
               <PrivateRoute exact path='/admin/Libraries' component={ViewLibraries} /> 
               <PrivateRoute exact path='/admin/CreateLibrary' component={CreateLibrary} /> 
-              <PrivateRoute exact path='/admin/Requests' component={Requests} />   
+              <PrivateRoute exact path='/admin/Requests' component={ViewRequests} />
+              <PrivateRoute exact path='/admin/Categories' component={ViewCategories} />    
               <Route  path="*" component={PageNotFound} />
               </Switch>
               
