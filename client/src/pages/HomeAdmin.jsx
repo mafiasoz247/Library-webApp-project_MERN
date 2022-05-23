@@ -51,6 +51,26 @@ const HomeAdmin = () => {
     });
   
   };
+
+  const fetchrequest = async () => {
+    setLoading(true);
+    let config = {
+        headers: {
+            Authorization: "basic " + token
+        }
+    }
+    await axios.get('http://localhost:4000/users/getQueriesManager', config, {
+    }).then(async response => {
+        setLibraries(response.data.data.message.Queries);
+        sessionStorage.setItem('libraries', JSON.stringify(response.data.data.message.Queries));
+        setLoading(false);
+        window.location.assign('/admin/Requests');
+        
+    }).catch(error => {
+  
+    });
+  
+  };
   return (
     <div className='HomeAdmin'>
       
@@ -74,6 +94,10 @@ const HomeAdmin = () => {
           <h1>Libraries</h1></a>
           </div>
           
+          <div className="boxrequest zone"><a onClick={fetchrequest} className="mylink4">
+          <img src="https://cdn1.iconfinder.com/data/icons/education-outlines/100/15-256.png"></img>
+          <h1>Requests</h1></a>
+          </div>
           
           
         </div>

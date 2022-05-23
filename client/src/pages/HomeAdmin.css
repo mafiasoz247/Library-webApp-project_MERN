@@ -23,6 +23,29 @@
     /* margin-top: 40px; */
 }
 
+.HomeAdmin .boxrequest h1{
+    color: #fff;
+    /* padding-right: 30px; */
+    margin-left: 8.125rem;
+    margin-top: 1.25rem;
+    /* margin-top: 40px; */
+}
+
+.boxrequest {
+    cursor:pointer;
+    background: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);
+    
+    
+    min-width: 100%;
+    margin-top: 3.125rem;
+    margin-left: 13.75rem;
+    margin-bottom: 6.875rem;
+    /* margin-right: 200px; */
+    height: 37.5rem;
+    
+    
+}
+
 .zone {
     /*padding:30px 50px;*/
     /* cursor:pointer; */
@@ -76,6 +99,21 @@
     /* height: 50%; */
    
 }
+
+.mylink4:hover img{
+    opacity: 50%;
+}
+.mylink4 > img {
+    /* padding-right: 10px; */
+    width:13.75rem;
+    height: 13.75rem; 
+    margin-top: 9.063rem;
+    margin-left: 6.563rem;
+    
+    /* height: 50%; */
+   
+}
+
 /* .zone:hover {
     -webkit-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
     -moz-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
@@ -186,6 +224,15 @@
 }
 
 .boxfirst:hover {
+    -webkit-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
+    -moz-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
+    -o-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
+    box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
+    opacity: 80%;
+    
+}
+
+.boxrequest:hover {
     -webkit-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
     -moz-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
     -o-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;

@@ -582,8 +582,9 @@ async function getQueriesManager({ token }, callback) {
 
 
                     let q = '0';
-                    let selectQuery = 'SELECT ??,??, ??, ??, ?? from ?? as A where A.?? = ?';
-                    let query = mysql.format(selectQuery, ["Query_ID", "Subject", "Description", "Name", "CONTACT_US", "Viewed_Flag", q]);
+                    let f = '1';
+                    let selectQuery = 'SELECT ??,??, ??, ??, ?? from ?? as A where A.?? = ? and A.?? = ?';
+                    let query = mysql.format(selectQuery, ["Query_ID", "Subject", "Description", "Name", "CONTACT_US", "Viewed_Flag", q, "Manager_Query", f]);
 
                     db.query(query, (err, Queries) => {
                         if (err) {
