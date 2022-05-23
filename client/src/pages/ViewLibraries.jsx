@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { makeStyles,Paper ,Toolbar, InputAdornment } from '@material-ui/core';
 import { setUserIDSession, getUser, removeUserSession, removeUserIDSession, getToken } from "../Utils/Common";
 import Libraries from '../Components/Libraries';
 import Pagination from '../Components/Pagination';
@@ -9,8 +10,20 @@ import { TableBody, TableRow, TableCell } from '@material-ui/core';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ResponsiveDialog from '../Components/Popup';
 import EmployeeForm from '../Components/form';
+import Input from '../Components/Input';
+import { Search } from "@material-ui/icons";
 //import UpdateIcon from '@mui/icons-material/Update';
 
+const useStyles = makeStyles(theme => ({
+    pageContent: {
+        margin: theme.spacing(0),
+        padding: theme.spacing(2)
+    },
+    searchInput: {
+        width: '50%',
+        margin: '10px'
+    }
+}))
 
 const headCells = [
     {id:'Library_ID', label: 'Library ID'},
@@ -28,8 +41,9 @@ const ViewLibraries = (props) => {
     const [itemsPerPage] = useState(1);
     const [recordForEdit,setRecordForEdit] = useState(null);
     const [openPopup, setOpenPopup] = useState(false)
+    const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const token = getToken();
-
+    const classes = useStyles();
     useEffect(() => {
         const fetchPosts = async () => {
             setLoading(true);
@@ -53,23 +67,26 @@ const ViewLibraries = (props) => {
         fetchPosts();
     }, []);
 
-    // Get current posts
-    // const indexOfLastItem = currentPage * itemsPerPage;
-    // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    // const currentItems = libraries.slice(indexOfFirstItem, indexOfLastItem);
-
-    // Change page
-    // const paginate = pageNumber => setCurrentPage(pageNumber);
+    
     const {
         TblContainer,
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-    } = useTable(libraries, headCells);
-    // const openInPopup = item => {
-    //     setRecordForEdit(item)
-    //     setOpenPopup(true)
-    // }
+    } = useTable(libraries, headCells, filterFn);
+    
+    const handleSearch = e => {
+        let target = e.target;
+        
+        setFilterFn({
+            fn: items => {
+                if (target.value == "")
+                    return items;
+                else
+                    return items.filter(x => x.Name.toLowerCase().includes(target.value.toLowerCase()))
+            }
+        })
+    }
     return (
         <div>
             <div className='container mt-5'>
@@ -80,8 +97,20 @@ const ViewLibraries = (props) => {
                     totalItems={libraries.length}
                     paginate={paginate}
                 /> */}
-            
+                        {/* <Paper className={classes.pageContent}> */}
 
+                <Toolbar>
+                    <div className='inp'><Input
+                    className={classes.searchInput} 
+                    placeholder = "Search Library Name"
+                    InputProps={{
+                        startAdornment: (<InputAdornment position='start'>
+                            <Search />
+                            </InputAdornment>)
+                    }}
+                    onChange={handleSearch}
+                    /></div>
+                </Toolbar>
             <TblContainer>
                 <TblHead />
                 <TableBody>
@@ -106,7 +135,7 @@ const ViewLibraries = (props) => {
             </TblContainer>
             <br />
             <TblPagination />
-            
+            {/* </Paper> */}
             {/* // openPopup ={openPopup}
             // setOpenPopup ={setOpenPopup}
             // title="Update Block flag"

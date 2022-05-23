@@ -54,12 +54,12 @@ const ViewRequests = (props) => {
 
         fetchPosts();
 
+        
+    }, []);
         const handleCategories = async () => {
 
 
-        }
-    }, []);
-
+    }
     
     const {
         TblContainer,
