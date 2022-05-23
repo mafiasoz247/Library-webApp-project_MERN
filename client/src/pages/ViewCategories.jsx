@@ -8,22 +8,18 @@ import useTableR from '../Components/useTableR';
 import ActionButton from '../Components/ActionButton';
 import { TableBody, TableRow, TableCell } from '@material-ui/core';
 import CheckIcon from '@mui/icons-material/Check';
-import ResponsiveDialog from '../Components/Popup_3';
+import ResponsiveDialog from '../Components/Popup_4';
 import EmployeeForm from '../Components/form';
 //import UpdateIcon from '@mui/icons-material/Update';
 
 
 const headCells = [
-    {id:'Query_ID', label: 'Query ID'},
-    {id:'Name', label: 'Name'},
-    {id:'Email', label: 'Email'},
-    {id:'Subject', label: 'Subject'},
-    {id:'Description', label: 'Description'},
-    {id:'actions', label: 'Complete'}
+    {id:'Category_ID', label: 'Category ID'},
+    {id:'Name', label: 'Name'}
 
 ]
 const ViewCategories = (props) => {
-    const [requests, setRequests] = useState(JSON.parse(sessionStorage.getItem('requests')));
+    const [Categories, setCategories] = useState(JSON.parse(sessionStorage.getItem('Categories')));
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(1);
@@ -39,11 +35,11 @@ const ViewCategories = (props) => {
                     Authorization: "basic " + token
                 }
             }
-            await axios.get('http://localhost:4000/users/getQueriesManager', config, {
+            await axios.get('http://localhost:4000/users/getCategory', config, {
             }).then(async response => {
-                setRequests(response.data.data.message.Queries);
-                sessionStorage.setItem('requests', JSON.stringify(response.data.data.message.Queries));
-                console.table(response.data.data.message.Queries)
+                setCategories(response.data.data.message.Categories);
+                sessionStorage.setItem('Categories', JSON.stringify(response.data.data.message.Categories));
+                console.table(response.data.data.message.Categories)
                 setLoading(false);
                // window.location.assign('/admin/Requests');
             }).catch(error => {
@@ -61,16 +57,14 @@ const ViewCategories = (props) => {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-    } = useTableR(requests, headCells);
+    } = useTableR(Categories, headCells);
     
     return (
         <div>
             <div className='container mt-5'>
 
-            <h1 className='text-primary mb-3'>Requests</h1>
-            <div className='sp'><Button variant="outlined" size="large" disableElevation>
-            Create Category
-            </Button></div>
+            <h1 className='text-primary mb-3'>Categories</h1>
+            <div className='cp'><ResponsiveDialog></ResponsiveDialog></div>
             
                 
                 
@@ -79,20 +73,10 @@ const ViewCategories = (props) => {
                 <TblHead />
                 <TableBody>
                     {recordsAfterPagingAndSorting().map(item => (
-                        <TableRow key={item.Query_ID}>
-                            <TableCell> {item.Query_ID} </TableCell>
+                        <TableRow key={item.Category_ID}>
+                            <TableCell> {item.Category_ID} </TableCell>
                             <TableCell> {item.Name} </TableCell>
-                            <TableCell> {item.Email} </TableCell>
-                            <TableCell> {item.Subject} </TableCell>
-                            <TableCell> {item.Description} </TableCell>
-                            <TableCell> 
-                            <ResponsiveDialog 
-                                request = {item.Query_ID}
-                                flag = {item.Viewed_Flag}
-                                >
-                                    <CheckIcon fontSize="small" /> 
-                            </ResponsiveDialog>
-                            </TableCell>
+                           
                         </TableRow>
                     ))}
                 </TableBody>
