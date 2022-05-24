@@ -75,7 +75,7 @@ const fetchCategories = async () => {
         setBooks(response.data.data.result.data);
         sessionStorage.setItem('Books', JSON.stringify(response.data.data.result.data));
         setLoading(false);
-        //window.location.assign('/manager/Books');
+        window.location.assign('/manager/Books');
         
     }).catch(error => {
   

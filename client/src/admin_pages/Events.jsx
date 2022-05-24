@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Events  from '../Components/Events.js';
+import Events  from '../Admin_Components/Events.js';
 
 
 const Eventpage = (props) => {

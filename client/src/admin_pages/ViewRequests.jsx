@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
 import {getToken } from "../Utils/Common";
-import useTable from '../Components/useTable';
+import useTable from '../Admin_Components/useTable';
 import { makeStyles,TableBody, TableRow, TableCell } from '@material-ui/core';
 import CheckIcon from '@mui/icons-material/Check';
-import ResponsiveDialog from '../Components/Popup_3';
+import ResponsiveDialog from '../Admin_Components/Popup_3';
 import { Toolbar,InputAdornment } from '@material-ui/core';
-import Input from '../Components/Input';
+import Input from '../Admin_Components/Input';
 import { Search } from '@material-ui/icons';
 //import UpdateIcon from '@mui/icons-material/Update';
 

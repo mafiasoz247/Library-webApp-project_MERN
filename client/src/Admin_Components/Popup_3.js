@@ -9,7 +9,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import EditOutlined from '@material-ui/icons/EditOutlined';
 import CheckIcon from '@mui/icons-material/Check';
-import Notification from '../Components/Notifications';
+import Notification from '../Admin_Components/Notifications';
 import axios from 'axios';
 import { getToken } from '../Utils/Common';
 

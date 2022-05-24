@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { setUserSession, setUserIDSession, getUser, removeUserSession, removeUserIDSession, getToken } from "../Utils/Common";
 import ReactDOM from 'react-dom';
-import '../Components/LoginForm.css'
-import Notification from '../Components/Notifications';
+import '../Admin_Components/LoginForm.css'
+import Notification from '../Admin_Components/Notifications';
 
 const CreateLibrary = (props) => {
 

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { getToken } from "../Utils/Common";
 import { makeStyles,TableBody, TableRow, TableCell } from '@material-ui/core';
-import useTable from '../Components/useTable';
-import ResponsiveDialog from '../Components/Popup_2';
+import useTable from '../Admin_Components/useTable';
+import ResponsiveDialog from '../Admin_Components/Popup_2';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { Toolbar, InputAdornment } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
-import Input from '../Components/Input';
+import Input from '../Admin_Components/Input';
 
 const useStyles = makeStyles(theme => ({
     pageContent: {

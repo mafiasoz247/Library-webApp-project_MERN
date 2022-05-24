@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { setUserSession, setUserIDSession, getUser, removeUserSession, removeUserIDSession } from "../Utils/Common";
 import ReactDOM from 'react-dom';
-import '../Components/Registerform.css'
+import '../Admin_Components/Registerform.css'
 
 const Register = (props) => {
 

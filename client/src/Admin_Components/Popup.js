@@ -8,7 +8,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import EditOutlined from '@material-ui/icons/EditOutlined';
-import Notification from '../Components/Notifications';
+import Notification from '../Admin_Components/Notifications';
+import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { getToken } from '../Utils/Common';
 
@@ -21,9 +22,8 @@ export default function ResponsiveDialog(props) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const token = getToken();
-    const User = props.user;
+    const Library = props.library;
     const Flag = props.flag;
-    console.log(User);
     //console.log(Library);
 
 
@@ -43,15 +43,15 @@ export default function ResponsiveDialog(props) {
                 Authorization: "basic " + token
             },
             flag: '1',
-            user: User
+            library: Library
 
         }
-        await axios.patch("http://localhost:4000/users/setCustomerFlag", config, {
+        await axios.patch("http://localhost:4000/users/setLibraryFlag", config, {
             headers: {
                 Authorization: "basic " + token
             },
             flag: '1',
-            user: User
+            library: Library
 
         }).then(response => {
             //sessionStorage.setItem('Manager_ID', response.data.data.message.info2[0].User_ID);
@@ -59,7 +59,7 @@ export default function ResponsiveDialog(props) {
             setLoading(false);
             setNotify({
                 isOpen: true,
-                message: "User Blocked!",
+                message: "Library Blocked!",
                 type: 'error'
             })
 
@@ -93,15 +93,15 @@ export default function ResponsiveDialog(props) {
                 Authorization: "basic " + token
             },
             flag: '0',
-            user: User
+            library: Library
 
         }
-        await axios.patch("http://localhost:4000/users/setCustomerFlag", config, {
+        await axios.patch("http://localhost:4000/users/setLibraryFlag", config, {
             headers: {
                 Authorization: "basic " + token
             },
             flag: '0',
-            user: User
+            library: Library
 
         }).then(response => {
             //sessionStorage.setItem('Manager_ID', response.data.data.message.info2[0].User_ID);
@@ -109,7 +109,7 @@ export default function ResponsiveDialog(props) {
             setLoading(false);
             setNotify({
                 isOpen: true,
-                message: "User Unblocked!",
+                message: "Library Unblocked!",
                 type: 'success'
             })
 
@@ -131,7 +131,7 @@ export default function ResponsiveDialog(props) {
 
         setTimeout(function () {
 
-           window.location.reload(false);
+            window.location.reload(false);
         }, 1500);
 
     };
@@ -156,7 +156,7 @@ export default function ResponsiveDialog(props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    {Flag == '1' 
+                {Flag == '1' 
                     ? 
                     <Button autoFocus color="error" onClick={handleBlock} disabled>Block </Button> 
                     : 
@@ -167,7 +167,6 @@ export default function ResponsiveDialog(props) {
                     <Button onClick={handleUnblock} autoFocus > Unblock </Button> 
                     : 
                     <Button onClick={handleUnblock} autoFocus disabled> Unblock </Button>  }
-                    
                 </DialogActions>
             </Dialog>
             <Notification

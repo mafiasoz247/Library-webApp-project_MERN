@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import {getToken, getUser} from "../Utils/Common";
 import ReactDOM from 'react-dom';
-import '../Components/Registerform.css'
-import Notification from '../Components/Notifications';
+import '../Admin_Components/Registerform.css'
+import Notification from '../Admin_Components/Notifications';
 
 const RegisterManager = (props) => {
     const user = getUser();

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
 import { getToken } from "../Utils/Common";
-import useTable from '../Components/useTable';
+import useTable from '../Admin_Components/useTable';
 import { makeStyles,TableBody, TableRow, TableCell,Toolbar,InputAdornment } from '@material-ui/core';
-import ResponsiveDialog from '../Components/Popup_4';
+import ResponsiveDialog from '../Admin_Components/Popup_4';
 import { Search } from '@material-ui/icons';
-import Input from '../Components/Input';
+import Input from '../Admin_Components/Input';
 
 
 const useStyles = makeStyles(theme => ({
@@ -31,7 +31,7 @@ const headCells = [
 
 ]
 const ViewBooks = (props) => {
-    const [Books, setBooks] = useState(JSON.parse(sessionStorage.getItem('Categories')));
+    const [Books, setBooks] = useState(JSON.parse(sessionStorage.getItem('Books')));
     const [loading, setLoading] = useState(false);
     const token = getToken();
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
