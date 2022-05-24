@@ -17,17 +17,17 @@ export const MenuItems = [
     
     
 ]
-export const MenuItemsAdmin = [
-    // {
-    //     title: 'Home',
-    //     url: '/admin/home',
-    //     cName: 'nav-links'
-    // },
-    // {
-    //     title: 'Profile',
-    //     url: '/dashboard',
-    //     cName: 'nav-links'
-    // },
+export const MenuItemsManager = [
+     {
+         title: 'Home',
+         url: '/manager/home',
+         cName: 'nav-links'
+     },
+     {
+         title: 'Profile',
+         url: '/dashboard',
+         cName: 'nav-links'
+     },
     
     
 ]

@@ -43,10 +43,10 @@
 // export default NavBar;
 
 import React, { Component, useState } from 'react';
-import { MenuItemsAdmin,MenuItems, LoggedIn, LoggedOut } from './MenuItems';
+import { MenuItemsManager,MenuItemsAdmin,MenuItems, LoggedIn, LoggedOut } from './MenuItems';
 import './Navbar.css'
 import { Button } from './Button';
-import { checkAdmin,checkToken, setUserIDSession, getUser, removeUserSession, removeUserIDSession, getToken } from "../../Utils/Common";
+import { checkManager,checkAdmin,checkToken, setUserIDSession, getUser, removeUserSession, removeUserIDSession, getToken, checkManager } from "../../Utils/Common";
 import axios from 'axios';
 import Notification from '../Notifications';
 
@@ -56,6 +56,7 @@ class Navbar extends Component {
   state = { clicked: false }
   token = checkToken()
   admin = checkAdmin();
+  manager = checkManager();
   handleClick = () => {
     this.setState({ clicked: !this.state.clicked })
   }
@@ -104,6 +105,16 @@ class Navbar extends Component {
               </li>
             )}
           ) : 
+          this.manager ? 
+          MenuItemsManager.map((item, index) => {
+            return (
+              <li key={index}>
+                <a className={item.cName}  href={item.url} >
+                  {item.title}
+                </a>
+              </li>
+            )}
+          ):
           MenuItems.map((item, index) => {
             return (
               <li key={index}>

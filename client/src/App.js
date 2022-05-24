@@ -1,26 +1,27 @@
 import React, { useState, useEffect,lazy,Suspense } from 'react';
 import { BrowserRouter, Switch, Route, NavLink } from "react-router-dom";
 import axios from 'axios';
-import Events from "./pages/Events";
+import Events from "./admin_pages/Events";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import PublicRoute from "./Utils/PublicRoute";
 import PrivateRoute from "./Utils/PrivateRoute";
-import { checkAdmin,getToken, removeUserSession, setUserSession, removeUserIDSession, setUserIDSession } from './Utils/Common';
+import { checkAdmin,checkManager,getToken, removeUserSession, setUserSession, removeUserIDSession, setUserIDSession } from './Utils/Common';
 import Spinner from "./Components/Spinner";
-import Login from './pages/Login';
-import Home from './pages/Home';
-import Register from './pages/Register';
+import Login from './admin_pages/Login';
+import Home from './admin_pages/Home';
+import HomeManager from './manager_pages/HomeManager';
+import Register from './admin_pages/Register';
 import Navbar from './Components/Navbar/Navbar.js';
-import Dashboard from './pages/Dashboard';
-import HomeAdmin from './pages/HomeAdmin';
-import PageNotFound from './pages/pagenotfound';
-import RegisterManager from './pages/RegisterManager';
-import ViewUsers from './pages/ViewUsers';
-import ViewLibraries from './pages/ViewLibraries';
-import CreateLibrary from './pages/CreateLibrary';
-import ViewRequests from './pages/ViewRequests';
-import ViewCategories from './pages/ViewCategories';
+import Dashboard from './admin_pages/Dashboard';
+import HomeAdmin from './admin_pages/HomeAdmin';
+import PageNotFound from './admin_pages/pagenotfound';
+import RegisterManager from './admin_pages/RegisterManager';
+import ViewUsers from './admin_pages/ViewUsers';
+import ViewLibraries from './admin_pages/ViewLibraries';
+import CreateLibrary from './admin_pages/CreateLibrary';
+import ViewRequests from './admin_pages/ViewRequests';
+import ViewCategories from './admin_pages/ViewCategories';
 // const Home = lazy(() => import("./pages/Home"));
 // const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
@@ -31,6 +32,7 @@ function App(props) {
 
   const [authLoading, setAuthLoading] = useState(true);
   const admin = checkAdmin();
+  const manager = checkManager();
   useEffect(() => {
     const token = getToken();
     if (!token) {
@@ -97,6 +99,20 @@ function App(props) {
               
               <PrivateRoute exact path='/admin/home' component={HomeAdmin} />
               <PrivateRoute exact path='/' component={HomeAdmin} />  
+              <PrivateRoute exact path='/admin/RegisterManager' component={RegisterManager} />
+              <PrivateRoute exact path='/admin/Users' component={ViewUsers} />
+              <PrivateRoute exact path='/admin/Libraries' component={ViewLibraries} /> 
+              <PrivateRoute exact path='/admin/CreateLibrary' component={CreateLibrary} /> 
+              <PrivateRoute exact path='/admin/Requests' component={ViewRequests} />
+              <PrivateRoute exact path='/admin/Categories' component={ViewCategories} />    
+              <Route  path="*" component={PageNotFound} />
+              </Switch>
+              
+              :manager ? 
+              <Switch>
+              
+              <PrivateRoute exact path='/manager/home' component={HomeManager} />
+              <PrivateRoute exact path='/' component={HomeManager} />  
               <PrivateRoute exact path='/admin/RegisterManager' component={RegisterManager} />
               <PrivateRoute exact path='/admin/Users' component={ViewUsers} />
               <PrivateRoute exact path='/admin/Libraries' component={ViewLibraries} /> 
