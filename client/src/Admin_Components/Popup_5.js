@@ -22,7 +22,8 @@ export default function ResponsiveDialog(props) {
     const [open, setOpen] = React.useState(false);
     const [notify, setNotify] = React.useState({ isOpen: false, message: '', type: '' });
     const [loading, setLoading] = React.useState(false);
-    const [Category, setCategory] = React.useState("");
+    const [subject, setsubject] = React.useState("");
+    const [description, setdescription] = React.useState("");
     const [error, setError] = React.useState("");
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('sm');
@@ -30,7 +31,8 @@ export default function ResponsiveDialog(props) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const token = getToken();
-   
+ 
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -40,12 +42,18 @@ export default function ResponsiveDialog(props) {
         setOpen(false);
         setError(null);
     };
-   
+    
 
     const handleAdd = e => {
-        setCategory(e.target.value);
-        console.log(Category);
+        setsubject(e.target.value);
+        
     }
+
+    const handleAdd1 = e => {
+        setdescription(e.target.value);
+       
+    }
+
     const handleClick = async () => {
         setLoading(true);
 
@@ -54,17 +62,19 @@ export default function ResponsiveDialog(props) {
                 Authorization: "basic " + token
             },
 
-            name: Category,
-            parent: "0"
+            description: description,
+            subject: subject
+
+        
 
         }
-        await axios.post("http://localhost:4000/users/createCategory", config, {
+        await axios.post("http://localhost:4000/users/RequestCategory", config, {
             headers: {
                 Authorization: "basic " + token
             },
 
-            name: Category,
-            parent: "0"
+            description: description,
+            subject: subject
 
 
         }).then(response => {
@@ -73,12 +83,12 @@ export default function ResponsiveDialog(props) {
             setLoading(false);
             setNotify({
                 isOpen: true,
-                message: "Category created successfully",
+                message: "Request made successfully",
                 type: 'success'
             })
             setOpen(false);
             setTimeout(function () {
-                window.location.assign("/admin/Requests");
+
             }, 500);
 
 
@@ -107,7 +117,7 @@ export default function ResponsiveDialog(props) {
         <div>
 
             <Button variant="outlined" onClick={handleClickOpen}>
-                ADD CATEGORY            </Button>
+                Request Admin           </Button>
             <Dialog
                 fullScreen={fullScreen}
                 open={open}
@@ -117,7 +127,7 @@ export default function ResponsiveDialog(props) {
                 maxWidth={maxWidth}
             >
                 <DialogTitle id="responsive-dialog-title">
-                    {"Add Category"}
+                    {"Enter Request"}
                 </DialogTitle>
                 <DialogContent>
                    
@@ -125,12 +135,26 @@ export default function ResponsiveDialog(props) {
                         <TextField
                             autoFocus
                             margin="dense"
-                            id="name"
-                            label="Enter Category Name"
+                            id="subject"
+                            label="Enter Subject"
                             type="email"
                             fullWidth
                             variant="standard"
                             onChange={handleAdd}
+                        />
+                   
+                    </Toolbar>
+                    <Toolbar>
+                      
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="description"
+                            label="Enter Description"
+                            type="email"
+                            fullWidth
+                            variant="standard"
+                            onChange={handleAdd1}
                         />
                     </Toolbar>
                     {error && <><h5 style={{ color: 'red' }}>{error}</h5></>}
@@ -138,7 +162,7 @@ export default function ResponsiveDialog(props) {
                 <DialogActions>
 
                     <Button autoFocus color='error' onClick={handleClose} > Close </Button>
-                    <Button autoFocus onClick={handleClick} > Add </Button>
+                    <Button autoFocus onClick={handleClick} > Create </Button>
 
 
                 </DialogActions>

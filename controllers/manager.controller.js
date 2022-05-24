@@ -249,7 +249,7 @@ exports.RequestCategory = (req, res, next) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(' ')[1];
 
-    userService.RequestCategory({req, token}, (error, result) => {
+    userService.requestCategory({req, token}, (error, result) => {
         if (error) {
             return next(error);
         }
