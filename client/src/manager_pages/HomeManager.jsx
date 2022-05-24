@@ -7,6 +7,7 @@ import { getToken } from '../Utils/Common';
 
 
 
+
 const HomeManager = () => {
   const [Reviews, setReviews] = useState(JSON.parse(sessionStorage.getItem('Reviews')));
   const [Queries, setQueries] = useState(JSON.parse(sessionStorage.getItem('Queries')));
@@ -27,8 +28,9 @@ const HomeManager = () => {
     }
     await axios.get('http://localhost:4000/users/getOrdersLibrary', config, {
     }).then(async response => {
-        setOrders(response.data.data.result.info);
-        sessionStorage.setItem('Orders', JSON.stringify(response.data.data.result.info));
+        setOrders(response.data.data.message.info);
+        console.table(response.data.data.message.info)
+        sessionStorage.setItem('Orders', JSON.stringify(response.data.data.message.info));
         //console.log(libraries);
         setLoading(false);
         window.location.assign('/manager/Orders')
@@ -71,7 +73,7 @@ const fetchCategories = async () => {
     await axios.get('http://localhost:4000/users/getBooksLibrary', config, {
     }).then(async response => {
         setBooks(response.data.data.result.data);
-        sessionStorage.setItem('Books', JSON.stringify(response.data.data.result.data));
+        sessionStorage.setItem('Reviews', JSON.stringify(response.data.data.result.data));
         setLoading(false);
         window.location.assign('/manager/Books');
         
@@ -90,13 +92,13 @@ const fetchCategories = async () => {
     }
     await axios.get('http://localhost:4000/users/seeReviewsLibrary', config, {
     }).then(async response => {
-        setRequests(response.data.data.message.Queries);
+        setReviews(response.data.data.message.Queries);
         sessionStorage.setItem('requests', JSON.stringify(response.data.data.message.Reviews));
         setLoading(false);
         window.location.assign('/manager/Reviews');
         
     }).catch(error => {
-  
+      // window.location.assign('/manager/Reviews');
     });
   
   };
@@ -110,7 +112,7 @@ const fetchCategories = async () => {
     }
     await axios.get('http://localhost:4000/users//getQueries', config, {
     }).then(async response => {
-        setRequests(response.data.data.message.Queries);
+        setQueries(response.data.data.message.Queries);
         sessionStorage.setItem('requests', JSON.stringify(response.data.data.message.Queries));
         setLoading(false);
         window.location.assign('/manager/Queries');
@@ -121,37 +123,37 @@ const fetchCategories = async () => {
   
   };
   return (
-    <div className='HomeAManager'>
+    <div className='HomeManager'>
       
         
         {/* <div class="container-homemanager"><img class="cover" src="./img/undraw.png" /></div> */}
         <div className="zone blue grid-wrapper">
         
         
-          <div className="boxfirst zone"><a onClick={fetchOrders} className="mylink">
-          <img src="https://cdn-icons.flaticon.com/png/512/3624/premium/3624080.png?token=exp=1653401747~hmac=60b791d86a5c3df152ac5095bdb639d1"></img>
+          <div className="boxorder zone"><a onClick={fetchOrders} className="picture1">
+          <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png"></img>
           <h2>Orders</h2></a>
           </div> 
 
-          <div className="boxlast zone"><a onClick={fetchBooks} className="mylink3">
+          <div className="boxbook zone"><a onClick={fetchBooks} className="picture2">
           <img src="https://cdn1.iconfinder.com/data/icons/education-outlines/100/15-256.png"></img>
           <h2>Books</h2></a>
           </div>
           
           
-          <div className="box zone"><a  onClick={fetchCategories} className="mylink2">
-          <img src="https://cdn2.iconfinder.com/data/icons/linkedin-ui/48/jee-100-256.png"></img>
+          <div className="boxcategories zone"><a  onClick={fetchCategories} className="picture3">
+          <img src="https://cdn-icons-png.flaticon.com/512/94/94715.png"></img>
           <h2>Categories</h2></a>
           </div>
          
-          
-          <div className="boxrequest zone"><a onClick={fetchqueries} className="mylink4">
-          <img src="https://cdn-icons-png.flaticon.com/512/901/901533.png"></img>
+          <br></br>
+          <div className="boxquery zone"><a onClick={fetchqueries} className="picture4">
+          <img src="https://cdn-icons-png.flaticon.com/512/4611/4611426.png"></img>
           <h2>Queries</h2></a>
           </div>
 
-          <div className="boxrequest zone"><a onClick={fetchreviews} className="mylink4">
-          <img src="https://cdn-icons-png.flaticon.com/512/901/901533.png"></img>
+          <div className="boxreview zone"><a onClick={fetchreviews} className="picture5">
+          <img src="https://cdn-icons-png.flaticon.com/512/651/651191.png"></img>
           <h2>Reviews</h2></a>
           </div>
           

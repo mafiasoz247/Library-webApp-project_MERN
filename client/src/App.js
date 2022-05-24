@@ -22,6 +22,11 @@ import ViewLibraries from './admin_pages/ViewLibraries';
 import CreateLibrary from './admin_pages/CreateLibrary';
 import ViewRequests from './admin_pages/ViewRequests';
 import ViewCategories from './admin_pages/ViewCategories';
+import ViewOrders from './manager_pages/ViewOrders'
+import ViewBooks from './manager_pages/ViewBooks'
+import ViewCategoriesM from './manager_pages/ViewCategoriesM'
+import ViewQueries from './manager_pages/ViewQueries'
+import ViewReviews from './manager_pages/ViewReviews'
 // const Home = lazy(() => import("./pages/Home"));
 // const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
@@ -113,12 +118,11 @@ function App(props) {
               
               <PrivateRoute exact path='/manager/home' component={HomeManager} />
               <PrivateRoute exact path='/' component={HomeManager} />  
-              <PrivateRoute exact path='/admin/RegisterManager' component={RegisterManager} />
-              <PrivateRoute exact path='/admin/Users' component={ViewUsers} />
-              <PrivateRoute exact path='/admin/Libraries' component={ViewLibraries} /> 
-              <PrivateRoute exact path='/admin/CreateLibrary' component={CreateLibrary} /> 
-              <PrivateRoute exact path='/admin/Requests' component={ViewRequests} />
-              <PrivateRoute exact path='/admin/Categories' component={ViewCategories} />    
+              <PrivateRoute exact path='/manager/Orders' component={ViewOrders} />
+              <PrivateRoute exact path='/manager/Categories' component={ViewCategoriesM} /> 
+              <PrivateRoute exact path='/manager/Books' component={ViewBooks} /> 
+              <PrivateRoute exact path='/manager/Reviews' component={ViewReviews} />
+              <PrivateRoute exact path='/manager/Queries' component={ViewQueries} />    
               <Route  path="*" component={PageNotFound} />
               </Switch>
               

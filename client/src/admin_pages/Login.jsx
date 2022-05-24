@@ -42,6 +42,9 @@ const Login = (props) => {
             )
             if (response.data.data.message.Type == 2)
             window.location.assign('/dashboard');
+            else if(response.data.data.message.Type == 1){
+                window.location.assign('/manager/home');
+            }
             else if (response.data.data.message.Type == 0) {
             window.location.assign('/admin/home');
             }

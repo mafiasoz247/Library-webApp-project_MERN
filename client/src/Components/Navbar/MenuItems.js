@@ -31,6 +31,20 @@ export const MenuItemsManager = [
     
     
 ]
+export const MenuItemsAdmin = [
+    // {
+    //     title: 'Home',
+    //     url: '/manager/home',
+    //     cName: 'nav-links'
+    // },
+    // {
+    //     title: 'Profile',
+    //     url: '/dashboard',
+    //     cName: 'nav-links'
+    // },
+   
+   
+]
 export const LoggedIn = [
     {
         title: 'My Profile',
