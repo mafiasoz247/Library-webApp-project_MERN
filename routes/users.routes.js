@@ -55,6 +55,7 @@ router.patch("/updatePassword", generalController.updatePassword);
 router.get("/getOneBookLibrary", managerController.getOneBookLibrary);
 router.get("/getBooksLibrary", managerController.getBooksLibrary);
 
+router.post("/RequestCategory", managerController.RequestCategory);
 
 router.get("/getReviews", customerController.getReviews);
 router.post("/giveReview",customerController.giveReview);

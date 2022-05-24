@@ -231,7 +231,25 @@ exports.QueryManager = (req, res, next) => {
     const token = authHeader && authHeader.split(' ')[1];
 
 
-    customerService.QueryManager({req, token}, (error, result) => {
+    userService.QueryManager({req, token}, (error, result) => {
+        if (error) {
+            return next(error);
+        }
+        return res.status(200).send({
+            Status: "Success",
+            data: {
+                message: result
+            },
+        });
+    });
+};
+
+exports.RequestCategory = (req, res, next) => {
+
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    userService.RequestCategory({req, token}, (error, result) => {
         if (error) {
             return next(error);
         }

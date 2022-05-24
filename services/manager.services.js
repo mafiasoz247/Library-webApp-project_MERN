@@ -113,8 +113,8 @@ async function CreateBook({ req, token }, callback) {
                                             });
                                         }
                                         else {
-                                            
-                                    let flag = '0';
+
+                                            let flag = '0';
                                             db.query(`INSERT INTO BOOKS(Title, ISBN, Author, Description, Category_ID, Quantity, Price, Delete_Flag) VALUES (?, ?, ?, ?, ?, ? , ?, ?)`
                                                 , [req.body.title, req.body.ISBN, req.body.author, req.body.description, req.body.category, req.body.quantity, req.body.price, flag],
                                                 (error, results, fields) => {
@@ -142,7 +142,6 @@ async function CreateBook({ req, token }, callback) {
 
 
 };
-
 
 async function updateBook({ req, token }, callback) {
 
@@ -219,8 +218,8 @@ async function updateBook({ req, token }, callback) {
                                 else {
 
 
-                                    let bookc = 'SELECT Library_ID FROM ?? as A1 INNER JOIN ?? as A2 ON A1.??= A2.??   WHERE ?? = ?';
-                                    let queryc = mysql.format(bookc, ["CATEGORY", "BOOKS", "Category_ID", "Category_ID", "Book_ID", req.body.Book_ID]);
+                                    let bookc = 'SELECT Library_ID FROM ?? WHERE ?? = ?';
+                                    let queryc = mysql.format(bookc, ["BOOKS", "BOOK_ID", req.body.Book_ID]);
 
 
                                     // Checking if recieved book ID's library matches managers library id
@@ -268,8 +267,6 @@ async function updateOrderStatusManager({ req, token }, callback) {
         return callback({ message: "Order Status Required!" });
     }
 
-
-
     let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
     let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
     db.query(query, (err, data) => {
@@ -309,9 +306,9 @@ async function updateOrderStatusManager({ req, token }, callback) {
                         else {
                             let library = info[0].Library_ID;
 
-                            // need to check whtehr this order if of this library or not
-                            let selectQuery = 'select COUNT(*) as "total" from ?? where ?? = ? AND ?? IN (select ?? from ?? where ?? IN (SELECT ?? from ?? where ?? = ?))';
-                            let query = mysql.format(selectQuery, ["ORDER_ITEMS", "Order_ID", req.body.order, "Book_ID", "Book_ID", "Books", "category_ID", "Category_ID", "Category", "Library_ID", req.body.library]);
+                            // need to check whether this order is of this library or not
+                            let selectQuery = 'select COUNT(*) as "total" from ?? where ?? = ? AND ?? IN (select ?? from ?? where ??)';
+                            let query = mysql.format(selectQuery, ["ORDER_ITEMS", "Order_ID", req.body.order, "Book_ID", "Book_ID", "Books", "Library_ID", req.body.library]);
 
                             db.query(query, (err, order_items) => {
                                 if (err) {
@@ -336,21 +333,13 @@ async function updateOrderStatusManager({ req, token }, callback) {
 
                                         return callback(null, "Order Status Updated Successfully!")
                                     });
-
                                 }
-
-
                             });
-
                         }
-
                     });
-
                 }
             });
-
         };
-
     });
 
 };
@@ -395,8 +384,6 @@ async function updateBookFlag({ req, token }, callback) {
                     let lib = 'SELECT Library_ID FROM ?? as A1 INNER JOIN ?? as A2 ON A1.??= A2.??   WHERE ?? = ?';
                     let querylib = mysql.format(lib, ["Libraries", "TOKENS_USER", "Manager_ID", "User_ID", "Token", token]);
 
-
-
                     db.query(querylib, (err, info) => {
                         if (err) {
                             return callback(err);
@@ -405,8 +392,8 @@ async function updateBookFlag({ req, token }, callback) {
                             let library = info[0].Library_ID;
 
 
-                            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ?? IN (SELECT ?? from ?? where ?? = ?))';
-                            let querylib3 = mysql.format(lib, [req.body.Book_ID, "Book_ID", "Books", "Category_ID", "Category_ID", "Category", "Library_ID", library]);
+                            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ?? == ?)';
+                            let querylib3 = mysql.format(lib, [req.body.Book_ID, "Book_ID", "Books", "Library_ID", library]);
 
                             db.query(querylib3, (err, info) => {
                                 if (err) {
@@ -491,9 +478,9 @@ async function getOrdersLibrary({ token }, callback) {
                         else {
                             let library = info[0].Library_ID;
 
-                            //     Query update
-                            let selectQuery = 'select DISTINCT(??)  from ?? where ?? IN (select ?? from ?? where ?? IN (SELECT ?? from ?? where ?? = ?))';
-                                let query = mysql.format(selectQuery, ["Order_ID", "order_items", "Book_ID", "Book_ID","Books","Category_ID","Category_ID", "Category", "Library_ID", library]);
+                            //     Query update -- what?
+                            let selectQuery = 'select DISTINCT(??)  from ?? where ?? IN (select ?? from ?? where ?? = ?)';
+                            let query = mysql.format(selectQuery, ["Order_ID", "order_items", "Book_ID", "Book_ID", "Books", "Library_ID", library]);
 
                             db.query(query, (err, info) => {
                                 if (err) {
@@ -554,11 +541,8 @@ async function getBooksLibrary({ token }, callback) {
                         else {
                             let library = info[0].Library_ID;
 
-
-
-                            let selectQuery = `SELECT Book_ID, Title,  Price, Book_Image, Quantity, C.Category_ID, Delete_Flag FROM ?? As B INNER JOIN ?? As C ON B.??=C.?? INNER JOIN ?? L ON C.??=L.?? WHERE C.?? = ?`;
-                            let query = mysql.format(selectQuery, ["BOOKS", "CATEGORY", "Category_ID", "Category_ID", "LIBRARIES", "Library_ID", "Library_ID", "Library_ID", library]);
-
+                            let selectQuery = `SELECT Book_ID, Title,  Price, Book_Image, Quantity, Category_ID, Delete_Flag FROM ?? where ?? = ?`;
+                            let query = mysql.format(selectQuery, ["BOOKS", "Library_ID", library]);
 
                             db.query(query, (err, data) => {
                                 if (err) {
@@ -575,7 +559,6 @@ async function getBooksLibrary({ token }, callback) {
                     });
 
                 }
-
 
             });
         };
@@ -630,8 +613,8 @@ async function getOneBookLibrary({ req, token }, callback) {
                             let library = info[0].Library_ID;
 
 
-                            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ?? IN (SELECT ?? from ?? where ?? = ?))';
-                            let querylib3 = mysql.format(lib, [req.body.book, "Book_ID", "Books", "Category_ID", "Category_ID", "Category", "Library_ID", library]);
+                            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ??  = ?)';
+                            let querylib3 = mysql.format(lib, [req.body.book, "Book_ID", "Books", "Library_ID", library]);
 
                             db.query(querylib3, (err, info) => {
                                 if (err) {
@@ -643,7 +626,7 @@ async function getOneBookLibrary({ req, token }, callback) {
                                     });
                                 }
                                 else {
-                                    let selectQuery = `SELECT A.Book_ID, A.Title, A.ISBN, A.Author, A.Price, A.Quantity, A.Description, A.Book_Image, A.Delete_Flag, A.Category_ID, C.Name AS "Category Name" FROM ?? AS A INNER JOIN ?? AS C ON A.?? =  C.?? WHERE ?? = ?`;
+                                    let selectQuery = `SELECT A.Book_ID, A.Title, A.ISBN, A.Author, A.Price, A.Quantity, A.Description, A.Book_Image, A.Category_ID, C.Name AS "Category Name" FROM ?? AS A INNER JOIN ?? AS C ON A.?? =  C.?? WHERE ?? = ?`;
                                     let query = mysql.format(selectQuery, ["BOOKS", "CATEGORY", "Category_ID", "Category_ID", "Book_ID", req.body.book]);
 
                                     db.query(query, (err, data) => {
@@ -665,68 +648,6 @@ async function getOneBookLibrary({ req, token }, callback) {
             });
 
         }
-
-    });
-
-};
-
-async function getCategoryLibrary({ token }, callback) {
-
-    let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
-    let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
-    db.query(query, (err, data) => {
-        if (err) {
-            return callback(err);
-        }
-
-        if (data[0].total == 0) {
-            return callback({
-                message: "Deleted Token, Cannot Get Categories"
-            });
-        }
-        else {
-
-            let selectQuery = 'SELECT ??, A1.?? FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
-            let query = mysql.format(selectQuery, ["Type", "User_ID", "USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
-
-            db.query(query, (err, info) => {
-                if (err) {
-                    return callback(err);
-                }
-
-                if (info[0].Type != 1) {
-                    return callback({
-                        message: "Access Violation!"
-                    });
-                }
-                else {
-                    let lib = 'SELECT Library_ID FROM ?? as A1 INNER JOIN ?? as A2 ON A1.??= A2.??   WHERE ?? = ?';
-                    let querylib = mysql.format(lib, ["Libraries", "TOKENS_USER", "Manager_ID", "User_ID", "Token", token]);
-
-                    db.query(querylib, (err, info) => {
-                        if (err) {
-                            return callback(err);
-                        }
-                        else {
-                            let library = info[0].Library_ID;
-
-
-                            let selectQuery3 = 'SELECT  ??, ?? FROM ?? WHERE ?? = ?';
-                            let query3 = mysql.format(selectQuery3, ["Name", "Category_ID", "CATEGORY", "Library_ID", library]);
-                            db.query(query3, (err, Categories) => {
-                                if (err) {
-                                    return callback(err);
-                                }
-                                else {
-
-                                    return callback(null, { Categories });
-                                };
-                            })
-                        }
-                    });
-                }
-            });
-        };
 
     });
 
@@ -778,8 +699,8 @@ async function seeReviews({ req, token }, callback) {
 
                             // Book id check for library
 
-                            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ?? IN (SELECT ?? from ?? where ?? = ?))';
-                            let querylib3 = mysql.format(lib, [req.body.Book_ID, "Book_ID", "Books", "Category_ID", "Category_ID", "Category", "Library_ID", library]);
+                            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ??  = ?)';
+                            let querylib3 = mysql.format(lib, [req.body.Book_ID, "Book_ID", "Books", "Library_ID", library]);
 
                             db.query(querylib3, (err, info) => {
                                 if (err) {
@@ -871,8 +792,8 @@ async function deleteReview({ req, token }, callback) {
 
                             // check if book id is of this library
 
-                            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ?? IN (SELECT ?? from ?? where ?? = ?))';
-                            let querylib3 = mysql.format(lib, [req.body.Book_ID, "Book_ID", "Books", "Category_ID", "Category_ID", "Category", "Library_ID", library]);
+                            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ?? = ?)';
+                            let querylib3 = mysql.format(lib, [req.body.Book_ID, "Book_ID", "Books", "Library_ID", library]);
 
                             db.query(querylib3, (err, info) => {
                                 if (err) {
@@ -924,7 +845,7 @@ async function deleteReview({ req, token }, callback) {
     })
 };
 
-async function getOrder_ItemsManager({req, token}, callback) {
+async function getOrder_ItemsManager({ req, token }, callback) {
 
 
     if (req.body.order === undefined) {
@@ -970,36 +891,36 @@ async function getOrder_ItemsManager({req, token}, callback) {
 
                             let library = info[0].Library_ID;
 
-                            
 
-                                let selectQuery = 'select COUNT(*) as "total" from ?? where ?? = ? AND ?? IN (select ?? from ?? where ?? IN (SELECT ?? from ?? where ?? = ?))';
-                                let query = mysql.format(selectQuery, ["order_items", "order_ID", req.body.order, "Book_ID", "Book_ID", "Books", "category_ID", "Category_ID", "Category", "Library_ID", req.body.library]);
 
-                                db.query(query, (err, order_items) => {
-                                    if (err) {
-                                        return callback(err);
-                                    }
-                                    if (info[0].total == 0) {
-                                        return callback({
-                                            message: "Invalid Order ID/Library ID"
-                                        });
-                                    }
-                                    else {
+                            let selectQuery = 'select COUNT(*) as "total" from ?? where ?? = ? AND ?? IN (select ?? from ?? where ?? = ?)';
+                            let query = mysql.format(selectQuery, ["order_items", "order_ID", req.body.order, "Book_ID", "Book_ID", "Books","Library_ID", req.body.library]);
 
-                                        let selectQuery = 'SELECT B.??,B.??,B.??,A.??,A.??,A.?? FROM ?? as A INNER JOIN ?? as B ON A.?? = B.??  WHERE A.?? = ?';
-                                        let query = mysql.format(selectQuery, ["Title", "Author", "Price", "Quantity", "Period", "Line_Total", "ORDER_ITEMS", "BOOKS", "Book_ID", "Book_ID", "Order_ID", req.body.order]);
+                            db.query(query, (err, order_items) => {
+                                if (err) {
+                                    return callback(err);
+                                }
+                                if (info[0].total == 0) {
+                                    return callback({
+                                        message: "Invalid Order ID/Library ID"
+                                    });
+                                }
+                                else {
 
-                                        db.query(query, (err, order_items) => {
-                                            if (err) {
-                                                return callback(err);
-                                            }
-                                            else {
-                                                return callback(null, { order_items });
-                                            }
-                                        });
-                                    }
-                                });
-                            
+                                    let selectQuery = 'SELECT B.??,B.??,B.??,A.??,A.??,A.?? FROM ?? as A INNER JOIN ?? as B ON A.?? = B.??  WHERE A.?? = ?';
+                                    let query = mysql.format(selectQuery, ["Title", "Author", "Price", "Quantity", "Period", "Line_Total", "ORDER_ITEMS", "BOOKS", "Book_ID", "Book_ID", "Order_ID", req.body.order]);
+
+                                    db.query(query, (err, order_items) => {
+                                        if (err) {
+                                            return callback(err);
+                                        }
+                                        else {
+                                            return callback(null, { order_items });
+                                        }
+                                    });
+                                }
+                            });
+
                         }
                     });
                 }
@@ -1049,20 +970,20 @@ async function getQueries({ token }, callback) {
                         else {
                             let library = info[0].Library_ID;
 
-                         
-                                let selectQuery = 'SELECT ??,??, ??, ??, ?? from ?? as A where A.?? = ?';
-                                let query = mysql.format(selectQuery, ["Query_ID","Viewed_Flag","Subject", "Description", "Name", "CONTACT_US","Library_ID", library]);
 
-                                db.query(query, (err, Queries) => {
-                                    if (err) {
-                                        return callback(err);
-                                    }
-                                    else {
-                                        return callback(null, { Queries });
-                                    }
-                                });
-                            }
-                        
+                            let selectQuery = 'SELECT ??,??, ??, ??, ?? from ?? as A where A.?? = ?';
+                            let query = mysql.format(selectQuery, ["Query_ID", "Viewed_Flag", "Subject", "Description", "Name", "CONTACT_US", "Library_ID", library]);
+
+                            db.query(query, (err, Queries) => {
+                                if (err) {
+                                    return callback(err);
+                                }
+                                else {
+                                    return callback(null, { Queries });
+                                }
+                            });
+                        }
+
                     });
                 }
             });
@@ -1113,36 +1034,104 @@ async function statusQuery({ req, token }, callback) {
                         else {
                             let library = info[0].Library_ID;
 
-                                let lib = 'Select COUNT(*) as "total" from ?? where ? IN (select ?? from ?? where ?? = ?)';
-                                let querylib = mysql.format(lib, ["CONTACT_US", req.body.query, "Query_ID", "CONTACT_US", "Library_ID", library]);
+                            let lib = 'Select COUNT(*) as "total" from ?? where ? IN (select ?? from ?? where ?? = ?)';
+                            let querylib = mysql.format(lib, ["CONTACT_US", req.body.query, "Query_ID", "CONTACT_US", "Library_ID", library]);
 
-                                db.query(querylib, (err, info) => {
-                                    if (err) {
-                                        return callback(err);
+                            db.query(querylib, (err, info) => {
+                                if (err) {
+                                    return callback(err);
+                                }
+                                if (data[0].total == 0) {
+                                    return callback({
+                                        message: "Invalid Query ID"
+                                    });
+                                }
+                                else {
+                                    // UPDATE Query
+                                    let temp = '1';
+                                    let updateQuery = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
+                                    let query = mysql.format(updateQuery, ["CONTACT_US", "Viewed_Flag", temp, "Query_ID", req.body.query]);
+
+                                    db.query(query, (err, info) => {
+                                        if (err) {
+                                            return callback(err);
+                                        }
+
+                                        return callback(null, "Query Status Updated Successfully!")
+                                    });
+
+                                }
+                            });
+                        }
+
+                    });
+                }
+            });
+        }
+    });
+};
+
+async function requestCategory({ req, token }, callback) {
+
+    if (req.body.subject === undefined) {
+        return callback({ message: "Subject Required!" });
+    }
+    if (req.body.description === undefined) {
+        return callback({ message: "Description Required!" });
+    }
+
+    let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
+    let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
+    db.query(query, (err, data) => {
+        if (err) {
+            return callback(err);
+        }
+
+        if (data[0].total == 0) {
+            return callback({
+                message: "Deleted Token, Cannot make request"
+            });
+        }
+        else {
+
+            let selectQuery = 'SELECT Name, Email, Type FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
+            let query = mysql.format(selectQuery, ["USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
+
+            db.query(query, (err, info) => {
+                if (err) {
+                    return callback(err);
+                }
+                if (info[0].Type != 1) {
+                    return callback({
+                        message: "Access Violation! Cannot make request"
+                    });
+                }
+
+                else {
+                    let Cname = info[0].Name;
+                    let Cemail = info[0].Email;
+
+                    let lib = 'SELECT Library_ID FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??   WHERE ?? = ?';
+                    let querylib = mysql.format(lib, ["Libraries", "TOKENS_USER", "Manager_ID", "User_ID", "Token", token]);
+
+                    db.query(querylib, (err, info) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        else {
+                            let libraryID = info[0].Library_ID;
+                            let flag = '0';
+                            let flag2 = '1';
+                            db.query(`INSERT INTO CONTACT_US(Subject, Description, Name, Email, Library_ID, Viewed_Flag, Manager_Query) VALUES (?, ?, ?, ?, ?, ? , ?)`
+                                , [req.body.subject, req.body.description, Cname, Cemail, libraryID, flag, flag2],
+                                (error, results, fields) => {
+                                    if (error) {
+                                        return callback(error);
                                     }
-                                    if (data[0].total == 0) {
-                                        return callback({
-                                            message: "Invalid Query ID"
-                                        });
-                                    }
-                                    else {
-                                          // UPDATE Query
-                                          let temp = '1';
-                                          let updateQuery = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
-                                          let query = mysql.format(updateQuery, ["CONTACT_US", "Viewed_Flag", temp, "Query_ID", req.body.query]);
-
-                                          db.query(query, (err, info) => {
-                                              if (err) {
-                                                  return callback(err);
-                                              }
-
-                                              return callback(null, "Query Status Updated Successfully!")
-                                          });
-
-                                    }
+                                    return callback(null, "Query made Successfully!")
                                 });
-                            }
-                        
+                        }
                     });
                 }
             });
@@ -1159,11 +1148,11 @@ module.exports = {
     updateBookFlag,
     getBooksLibrary,
     getOneBookLibrary,
-    getCategoryLibrary,
     deleteReview,
     seeReviews,
     getOrder_ItemsManager,
     getQueries,
-    statusQuery
-    
+    statusQuery,
+    requestCategory
+
 };
