@@ -192,7 +192,7 @@ export default function ResponsiveDialog(props) {
                 <DialogActions>
 
                     <Button autoFocus color='error' onClick={handleClose} > Close </Button>
-                    <Button autoFocus onClick={handleClick}  > Add </Button>
+                    <Button autoFocus onClick={handleClick} > Add </Button>
 
 
                 </DialogActions>

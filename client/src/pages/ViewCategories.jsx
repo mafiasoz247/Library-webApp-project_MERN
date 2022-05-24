@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
-import { setUserIDSession, getUser, removeUserSession, removeUserIDSession, getToken } from "../Utils/Common";
-import Libraries from '../Components/Libraries';
-import Pagination from '../Components/Pagination';
-import useTableR from '../Components/useTableR';
-import ActionButton from '../Components/ActionButton';
-import { TableBody, TableRow, TableCell } from '@material-ui/core';
-import CheckIcon from '@mui/icons-material/Check';
+import { getToken } from "../Utils/Common";
+import useTable from '../Components/useTable';
+import { makeStyles,TableBody, TableRow, TableCell,Toolbar,InputAdornment } from '@material-ui/core';
 import ResponsiveDialog from '../Components/Popup_4';
-import EmployeeForm from '../Components/form';
-//import UpdateIcon from '@mui/icons-material/Update';
+import { Search } from '@material-ui/icons';
+import Input from '../Components/Input';
 
+
+const useStyles = makeStyles(theme => ({
+    pageContent: {
+        margin: theme.spacing(0),
+        padding: theme.spacing(2)
+    },
+    searchInput: {
+        width: '50%',
+        marginLeft: '10px',
+        marginBottom: "20px"
+    }
+}))
 
 const headCells = [
     {id:'Category_ID', label: 'Category ID'},
@@ -26,6 +34,8 @@ const ViewCategories = (props) => {
     const [recordForEdit,setRecordForEdit] = useState(null);
     const [openPopup, setOpenPopup] = useState(false)
     const token = getToken();
+    const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
+    const classes = useStyles();
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -57,15 +67,38 @@ const ViewCategories = (props) => {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-    } = useTableR(Categories, headCells);
+    } = useTable(Categories, headCells, filterFn);
     
+    const handleSearch = e => {
+        let target = e.target;
+        
+        setFilterFn({
+            fn: items => {
+                if (target.value == "")
+                    return items;
+                else
+                    return items.filter(x => x.Name.toLowerCase().includes(target.value.toLowerCase()))
+            }
+        })
+    }
     return (
         <div>
             <div className='container mt-5'>
 
             <h1 className='text-primary mb-3'>Categories</h1>
-            <div className='cp'><ResponsiveDialog fullWidth='true' maxWidth='xl'></ResponsiveDialog></div>
-            
+            <div className='cp'><ResponsiveDialog fullWidth='true'></ResponsiveDialog></div>
+            <Toolbar>
+                    <div className='inp'><Input
+                    className={classes.searchInput} 
+                    placeholder = "Search Category Name"
+                    InputProps={{
+                        startAdornment: (<InputAdornment position='start'>
+                            <Search />
+                            </InputAdornment>)
+                    }}
+                    onChange={handleSearch}
+                    /></div>
+                </Toolbar>
                 
                 
             <nbsp></nbsp>

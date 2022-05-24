@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { setUserSession, setUserIDSession,getToken, getUser, removeUserSession, removeUserIDSession } from "../Utils/Common";
+import {getToken, getUser} from "../Utils/Common";
 import ReactDOM from 'react-dom';
 import '../Components/Registerform.css'
 import Notification from '../Components/Notifications';

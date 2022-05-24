@@ -1,21 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
-import { setUserIDSession, getUser, removeUserSession, removeUserIDSession, getToken } from "../Utils/Common";
-import Libraries from '../Components/Libraries';
-import Pagination from '../Components/Pagination';
-import useTableR from '../Components/useTableR';
-import ActionButton from '../Components/ActionButton';
-import { TableBody, TableRow, TableCell } from '@material-ui/core';
+import {getToken } from "../Utils/Common";
+import useTable from '../Components/useTable';
+import { makeStyles,TableBody, TableRow, TableCell } from '@material-ui/core';
 import CheckIcon from '@mui/icons-material/Check';
 import ResponsiveDialog from '../Components/Popup_3';
-import EmployeeForm from '../Components/form';
+import { Toolbar,InputAdornment } from '@material-ui/core';
+import Input from '../Components/Input';
+import { Search } from '@material-ui/icons';
 //import UpdateIcon from '@mui/icons-material/Update';
 
-
+const useStyles = makeStyles(theme => ({
+    pageContent: {
+        margin: theme.spacing(0),
+        padding: theme.spacing(2)
+    },
+    searchInput: {
+        width: '50%',
+        marginLeft: '10px',
+        marginBottom: "20px"
+    }
+}))
 const headCells = [
     { id: 'Query_ID', label: 'Query ID' },
-    { id: 'Name', label: 'Name' },
+    { id: 'Name', label: ' Manager name' },
     { id: 'Email', label: 'Email' },
     { id: 'Subject', label: 'Subject' },
     { id: 'Description', label: 'Description' },
@@ -25,11 +34,10 @@ const headCells = [
 const ViewRequests = (props) => {
     const [requests, setRequests] = useState(JSON.parse(sessionStorage.getItem('requests')));
     const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(1);
     const [Categories, setCategories] = useState(JSON.parse(sessionStorage.getItem('Categories')));
-    const [recordForEdit, setRecordForEdit] = useState(null);
-    const [openPopup, setOpenPopup] = useState(false)
+    const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
+    const [records,setRecords] = useState(requests)
+    const classes = useStyles();
     const token = getToken();
 
     
@@ -45,6 +53,7 @@ const ViewRequests = (props) => {
             await axios.get('http://localhost:4000/users/getQueriesManager', config, {
             }).then(async response => {
                 setRequests(response.data.data.message.Queries);
+                setRecords(requests);
                 sessionStorage.setItem('requests', JSON.stringify(response.data.data.message.Queries));
                 console.table(response.data.data.message.Queries)
                 setLoading(false);
@@ -82,6 +91,18 @@ const ViewRequests = (props) => {
 
     }
 
+    const handleSearch = e => {
+        let target = e.target;
+        
+        setFilterFn({
+            fn: items => {
+                if (target.value == "")
+                    return items;
+                else
+                    return items.filter(x => x.Name.toLowerCase().includes(target.value.toLowerCase()))
+            }
+        })
+    }
 
 
     const {
@@ -89,20 +110,36 @@ const ViewRequests = (props) => {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-    } = useTableR(requests, headCells);
+    } = useTable(records, headCells,filterFn);
 
     return (
         <div>
             <div className='container mt-5'>
 
-                <h1 className='text-primary mb-3'>Requests</h1>
-                <div className='sp'><Button variant="outlined" onClick={handleCategories} size="large" disableElevation>
+                <div className='oopar'><h1 className='text-primary mb-3'>Requests</h1></div>
+                <div className='sp'>
+                    
+                    <Button className='categorycreate' variant="outlined" onClick={handleCategories} size="large" disableElevation>
                     Create Category
-                </Button></div>
+                </Button>
+
+                </div>
+
+                <Toolbar>
+                    <div className='inp'><Input
+                    className={classes.searchInput} 
+                    placeholder = "Search manager Name"
+                    InputProps={{
+                        startAdornment: (<InputAdornment position='start'>
+                            <Search />
+                            </InputAdornment>)
+                    }}
+                    onChange={handleSearch}
+                    /></div>
+                </Toolbar>
+               
 
 
-
-                <nbsp></nbsp>
                 <TblContainer>
                     <TblHead />
                     <TableBody>

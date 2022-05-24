@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default function useTable(libraries, headCells, filterFn) {
+export default function useTable(records, headCells, filterFn) {
     const classes = useStyles();
     const pages = [5, 10, 15]
     const [page, setPage] = useState(0)
@@ -75,7 +75,7 @@ export default function useTable(libraries, headCells, filterFn) {
         page={page}
         rowsPerPageOptions={pages}
         rowsPerPage={rowsPerPage}
-        count={libraries.length}
+        count={records.length}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
         
@@ -108,7 +108,7 @@ export default function useTable(libraries, headCells, filterFn) {
     }
     
     const recordsAfterPagingAndSorting = () => {
-        return stableSort(filterFn.fn(libraries), getComparator(order, orderBy)).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+        return stableSort(filterFn.fn(records), getComparator(order, orderBy)).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
     }
 
     return {

@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles,Paper ,Toolbar, InputAdornment } from '@material-ui/core';
-import { setUserIDSession, getUser, removeUserSession, removeUserIDSession, getToken } from "../Utils/Common";
-import Libraries from '../Components/Libraries';
-import Pagination from '../Components/Pagination';
+import {  getToken } from "../Utils/Common";
 import useTable from '../Components/useTable';
-import ActionButton from '../Components/ActionButton';
 import { TableBody, TableRow, TableCell } from '@material-ui/core';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ResponsiveDialog from '../Components/Popup';
-import EmployeeForm from '../Components/form';
 import Input from '../Components/Input';
 import { Search } from "@material-ui/icons";
-//import UpdateIcon from '@mui/icons-material/Update';
+
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -21,7 +17,8 @@ const useStyles = makeStyles(theme => ({
     },
     searchInput: {
         width: '50%',
-        margin: '10px'
+        marginLeft: '835px',
+        marginBottom: "20px"
     }
 }))
 
@@ -91,13 +88,7 @@ const ViewLibraries = (props) => {
         <div>
             <div className='container mt-5'>
                 <h1 className='text-primary mb-3'>Libraries</h1><br></br>
-                {/* <Libraries l={currentItems} loading={loading} />
-                <Pagination
-                    itemsPerPage={itemsPerPage}
-                    totalItems={libraries.length}
-                    paginate={paginate}
-                /> */}
-                        {/* <Paper className={classes.pageContent}> */}
+               
 
                 <Toolbar>
                     <div className='inp'><Input
@@ -135,13 +126,7 @@ const ViewLibraries = (props) => {
             </TblContainer>
             <br />
             <TblPagination />
-            {/* </Paper> */}
-            {/* // openPopup ={openPopup}
-            // setOpenPopup ={setOpenPopup}
-            // title="Update Block flag"
-            // children = "set your flag"
-             */}
-            {/* <EmployeeForm /> */}
+           
             
             </div>
         </div>

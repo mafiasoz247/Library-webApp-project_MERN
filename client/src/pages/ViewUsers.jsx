@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { setUserIDSession, getUser, removeUserSession, removeUserIDSession, getToken } from "../Utils/Common";
-import Libraries from '../Components/Libraries';
-import Pagination from '../Components/Pagination';
-import { TableBody, TableRow, TableCell } from '@material-ui/core';
-import useTableU from '../Components/useTableU';
+import { getToken } from "../Utils/Common";
+import { makeStyles,TableBody, TableRow, TableCell } from '@material-ui/core';
+import useTable from '../Components/useTable';
 import ResponsiveDialog from '../Components/Popup_2';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import { Toolbar, InputAdornment } from '@material-ui/core';
+import { Search } from '@material-ui/icons';
+import Input from '../Components/Input';
 
+const useStyles = makeStyles(theme => ({
+    pageContent: {
+        margin: theme.spacing(0),
+        padding: theme.spacing(2)
+    },
+    searchInput: {
+        width: '50%',
+        marginLeft: '835px',
+        marginBottom: "20px"
+    }
+}))
 
 const headCells = [
     {id:'User_ID', label: 'User ID'},
@@ -22,9 +34,10 @@ const headCells = [
 const ViewUsers = (props) => {
     const [Users, setUsers] = useState(JSON.parse(sessionStorage.getItem('Users')));
     const [loading, setLoading] = useState(false);
-    // const [currentPage, setCurrentPage] = useState(1);
-    // const [itemsPerPage] = useState(1);
+    const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const token = getToken();
+    const classes = useStyles();
+    const[records,setRecords]= useState(Users);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -37,6 +50,7 @@ const ViewUsers = (props) => {
             await axios.get('http://localhost:4000/users/getUsers', config, {
             }).then(async response => {
                 setUsers(response.data.data.message.Customers);
+                setRecords(Users);
                 sessionStorage.setItem('Users', JSON.stringify(response.data.data.message.Customers));
                 //console.log(libraries);
                 setLoading(false);
@@ -48,25 +62,43 @@ const ViewUsers = (props) => {
 
         fetchUsers();
     }, []);
+    
+    const handleSearch = e => {
+        let target = e.target;
+        
+        setFilterFn({
+            fn: items => {
+                if (target.value == "")
+                    return items;
+                else
+                    return items.filter(x => x.Name.toLowerCase().includes(target.value.toLowerCase()))
+            }
+        })
+    }
 
-    // Get current posts
-//     const indexOfLastItem = currentPage * itemsPerPage;
-//     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-//     const currentItems = Users.slice(indexOfFirstItem, indexOfLastItem);
-
-//     Change page
-//     const paginate = pageNumber => setCurrentPage(pageNumber);
+  
     const {
         TblContainer,
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-    } = useTableU(Users, headCells);
+    } = useTable(records, headCells,filterFn);
     return (
         <div>
             <div className='container mt-5'>
                 <h1 className='text-primary mb-3'>Users</h1> <br></br>
-  
+                <Toolbar>
+                    <div className='inp'><Input
+                    className={classes.searchInput} 
+                    placeholder = "Search User Name"
+                    InputProps={{
+                        startAdornment: (<InputAdornment position='start'>
+                            <Search />
+                            </InputAdornment>)
+                    }}
+                    onChange={handleSearch}
+                    /></div>
+                </Toolbar>
             <TblContainer>
                 <TblHead />
                 <TableBody>
