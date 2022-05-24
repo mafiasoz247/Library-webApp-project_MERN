@@ -73,9 +73,9 @@ const fetchCategories = async () => {
     await axios.get('http://localhost:4000/users/getBooksLibrary', config, {
     }).then(async response => {
         setBooks(response.data.data.result.data);
-        sessionStorage.setItem('Reviews', JSON.stringify(response.data.data.result.data));
+        sessionStorage.setItem('Books', JSON.stringify(response.data.data.result.data));
         setLoading(false);
-        window.location.assign('/manager/Books');
+        //window.location.assign('/manager/Books');
         
     }).catch(error => {
   
@@ -93,7 +93,7 @@ const fetchCategories = async () => {
     await axios.get('http://localhost:4000/users/seeReviewsLibrary', config, {
     }).then(async response => {
         setReviews(response.data.data.message.Queries);
-        sessionStorage.setItem('requests', JSON.stringify(response.data.data.message.Reviews));
+        sessionStorage.setItem('Reviews', JSON.stringify(response.data.data.message.Reviews));
         setLoading(false);
         window.location.assign('/manager/Reviews');
         
@@ -113,7 +113,7 @@ const fetchCategories = async () => {
     await axios.get('http://localhost:4000/users//getQueries', config, {
     }).then(async response => {
         setQueries(response.data.data.message.Queries);
-        sessionStorage.setItem('requests', JSON.stringify(response.data.data.message.Queries));
+        sessionStorage.setItem('Queries', JSON.stringify(response.data.data.message.Queries));
         setLoading(false);
         window.location.assign('/manager/Queries');
         
