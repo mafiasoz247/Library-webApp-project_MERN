@@ -76,7 +76,26 @@ const fetchCategories = async () => {
     }).catch(error => {
   
     });
-  
+    
+    
+      setLoading(true);
+      let config2 = {
+          headers: {
+              Authorization: "basic " + token
+          }
+      }
+      await axios.get('http://localhost:4000/users/getCategory', config2, {
+      }).then(async response => {
+          // console.table(response.data.data.message.Categories)
+          sessionStorage.setItem('Categories', JSON.stringify(response.data.data.message.Categories));
+          setLoading(false);
+          //window.location.assign('/manager/Books');
+          
+      }).catch(error => {
+    
+      });
+    
+    
   };
 
   const fetchReviews = async () => {

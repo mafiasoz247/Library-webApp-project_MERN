@@ -108,12 +108,8 @@ async function CreateBook({ req, token }, callback) {
             });
         }
     });
-<<<<<<< HEAD
 };
 
-=======
-}
->>>>>>> 1f26ea1dcb7e2f5199a389eec9b235a6941760cf
 async function updateBook({ req, token }, callback) {
 
     if (req.body.Book_ID === undefined) {
