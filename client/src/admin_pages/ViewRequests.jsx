@@ -36,7 +36,7 @@ const ViewRequests = (props) => {
     const [loading, setLoading] = useState(false);
     const [Categories, setCategories] = useState(JSON.parse(sessionStorage.getItem('Categories')));
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
-    const [records,setRecords] = useState(requests)
+    //const [records,setRecords] = useState(requests)
     const classes = useStyles();
     const token = getToken();
 
@@ -53,7 +53,7 @@ const ViewRequests = (props) => {
             await axios.get('http://localhost:4000/users/getQueriesManager', config, {
             }).then(async response => {
                 setRequests(response.data.data.message.Queries);
-                setRecords(requests);
+               // setRecords(requests);
                 sessionStorage.setItem('requests', JSON.stringify(response.data.data.message.Queries));
                 console.table(response.data.data.message.Queries)
                 setLoading(false);
@@ -110,7 +110,7 @@ const ViewRequests = (props) => {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-    } = useTable(records, headCells,filterFn);
+    } = useTable(requests, headCells,filterFn);
 
     return (
         <div>

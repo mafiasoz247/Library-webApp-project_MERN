@@ -4,10 +4,6 @@ import axios from 'axios';
 import { getToken } from '../Utils/Common';
 
 
-
-
-
-
 const HomeManager = () => {
   const [Reviews, setReviews] = useState(JSON.parse(sessionStorage.getItem('Reviews')));
   const [Queries, setQueries] = useState(JSON.parse(sessionStorage.getItem('Queries')));
@@ -83,22 +79,24 @@ const fetchCategories = async () => {
   
   };
 
-  const fetchreviews = async () => {
+  const fetchReviews = async () => {
     setLoading(true);
     let config = {
         headers: {
             Authorization: "basic " + token
         }
     }
+    console.log("Inside Reviews 1")
     await axios.get('http://localhost:4000/users/seeReviewsLibrary', config, {
     }).then(async response => {
-        setReviews(response.data.data.message.Queries);
+        setReviews(response.data.data.message.Reviews);
         sessionStorage.setItem('Reviews', JSON.stringify(response.data.data.message.Reviews));
         setLoading(false);
+        
+    console.log("Inside Reviews 2")
         window.location.assign('/manager/Reviews');
         
     }).catch(error => {
-      // window.location.assign('/manager/Reviews');
     });
   
   };
@@ -110,7 +108,7 @@ const fetchCategories = async () => {
             Authorization: "basic " + token
         }
     }
-    await axios.get('http://localhost:4000/users//getQueries', config, {
+    await axios.get('http://localhost:4000/users/getQueries', config, {
     }).then(async response => {
         setQueries(response.data.data.message.Queries);
         sessionStorage.setItem('Queries', JSON.stringify(response.data.data.message.Queries));
@@ -152,7 +150,7 @@ const fetchCategories = async () => {
           <h2>Queries</h2></a>
           </div>
 
-          <div className="boxreview zone"><a onClick={fetchreviews} className="picture5">
+          <div className="boxreview zone"><a onClick={fetchReviews} className="picture5">
           <img src="https://cdn-icons-png.flaticon.com/512/651/651191.png"></img>
           <h2>Reviews</h2></a>
           </div>

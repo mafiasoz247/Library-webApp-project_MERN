@@ -11,8 +11,7 @@ import EditOutlined from '@material-ui/icons/EditOutlined';
 import CheckIcon from '@mui/icons-material/Check';
 import Notification from '../Admin_Components/Notifications';
 import axios from 'axios';
-import { getToken } from '../Utils/Common';
-
+import { getToken, checkAdmin, checkManager } from '../Utils/Common';
 
 export default function ResponsiveDialog(props) {
     const [open, setOpen] = React.useState(false);
@@ -30,6 +29,8 @@ export default function ResponsiveDialog(props) {
     //console.log(Library);
 
 
+    const admin = checkAdmin();
+    console.log(admin);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -38,22 +39,74 @@ export default function ResponsiveDialog(props) {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleBlock = async () => {
+
+    const handleBlockManager = async () => {
         setLoading(true);
 
         let config = {
             headers: {
                 Authorization: "basic " + token
             },
-            
+            Query: request
+        }
+
+        await axios.patch("http://localhost:4000/users/statusQuery", config, {
+            headers: {
+                Authorization: "basic " + token
+            },
+
             Query: request
 
+        }).then(response => {
+            //sessionStorage.setItem('Manager_ID', response.data.data.message.info2[0].User_ID);
+            //window.location.assign("/admin/CreateLibrary");
+            setLoading(false);
+            setNotify({
+                isOpen: true,
+                message: "Request catered!",
+                type: 'success'
+            })
+
+
+
+        }).catch(error => {
+            // console.log("lol");
+            setLoading(false);
+            if (error.response.status === 500) {
+                //setError(error.response.data.data.message || "Enter a valid email");
+                setNotify({
+                    isOpen: true,
+                    message: error.response.data.data.message,
+                    type: 'error'
+                })
+            }
+        })
+
+
+        setOpen(false);
+
+        setTimeout(function () {
+            window.location.reload(false);
+        }, 1500);
+
+    }
+
+    const handleBlockAdmin = async () => {
+        setLoading(true);
+
+        let config = {
+            headers: {
+                Authorization: "basic " + token
+            },
+            Query: request
         }
+
+
         await axios.patch("http://localhost:4000/users/setQueryManager", config, {
             headers: {
                 Authorization: "basic " + token
             },
-            
+
             Query: request
 
         }).then(response => {
@@ -80,6 +133,8 @@ export default function ResponsiveDialog(props) {
             }
         })
 
+
+
         setOpen(false);
 
         setTimeout(function () {
@@ -87,10 +142,14 @@ export default function ResponsiveDialog(props) {
         }, 1500);
 
 
-    };
-    
 
-    
+    }
+
+
+
+
+
+
 
     return (
         <div>
@@ -110,15 +169,14 @@ export default function ResponsiveDialog(props) {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                    Confirm as catered?
+                        Confirm as catered?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  
-                    <Button autoFocus color='error'  onClick={handleClose} > Close </Button> 
-                    <Button autoFocus  onClick={handleBlock} > Confirm </Button> 
-                    
-               
+
+                    <Button autoFocus color='error' onClick={handleClose} > Close </Button>
+                    <Button autoFocus onClick={admin ? handleBlockAdmin : handleBlockManager} > Confirm </Button>
+
                 </DialogActions>
             </Dialog>
             <Notification

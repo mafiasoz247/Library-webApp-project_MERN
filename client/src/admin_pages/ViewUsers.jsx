@@ -37,7 +37,7 @@ const ViewUsers = (props) => {
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const token = getToken();
     const classes = useStyles();
-    const[records,setRecords]= useState(Users);
+//    const[records,setRecords]= useState(Users);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -50,7 +50,7 @@ const ViewUsers = (props) => {
             await axios.get('http://localhost:4000/users/getUsers', config, {
             }).then(async response => {
                 setUsers(response.data.data.message.Customers);
-                setRecords(Users);
+               // setRecords(Users);
                 sessionStorage.setItem('Users', JSON.stringify(response.data.data.message.Customers));
                 //console.log(libraries);
                 setLoading(false);
@@ -82,7 +82,7 @@ const ViewUsers = (props) => {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-    } = useTable(records, headCells,filterFn);
+    } = useTable(Users, headCells,filterFn);
     return (
         <div>
             <div className='container mt-5'>

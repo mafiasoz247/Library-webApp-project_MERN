@@ -36,8 +36,11 @@ import ViewReviews from './manager_pages/ViewReviews'
 function App(props) {
 
   const [authLoading, setAuthLoading] = useState(true);
+  
   const admin = checkAdmin();
   const manager = checkManager();
+
+
   useEffect(() => {
     const token = getToken();
     if (!token) {

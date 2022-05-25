@@ -106,10 +106,6 @@ export default function ResponsiveDialog(props) {
             }
         })
 
-
-
-
-
     }
 
 
