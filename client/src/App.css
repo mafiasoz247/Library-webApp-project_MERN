@@ -42,3 +42,62 @@ font-family: 'Montserrat', sans-serif;
   margin-left: 1157px;
   margin-bottom: 15px;
 }
+
+.bp{
+  margin-left: 1180px;
+  margin-bottom: 15px;
+}
+.Title{
+  margin-top: 0.75rem;
+  width: 100%;
+}
+.ISBN{
+  margin-left: 2rem;
+}
+.Author{
+  width: 100%;
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+}
+.Description{
+  margin-left: 2rem;
+}
+.CID{
+  width: 76%;
+  /* margin-top: 2rem; */
+}
+.Quantity{
+  margin-left: 2rem;
+  /* width: 5rem; */
+}
+.Price{
+  margin-top: 0.75rem;
+}
+.ISBNe {
+  margin-left: 2rem;
+  margin-top: 1.35rem;
+}
+.Authore{
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.Descriptione{
+  margin-left: 2rem;
+  margin-top: -1.4rem;
+}
+.CIDe{
+  width: 100%;
+  margin-bottom: 1rem;
+  /* margin-top: 2rem; */
+}
+.Quantitye{
+  margin-left: 2rem;
+  margin-top: -1.45rem;
+}
+.bookimg{
+  /* display: flex; */
+  /* width: 60%; */
+  margin-left: auto;
+  margin-right: auto;
+}

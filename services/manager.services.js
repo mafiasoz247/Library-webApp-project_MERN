@@ -72,60 +72,35 @@ async function CreateBook({ req, token }, callback) {
 
                             let library = info[0].Library_ID;
 
-                            let selectcount = 'SELECT Count(*) as "total" FROM ?? WHERE ?? = ? AND ?? = ? LIMIT 1';
-                            let querycount = mysql.format(selectcount, [
-                                "CATEGORY",
-                                "Library_ID",
-                                library,
-                                "Category_ID",
-                                req.body.category
+                            let selectQuery2 = 'SELECT Count(*) as "total" FROM ?? WHERE ?? = ? AND  LIBRARY_ID = ?';
+                            let query2 = mysql.format(selectQuery2, [
+                                "BOOKS",
+                                "ISBN",
+                                req.body.ISBN,
+                                library
                             ]);
 
-                            db.query(querycount, (err, info) => {
+                            db.query(query2, (err, info) => {
                                 if (err) {
                                     return callback(err);
                                 }
-                                if (info[0].total != 1) {
+                                if (info[0].total > 0) {
                                     return callback({
-                                        message: "Invalid Category ID Entered for the Library"
+                                        message: "Book already exists in this Library"
                                     });
                                 }
                                 else {
 
-                                    let selectQuery2 = 'SELECT Count(*) as "total" FROM ?? WHERE ?? = ? AND ?? IN (SELECT ?? FROM ?? WHERE LIBRARY_ID = ?);';
-                                    let query2 = mysql.format(selectQuery2, [
-                                        "BOOKS",
-                                        "ISBN",
-                                        req.body.ISBN,
-                                        "Category_ID",
-                                        "Category_ID",
-                                        "CATEGORY",
-                                        library
-                                    ]);
+                                    let flag = '0';
+                                    db.query(`INSERT INTO BOOKS(Library_ID, Title, ISBN, Author, Description, Category_ID, Quantity, Price, Delete_Flag) VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?)`
+                                        , [library, req.body.title, req.body.ISBN, req.body.author, req.body.description, req.body.category, req.body.quantity, req.body.price, flag],
+                                        (error, results, fields) => {
+                                            if (error) {
+                                                return callback(error);
+                                            }
 
-                                    db.query(query2, (err, info) => {
-                                        if (err) {
-                                            return callback(err);
-                                        }
-                                        if (info[0].total > 0) {
-                                            return callback({
-                                                message: "Book already exists in this Library"
-                                            });
-                                        }
-                                        else {
-
-                                            let flag = '0';
-                                            db.query(`INSERT INTO BOOKS(Title, ISBN, Author, Description, Category_ID, Quantity, Price, Delete_Flag) VALUES (?, ?, ?, ?, ?, ? , ?, ?)`
-                                                , [req.body.title, req.body.ISBN, req.body.author, req.body.description, req.body.category, req.body.quantity, req.body.price, flag],
-                                                (error, results, fields) => {
-                                                    if (error) {
-                                                        return callback(error);
-                                                    }
-
-                                                    return callback(null, "Book Added Successfully!")
-                                                });
-                                        }
-                                    });
+                                            return callback(null, "Book Added Successfully!")
+                                        });
                                 }
                             });
                         }
@@ -133,16 +108,9 @@ async function CreateBook({ req, token }, callback) {
 
                 }
             });
-
-
-
         }
-
     });
-
-
-};
-
+}
 async function updateBook({ req, token }, callback) {
 
     if (req.body.Book_ID === undefined) {
@@ -392,7 +360,7 @@ async function updateBookFlag({ req, token }, callback) {
                             let library = info[0].Library_ID;
 
 
-                            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ?? == ?)';
+                            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ?? = ?)';
                             let querylib3 = mysql.format(lib, [req.body.Book_ID, "Book_ID", "Books", "Library_ID", library]);
 
                             db.query(querylib3, (err, info) => {
@@ -573,6 +541,7 @@ async function getOneBookLibrary({ req, token }, callback) {
     if (req.body.book === undefined) {
         return callback({ message: "Book ID Required!" });
     }
+    
 
     let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
     let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
