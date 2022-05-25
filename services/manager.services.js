@@ -445,9 +445,8 @@ async function getOrdersLibrary({ token }, callback) {
                         else {
                             let library = info[0].Library_ID;
 
-                            //     Query update -- what?
-                            let selectQuery = 'select DISTINCT(??)  from ?? where ?? IN (select ?? from ?? where ?? = ?)';
-                            let query = mysql.format(selectQuery, ["Order_ID", "order_items", "Book_ID", "Book_ID", "Books", "Library_ID", library]);
+                            let selectQuery = 'Select ??, ??, ??, ??, ?? from ?? where ?? IN (Select ?? from ?? where ?? IN (Select ?? from ?? where ?? = ?))';
+                            let query = mysql.format(selectQuery, ["Order_ID","User_ID", "Order_Date", "Total_Price", "Status","ORDERS", "Order_ID","Order_ID","ORDER_ITEMS", "Book_ID","Book_ID" ,"Books","Library_ID", library]);
 
                             db.query(query, (err, info) => {
                                 if (err) {
