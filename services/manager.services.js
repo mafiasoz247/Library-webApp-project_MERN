@@ -108,8 +108,12 @@ async function CreateBook({ req, token }, callback) {
             });
         }
     });
+<<<<<<< HEAD
 };
 
+=======
+}
+>>>>>>> 1f26ea1dcb7e2f5199a389eec9b235a6941760cf
 async function updateBook({ req, token }, callback) {
 
     if (req.body.Book_ID === undefined) {
@@ -359,7 +363,7 @@ async function updateBookFlag({ req, token }, callback) {
                             let library = info[0].Library_ID;
 
 
-                            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ?? == ?)';
+                            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ?? = ?)';
                             let querylib3 = mysql.format(lib, [req.body.Book_ID, "Book_ID", "Books", "Library_ID", library]);
 
                             db.query(querylib3, (err, info) => {
@@ -540,6 +544,7 @@ async function getOneBookLibrary({ req, token }, callback) {
     if (req.body.book === undefined) {
         return callback({ message: "Book ID Required!" });
     }
+    
 
     let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
     let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);

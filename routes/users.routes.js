@@ -52,7 +52,7 @@ router.patch("/setBookFlag", managerController.updateBookFlag);
 
 router.patch("/updatePassword", generalController.updatePassword);
 
-router.get("/getOneBookLibrary", managerController.getOneBookLibrary);
+router.patch("/getOneBookLibrary", managerController.getOneBookLibrary);
 router.get("/getBooksLibrary", managerController.getBooksLibrary);
 
 router.post("/RequestCategory", managerController.RequestCategory);
