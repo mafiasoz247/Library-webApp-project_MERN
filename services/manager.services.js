@@ -536,6 +536,72 @@ async function getBooksLibrary({ token }, callback) {
 
 };
 
+async function getLibrary({ token }, callback) {
+
+    let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
+    let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
+    db.query(query, (err, data) => {
+        if (err) {
+            return callback(err);
+        }
+
+        if (data[0].total == 0) {
+            return callback({
+                message: "Deleted Token, Cannot Get books"
+            });
+        }
+        else {
+
+            let selectQuery = 'SELECT ??, A1.?? FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
+            let query = mysql.format(selectQuery, ["Type", "User_ID", "USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
+
+            db.query(query, (err, info) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (info[0].Type != 1) {
+                    return callback({
+                        message: "Access Violation!"
+                    });
+                }
+                else {
+                    let lib = 'SELECT Library_ID FROM ?? as A1 INNER JOIN ?? as A2 ON A1.??= A2.??   WHERE ?? = ?';
+                    let querylib = mysql.format(lib, ["Libraries", "TOKENS_USER", "Manager_ID", "User_ID", "Token", token]);
+
+                    db.query(querylib, (err, info) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        else {
+                            let library = info[0].Library_ID;
+
+                            let selectQuery = `SELECT ?? FROM ?? where ?? = ?`;
+                            let query = mysql.format(selectQuery, ["Name","Libraries", "Library_ID", library]);
+
+                            db.query(query, (err, library) => {
+                                if (err) {
+                                    return callback(err);
+                                }
+                                else {
+                                    return callback(null, { library });
+                                };
+
+                            })
+
+                        };
+
+                    });
+
+                }
+
+            });
+        };
+
+    });
+
+};
+
 async function getOneBookLibrary({ req, token }, callback) {
 
 
@@ -1086,6 +1152,7 @@ module.exports = {
     getOrder_ItemsManager,
     getQueries,
     statusQuery,
-    requestCategory
+    requestCategory,
+    getLibrary
 
 };
