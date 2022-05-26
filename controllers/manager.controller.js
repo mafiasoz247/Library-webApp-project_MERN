@@ -261,3 +261,21 @@ exports.RequestCategory = (req, res, next) => {
         });
     });
 };
+
+
+exports.getLibrary = (req, res, next) => {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    userService.getLibrary({ req, token }, (error, result) => {
+        if (error) {
+            return next(error);
+        }
+        return res.status(200).send({
+            Status: "Success",
+            data: {
+                message: result
+            },
+        });
+    });
+};
