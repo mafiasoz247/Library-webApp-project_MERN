@@ -25,7 +25,7 @@ export const MenuItemsManager = [
      },
      {
          title: 'Profile',
-         url: '/dashboard',
+         url: '/manager/Profile',
          cName: 'nav-links'
      },
     

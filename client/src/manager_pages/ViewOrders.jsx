@@ -73,14 +73,15 @@ const ViewOrders = (props) => {
 
     const handleSearch = e => {
         let target = e.target;
-
+        console.log(target.value);
         setFilterFn({
             fn: items => {
                 if (target.value == "")
                     return items;
-                else
-                    return items.filter(x => x.Order_ID.includes(target.value))
-            }
+                else{
+                    return items.filter(x => x.Order_ID.toString().includes(target.value.toString()))
+                }
+                }
         })
     }
     return (

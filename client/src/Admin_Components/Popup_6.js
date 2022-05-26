@@ -37,6 +37,7 @@ export default function ResponsiveDialog(props) {
     const [ISBN, setISBN] = React.useState(null);
     const [Quantity, setQuantity] = React.useState(null);
     const [Price, setPrice] = React.useState(null);
+    const [URL, setURL] = React.useState(null);
     const Categories = JSON.parse(sessionStorage.getItem("Categories"));
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -85,6 +86,9 @@ export default function ResponsiveDialog(props) {
     const handleChangePrice = e => {
         setPrice(e.target.value);
     }
+    const handleChangeURL = e => {
+        setURL(e.target.value);
+    }
 
     const handleClick = async () => {
         setLoading(true);
@@ -100,7 +104,8 @@ export default function ResponsiveDialog(props) {
             author: Author,
             category: CategoryID,
             quantity: Quantity,
-            price: Price
+            price: Price,
+            url: URL
 
 
         }
@@ -115,7 +120,8 @@ export default function ResponsiveDialog(props) {
             author: Author,
             category: CategoryID,
             quantity: Quantity,
-            price: Price
+            price: Price,
+            url: URL
 
 
 
@@ -226,6 +232,9 @@ export default function ResponsiveDialog(props) {
                                 }
                                 onChange={handleChangePrice}
                             />
+
+                        <div className='URL'><TextField id="outlined-search" label="Image URL" type="search" InputLabelProps={{ shrink: true, }} onChange={handleChangeURL} />
+                        </div>
                         </Toolbar>
                     </div>
                     {error && <><h5 style={{ color: 'red' }}>{error}</h5></>}

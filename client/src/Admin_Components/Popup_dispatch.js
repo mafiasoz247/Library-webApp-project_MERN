@@ -19,6 +19,9 @@ export default function ResponsiveDialog2(props) {
     const [open, setOpen] = React.useState(false);
     const [notify, setNotify] = React.useState({ isOpen: false, message: '', type: '' });
     const [loading, setLoading] = React.useState(false);
+    const [fullWidth, setFullWidth] = React.useState(true);
+    const [maxWidth, setMaxWidth] = React.useState('sm');
+
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -60,7 +63,7 @@ export default function ResponsiveDialog2(props) {
             setLoading(false);
             setNotify({
                 isOpen: true,
-                message: "Order Dispatched",
+                message: "Order status set to 'In progress'",
                 type: 'error'
             })
 
@@ -82,7 +85,7 @@ export default function ResponsiveDialog2(props) {
 
         setTimeout(function () {
            window.location.reload(false);
-        }, 1500);
+        }, 1000);
 
 
     };
@@ -110,7 +113,7 @@ export default function ResponsiveDialog2(props) {
             setLoading(false);
             setNotify({
                 isOpen: true,
-                message: "Order is still in Progress",
+                message: "Dispatched",
                 type: 'success'
             })
 
@@ -133,7 +136,7 @@ export default function ResponsiveDialog2(props) {
         setTimeout(function () {
 
            window.location.reload(false);
-        }, 500);
+        }, 1000);
 
     };
 
@@ -147,6 +150,8 @@ export default function ResponsiveDialog2(props) {
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="responsive-dialog-title"
+                fullWidth={fullWidth}
+                maxWidth={maxWidth}
             >
                 <DialogTitle id="responsive-dialog-title">
                     {"Update Status"}

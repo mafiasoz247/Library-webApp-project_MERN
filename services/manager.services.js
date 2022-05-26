@@ -29,6 +29,9 @@ async function CreateBook({ req, token }, callback) {
     if (req.body.price === undefined) {
         return callback({ message: "Price Required!" });
     }
+    if (req.body.url === undefined) {
+        return callback({ message: "Image URL Required!" });
+    }
 
 
     let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
@@ -90,8 +93,8 @@ async function CreateBook({ req, token }, callback) {
                                 else {
 
                                     let flag = '0';
-                                    db.query(`INSERT INTO BOOKS(Library_ID, Title, ISBN, Author, Description, Category_ID, Quantity, Price, Delete_Flag) VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?)`
-                                        , [library, req.body.title, req.body.ISBN, req.body.author, req.body.description, req.body.category, req.body.quantity, req.body.price, flag],
+                                    db.query(`INSERT INTO BOOKS(Library_ID, Title, ISBN, Author, Description, Category_ID, Quantity, Price, Delete_Flag, Book_Image) VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?, ?)`
+                                        , [library, req.body.title, req.body.ISBN, req.body.author, req.body.description, req.body.category, req.body.quantity, req.body.price, flag, req.body.url],
                                         (error, results, fields) => {
                                             if (error) {
                                                 return callback(error);

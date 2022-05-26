@@ -64,11 +64,13 @@ font-family: 'Montserrat', sans-serif;
 }
 .CID{
   width: 76%;
+  max-width: 76%;
+  min-width: 76%;
   /* margin-top: 2rem; */
 }
 .Quantity{
   margin-left: 2rem;
-  /* width: 5rem; */
+  /* width: 40%; */
 }
 .Price{
   margin-top: 0.75rem;
@@ -104,4 +106,30 @@ font-family: 'Montserrat', sans-serif;
 .vcm{
   margin-left: 1147px;
   margin-bottom: 15px;
+}
+.URL{
+  margin-left: 2rem;
+}
+.profileimg{
+  width: 14rem;
+  height: 14rem;
+  margin-left: 5rem;
+  margin-top: 3rem;
+  /* margin-right: auto; */
+}
+
+.Manager{
+  margin-top: 6rem;
+  margin-left: 11rem;
+}
+
+.Address{
+  width: 100%;
+  margin-top: 1rem;
+   margin-bottom: 1rem;
+  /* margin-right: auto; */
+}
+.Contact{
+  margin-left: -14rem;
+  margin-top: 0rem;
 }

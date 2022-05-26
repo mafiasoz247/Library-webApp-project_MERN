@@ -28,6 +28,7 @@ import ViewBooks from './manager_pages/ViewBooks'
 import ViewCategoriesM from './manager_pages/ViewCategoriesM'
 import ViewQueries from './manager_pages/ViewQueries'
 import ViewReviews from './manager_pages/ViewReviews'
+import ViewProfile from './manager_pages/ViewProfile';
 // const Home = lazy(() => import("./pages/Home"));
 // const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
@@ -127,7 +128,8 @@ function App(props) {
               <PrivateRoute exact path='/manager/Books' component={ViewBooks} /> 
               <PrivateRoute exact path='/manager/Reviews' component={ViewReviews} />
               <PrivateRoute exact path='/manager/Queries' component={ViewQueries} />  
-              <PrivateRoute exact path='/manager/OrderItems' component={ViewOrderItems} />    
+              <PrivateRoute exact path='/manager/OrderItems' component={ViewOrderItems} />
+              <PrivateRoute exact path='/manager/Profile' component={ViewProfile} />      
               <Route  path="*" component={PageNotFound} />
               </Switch>
               
