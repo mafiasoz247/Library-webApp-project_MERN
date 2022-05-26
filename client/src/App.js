@@ -23,6 +23,7 @@ import CreateLibrary from './admin_pages/CreateLibrary';
 import ViewRequests from './admin_pages/ViewRequests';
 import ViewCategories from './admin_pages/ViewCategories';
 import ViewOrders from './manager_pages/ViewOrders'
+import ViewOrderItems from './manager_pages/ViewOrderItems'
 import ViewBooks from './manager_pages/ViewBooks'
 import ViewCategoriesM from './manager_pages/ViewCategoriesM'
 import ViewQueries from './manager_pages/ViewQueries'
@@ -125,7 +126,8 @@ function App(props) {
               <PrivateRoute exact path='/manager/Categories' component={ViewCategoriesM} /> 
               <PrivateRoute exact path='/manager/Books' component={ViewBooks} /> 
               <PrivateRoute exact path='/manager/Reviews' component={ViewReviews} />
-              <PrivateRoute exact path='/manager/Queries' component={ViewQueries} />    
+              <PrivateRoute exact path='/manager/Queries' component={ViewQueries} />  
+              <PrivateRoute exact path='/manager/OrderItems' component={ViewOrderItems} />    
               <Route  path="*" component={PageNotFound} />
               </Switch>
               

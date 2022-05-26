@@ -66,7 +66,7 @@ router.delete("/deleteReview", customerController.deleteReview);
 
 router.get("/getQueries", managerController.getQueries);
 router.patch("/statusQuery", managerController.statusQuery);
-router.get("/getOrder_ItemsManager", managerController.getOrder_ItemsManager);
+router.patch("/getOrder_ItemsManager", managerController.getOrder_ItemsManager);
 
 
 
