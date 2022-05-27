@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import '../admin_pages/HomeAdmin'
 import axios from 'axios';
 import { getToken } from '../Utils/Common';
@@ -14,7 +14,31 @@ const HomeManager = () => {
   const [Categories, setCategories] = useState(JSON.parse(sessionStorage.getItem('Categories')));
 
 
+  useEffect(() => {
+    const fetchlname = async () => {
+        setLoading(true);
+        let config = {
+            headers: {
+                Authorization: "basic " + token
+            }
+        }
+        await axios.get('http://localhost:4000/users/getLibrary', config, {
+        }).then(async response => {
+            sessionStorage.setItem('Library', JSON.stringify(response.data.data.message.library[0].Name));
 
+            setLoading(false);
+            //window.location.assign('/manager/Books');
+            
+        }).catch(error => {
+      
+        });
+      
+      };
+          
+      
+    fetchlname();
+    
+}, []);
   const fetchOrders = async () => {
     setLoading(true);
     let config = {

@@ -243,10 +243,10 @@ async function userProfile({ req, token }, callback) {
 async function updatePassword({ req, token }, callback) {
 
     if (req.body.oldPassword === undefined) {
-        return callback({ message: "Password is Required!" });
+        return callback({ message: "Current Password is Required!" });
     }
     if (req.body.newPassword === undefined) {
-        return callback({ message: "Password is Required!" });
+        return callback({ message: "New Password is Required!" });
     }
 
     let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
