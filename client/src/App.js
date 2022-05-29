@@ -9,11 +9,11 @@ import PrivateRoute from "./Utils/PrivateRoute";
 import { checkAdmin,checkManager,getToken, removeUserSession, setUserSession, removeUserIDSession, setUserIDSession } from './Utils/Common';
 import Spinner from "./Admin_Components/Spinner";
 import Login from './admin_pages/Login';
-import Home from './admin_pages/Home';
+import Home from './customer_pages/Home';
 import HomeManager from './manager_pages/HomeManager';
 import Register from './admin_pages/Register';
 import Navbar from './Admin_Components/Navbar/Navbar.js';
-import Dashboard from './admin_pages/Dashboard';
+import Dashboard from './customer_pages/Dashboard';
 import HomeAdmin from './admin_pages/HomeAdmin';
 import PageNotFound from './admin_pages/pagenotfound';
 import RegisterManager from './admin_pages/RegisterManager';
@@ -29,6 +29,7 @@ import ViewCategoriesM from './manager_pages/ViewCategoriesM'
 import ViewQueries from './manager_pages/ViewQueries'
 import ViewReviews from './manager_pages/ViewReviews'
 import ViewProfile from './manager_pages/ViewProfile';
+import ViewBook from './customer_pages/ViewBook';
 // const Home = lazy(() => import("./pages/Home"));
 // const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
@@ -137,11 +138,12 @@ function App(props) {
               
               <Switch>
               
-              <Route exact path='/Home' component={Home} />
-              <Route exact path='/' component={Login} />
+              <PrivateRoute exact path='/Home' component={Home} />
+              <PublicRoute exact path='/' component={Login} />
               <PublicRoute exact path='/login' component={Login} />
               <PublicRoute exact path='/register' component={Register} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
+              <PrivateRoute exact path='/ViewBook' component={ViewBook} />
               <Route exact path='/events' component={Events} />
               <Route  path="*" component={PageNotFound} />
               </Switch>

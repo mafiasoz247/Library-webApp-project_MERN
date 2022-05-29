@@ -38,6 +38,7 @@ class Navbar extends Component {
       }).then(response => {
         removeUserSession();
         removeUserIDSession();
+        sessionStorage.clear();
       }).catch(error => {        
         console.log("errors >>> ", error)
       })
@@ -71,7 +72,8 @@ class Navbar extends Component {
                 </a>
               </li>
             )}
-          ):
+          ): 
+          token ? 
           MenuItems.map((item, index) => {
             return (
               <li key={index}>
@@ -80,7 +82,7 @@ class Navbar extends Component {
                 </a>
               </li>
             )}
-           )
+           ) : ""
       
           }
           </ul>

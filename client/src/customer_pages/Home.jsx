@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
 import { getToken } from "../Utils/Common";
-import useTable from '../Admin_Components/useTable';
+import useGrid from '../Admin_Components/useGrid';
 import { TextField, makeStyles, TableBody, TableRow, TableCell, Toolbar, InputAdornment } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+import { CheckBoxOutlineBlank, CompareArrowsOutlined, Search } from '@material-ui/icons';
 import Input from '../Admin_Components/Input';
 import ResponsiveDialog2 from '../Admin_Components/Popup_delete';
 import ResponsiveDialog3 from '../Admin_Components/Popup_edit'
@@ -19,7 +19,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { width } from '@mui/system';
-
+import ViewBook from "./ViewBook.jsx"
 const useStyles = makeStyles(theme => ({
     pageContent: {
         margin: theme.spacing(0),
@@ -66,32 +66,20 @@ const Home = (props) => {
     const [Categories,setCategories] = useState(JSON.parse(sessionStorage.getItem('Categories')));
     const token = getToken();
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
+    const [filterFnCID, setFilterFnCID] = useState({ fnc: items => { return items; } })
+    const [filterFnLID, setFilterFnLID] = useState({ fnl: items => { return items; } })
     const classes = useStyles();
     const [textboxvalue, setTextBoxValues] = useState();
     const [CategoryID, setCategoryID] = React.useState(null);
-    const [libraries,setLibraries] = React.useState();
+    const [libraries,setLibraries] = React.useState(JSON.parse(sessionStorage.getItem('Libraries')));
+    const [LibraryID,setLibraryID] = React.useState();
+    const [currentBook, setCurrentBook] = React.useState();
+    const [currentBookReviews, setCurrentBookReviews] = React.useState();
+
 
     useEffect(() => {
 
-        axios.get('http://localhost:4000/users/getBooks', {
-        }).then(async response => {
-            setBooks(response.data.data.result.data);
-            sessionStorage.setItem('Books', JSON.stringify(response.data.data.result.data));
-            //window.location.assign('/manager/Books');
-
-        }).catch(error => {
-
-        });
-         axios.get('http://localhost:4000/users/getLibrariesGeneral', {
-        }).then(async response => {
-           // console.table(response.data.data.message.libraries);
-            setLibraries(response.data.data.message.libraries);
-            sessionStorage.setItem('Libraries', JSON.stringify(response.data.data.message.libraries));
-            //window.location.assign('/manager/Books');
-            
-        }).catch(error => {
-      
-        });
+       
        
         const fetchCategories = async () => {
             setLoading(true);
@@ -110,7 +98,27 @@ const Home = (props) => {
             }).catch(error => {
 
             });
-
+            axios.get('http://localhost:4000/users/getBooks', {
+            }).then(async response => {
+                setBooks(response.data.data.result.data);
+                sessionStorage.setItem('Books', JSON.stringify(response.data.data.result.data));
+                // window.location.assign('/manager/Books');
+    
+            }).catch(error => {
+    
+            });
+             axios.get('http://localhost:4000/users/getLibrariesGeneral', {
+            }).then(async response => {
+               // console.table(response.data.data.message.libraries);
+                setLibraries(response.data.data.message.libraries);
+                // console.table(libraries);
+                
+                sessionStorage.setItem('Libraries', JSON.stringify(response.data.data.message.libraries));
+                // window.location.assign('/Books');
+                
+            }).catch(error => {
+          
+            });
         };
         
         fetchCategories();
@@ -118,26 +126,95 @@ const Home = (props) => {
 
 
     const {
-        TblContainer,
-        TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-    } = useTable(Books, headCells, filterFn);
+    } = useGrid(Books, headCells, filterFn, filterFnCID, filterFnLID);
 
     const handleSearch = e => {
         let target = e.target;
         setTextBoxValues(target.value);
+        console.log(textboxvalue);
         setFilterFn({
             fn: items => {
                 if (target.value == "")
                     return items;
                 else
-                    return items.filter(x => x.Title.toLowerCase().includes(target.value.toLowerCase()))
+                   return items.filter(x => x.Title.toLowerCase().includes(target.value.toLowerCase()));
             }
         })
     }
+    
     const handleChangeCategoryID = event => {
         setCategoryID(event.target.value);
+        console.log(CategoryID);
+        
+        setFilterFnCID({
+            fnc: items => {
+                if (event.target.value == null)
+                    return items;
+                else
+                    return items.filter(x => x.Category_ID.toString().includes(event.target.value.toString()))
+            }
+        })
+       
+    }
+    const handleChangeLibraryID = event => {
+        setLibraryID(event.target.value);
+        // console.log(LibraryID);
+        setFilterFnLID({
+            fnl: items => {
+                if (event.target.value == null)
+                    return items;
+                else
+                    return items.filter(x => x.Library_ID.toString().includes(event.target.value.toString()))
+            }
+        })
+    }
+    const handleBookPage = async (event) => {
+        setCurrentBook(event.target.value);
+        console.log(event.target.value);
+        // console.log(LibraryID);
+        sessionStorage.setItem('CurrentBook', JSON.stringify(event.target.value));
+        let config = {
+            headers: {
+                Authorization: "basic " + token
+            },
+            book : event.target.value
+        }
+        
+        await axios.patch('http://localhost:4000/users/getOneBook', config, {
+            headers: {
+                Authorization: "basic " + token
+            },
+            book : event.target.value
+                
+            }).then(async response => {
+             //   console.table(response.data.data.result.book);
+                setCurrentBook(response.data.data.result.book);
+                sessionStorage.setItem('CurrentBook', JSON.stringify(response.data.data.result.book));
+                // window.location.assign('/ViewBook');
+    
+            }).catch(error => {
+    
+            });
+        // window.location.assign("/ViewBook")
+        await axios.patch('http://localhost:4000/users/getreviewsinglebook', config, {
+            headers: {
+                Authorization: "basic " + token
+            },
+            book : event.target.value
+                
+            }).then(async response => {
+               console.table(response.data.data.message.Reviews);
+                setCurrentBookReviews(response.data.data.message.Reviews);
+                sessionStorage.setItem('CurrentBookReviews', JSON.stringify(response.data.data.message.Reviews));
+                window.location.assign('/ViewBook');
+    
+            }).catch(error => {
+                if (error.response.status === 500)
+                sessionStorage.setItem('CurrentBookReviews', "No reviews");
+            });
+        window.location.assign("/ViewBook")
     }
     return (
 
@@ -184,7 +261,7 @@ const Home = (props) => {
                             value={CategoryID}
                             onChange={handleChangeCategoryID}
                         >
-                           <MenuItem value={null}>All</MenuItem>
+                           <MenuItem value="">All</MenuItem>
                                     {
                                         Categories.map(item => (
                                             <MenuItem value={item.Category_ID}>{item.Name}</MenuItem>
@@ -201,13 +278,13 @@ const Home = (props) => {
                         className={classes.select}
                         labelId="demo-simple-select-filled-label"
                         id="demo-simple-select-filled"
-                        value={CategoryID}
-                        onChange={handleChangeCategoryID}
+                        value={LibraryID}
+                        onChange={handleChangeLibraryID}
                     >
-                       <MenuItem value={null}>All</MenuItem>
+                       <MenuItem value="">All</MenuItem>
                                 {
-                                    Categories.map(item => (
-                                        <MenuItem value={item.Category_ID}>{item.Name}</MenuItem>
+                                    libraries.map(item => (
+                                        <MenuItem value={item.Library_ID}>{item.Name}</MenuItem>
                                     ))
                                 }
                     </Select>
@@ -217,13 +294,16 @@ const Home = (props) => {
                 </Box>
 
 
-
-                <Toolbar />
+<br/>
+                {/* <Toolbar /> */}
 
                 <nbsp></nbsp>
+                <TblPagination />
+                <br/>
                 <ImageList cols={5} gap={50}>
-                    {Books.map((item) => (
+                    {recordsAfterPagingAndSorting().map((item) => (
                         <ImageListItem key={item.Book_Image}>
+                            
                             <img
                                 src={`${item.Book_Image}?w=248&fit=crop&auto=format`}
                                 srcSet={`${item.Book_Image}?w=248&fit=crop&auto=format&dpr=2 2x`}
@@ -231,13 +311,15 @@ const Home = (props) => {
                                 loading="lazy"
                                 width="40px"
                                 height="40px"
+                                onClick={handleBookPage}
                             />
-                            <ImageListItemBar position="below" title={item.Title} />
+                            {/* <ImageListItemBar position="below" value={item.Book_ID} title={item.Title} onClick={handleBookPage} /> */}
+                        <Button defaultValue={item.Book_ID} value={item.Book_ID} onClick={handleBookPage}>{item.Title}</Button>
                         </ImageListItem>
                     ))}
                 </ImageList>
                 <br />
-                <TblPagination />
+                
 
 
                 {/* <Box sx={{ width: 500, height: 450, overflowY: 'scroll' }}> */}

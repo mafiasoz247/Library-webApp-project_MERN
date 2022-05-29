@@ -39,7 +39,6 @@ app.use(
         path: [
             { url: "/users/login", methods: ["POST"]},
             { url: "/users/register", methods: ["POST"] },
-            { url: "/users/getOneBook", methods: ["GET"] },
             { url: "/users/GetBooks", methods: ["GET"] },
             { url: "/users/getBookCategoryWise", methods: ["GET"] }  ,
             { url: "/users/newsletter", methods: ["POST"] },

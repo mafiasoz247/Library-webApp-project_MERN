@@ -8,83 +8,51 @@ const res = require("express/lib/response");
 
 async function getBooks({ req }, callback) {
 
-                    let selectQuery = `SELECT ??,??, ??, ??, ??, ?? FROM ??`
-                    let query = mysql.format(selectQuery, ["Book_ID","Category_ID", "Title", "Author", "Price", "Book_Image", "BOOKS"]);
+    let selectQuery = `SELECT ??,??, ??, ??, ??, ??, ?? FROM ??`
+    let query = mysql.format(selectQuery, ["Book_ID", "Category_ID", "Title", "Author", "Price", "Book_Image", "Library_ID", "BOOKS"]);
 
 
-                    db.query(query, (err, data) => {
-                        if (err) {
-                            return callback(err);
-                        }
-                        if (data[0].total == 0) {
-                            return callback({
-                                message: "No Books to show!"
-                            });
-                        }
-                        else {
-                            return callback(null, { data });
-                        };
-
-                    })
-
-                ;
-
-};
-
-async function getOneBook({ req }, callback) {
-
-    if (req.body.library === undefined) {
-        return callback({ message: "Library ID Required!" });
-    }
-    if (req.body.book === undefined) {
-        return callback({ message: "Book ID Required!" });
-    }
-
-    let lib = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ?';
-    let querylib = mysql.format(lib, ["Libraries", "Library_ID", req.body.library]);
-
-    db.query(querylib, (err, info) => {
+    db.query(query, (err, data) => {
         if (err) {
             return callback(err);
         }
-        if (info[0].total != 1) {
+        if (data[0].total == 0) {
             return callback({
-                message: "Invalid Library ID"
+                message: "No Books to show!"
             });
         }
-
         else {
+            return callback(null, { data });
+        };
 
-            let lib = 'SELECT COUNT(*) as "total" where ? IN (SELECT ?? from ?? where ?? IN (SELECT ?? from ?? where ?? = ?))';
-            let querylib3 = mysql.format(lib, [req.body.book, "Book_ID", "Books", "Category_ID", "Category_ID", "Category", "Library_ID", req.body.library]);
-
-            db.query(querylib3, (err, info) => {
-                if (err) {
-                    return callback(err);
-                }
-                if (info[0].total != 1) {
-                    return callback({
-                        message: "Invalid Book ID for Library"
-                    });
-                }
-                else {
-                    let selectQuery = `SELECT Book_ID, Title, ISBN, Author, Price, Book_Image, Description, Quantity FROM ?? WHERE ?? = ?`;
-                    let query = mysql.format(selectQuery, ["BOOKS", "Book_ID", req.body.book]);
-
-                    db.query(query, (err, data) => {
-                        if (err) {
-                            return callback(err);
-                        }
-                        else {
-
-                            return callback(null, { data });
-                        };
-                    })
-                }
-            })
-        }
     })
+
+        ;
+
 };
+
+async function getOneBook({ req, token }, callback) {
+
+    let flag = 0;
+        if (req.body.book === undefined) {
+        return callback({ message: "Book ID Required!" });
+    }
+
+    else {
+        let selectQuery = `SELECT Book_ID, Title, ISBN, Author, Price, Book_Image, Description, Quantity FROM ?? WHERE ?? = ? AND ??=?`;
+        let query = mysql.format(selectQuery, ["BOOKS", "Book_ID", req.body.book,"Delete_Flag",flag]);
+
+        db.query(query, (err, book) => {
+            if (err) {
+                return callback(err);
+            }
+            else {
+
+                return callback(null, { book });
+            };
+        })
+    }
+}
 
 async function getBookCategoryWise({ req }, callback) {
 
@@ -486,53 +454,36 @@ async function CustomerContact({ req, token }, callback) {
 
 };
 
-async function getReviews({ req }, callback) {
+async function getReviews({ req,token }, callback) {
 
-    if (req.body.library === undefined) {
-        return callback({ message: "Library ID Required!" });
-    }
-    if (req.body.Book_ID === undefined) {
+
+    if (req.body.book === undefined) {
         return callback({ message: "Book ID Required!" });
     }
 
-    let lib = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ?';
-    let querylib = mysql.format(lib, ["Libraries", "Library_ID", req.body.library]);
+    else {
 
-    db.query(querylib, (err, info) => {
-        if (err) {
-            return callback(err);
-        }
-        if (info[0].total != 1) {
-            return callback({
-                message: "Invalid Library ID"
-            });
-        }
+        let selectQuery3 = 'SELECT  COUNT(*) as "total",??, ?? FROM ?? WHERE ?? = ?';
+        let query3 = mysql.format(selectQuery3, ["Review", "Rating", "REVIEWS", "Book_ID", req.body.book]);
+        db.query(query3, (err, Reviews) => {
+            if (err) {
+                return callback(err);
+            }
 
-        else {
+            if (Reviews[0].total == 0) {
+                return callback({
+                    message: "No Reviews to show!"
+                });
+            }
+            else {
+                return callback(null, { Reviews });
 
-            let selectQuery3 = 'SELECT  COUNT(*) as "total",??, ?? FROM ?? WHERE ?? = ?';
-            let query3 = mysql.format(selectQuery3, ["Review", "Rating", "REVIEWS", "Book_ID", req.body.Book_ID]);
-            db.query(query3, (err, Reviews) => {
-                if (err) {
-                    return callback(err);
-                }
+            };
 
-                if (Reviews[0].total == 0) {
-                    return callback({
-                        message: "No Reviews to show!"
-                    });
-                }
-                else {
-                    return callback(null, { Reviews });
+        })
 
-                };
-
-            })
-
-        }
-    })
-};
-
+    }
+}
 async function giveReview({ req, token }, callback) {
     if (req.body.library === undefined) {
         return callback({ message: "library is Required!" });
@@ -803,10 +754,10 @@ async function getEvents({ req }, callback) {
                     return callback(err);
                 }
                 else {
-                    return callback(null, {results });
+                    return callback(null, { results });
                 }
             })
-            
+
         }
     })
 };

@@ -23,7 +23,7 @@ router.post("/newsletter", customerController.newsletter);
 router.post("/CreateLibrary", adminController.CreateLibrary);
 router.post("/CreateBook", managerController.CreateBook);
 
-router.get("/getOneBook", customerController.getOneBook);
+router.patch("/getOneBook", customerController.getOneBook);
 router.get("/getBooks", customerController.getBooks);
 router.get("/getBookCategoryWise", customerController.getBookCategoryWise);
 
@@ -57,7 +57,7 @@ router.get("/getBooksLibrary", managerController.getBooksLibrary);
 
 router.post("/RequestCategory", managerController.RequestCategory);
 
-router.get("/getReviews", customerController.getReviews);
+router.patch("/getreviewsinglebook", customerController.getReviews);
 router.post("/giveReview",customerController.giveReview);
 router.get("/seeReviewsLibrary", managerController.seeReviews);
 router.delete("/deleteReviewLibrary", managerController.deleteReview);

@@ -18,24 +18,7 @@ const Login = (props) => {
         setError(null);
         setLoading(true);
         
-        await axios.get('http://localhost:4000/users/getBooks', {
-        }).then(async response => {
-            setBooks(response.data.data.result.data);
-            sessionStorage.setItem('Books', JSON.stringify(response.data.data.result.data));
-            //window.location.assign('/manager/Books');
-            
-        }).catch(error => {
-      
-        });
-        await axios.get('http://localhost:4000/users/getLibrariesGeneral', {
-        }).then(async response => {
-            setLibraries(response.data.data.result.data);
-            sessionStorage.setItem('Libraries', JSON.stringify(response.data.data.result.data));
-            //window.location.assign('/manager/Books');
-            
-        }).catch(error => {
-      
-        });
+       
         await axios.post("http://localhost:4000/users/login", {
             email: email,
             password: password
@@ -62,8 +45,39 @@ const Login = (props) => {
                 console.log("errors >>> ", error)
             }// console.log('error >>>', error);
             )
-            if (response.data.data.message.Type == 2)
-            window.location.assign('/Home');
+            if (response.data.data.message.Type == 2){
+            await axios.get('http://localhost:4000/users/getBooks', {
+            }).then(async response => {
+                setBooks(response.data.data.result.data);
+                sessionStorage.setItem('Books', JSON.stringify(response.data.data.result.data));
+                //window.location.assign('/manager/Books');
+                
+            }).catch(error => {
+          
+            });
+            await axios.get('http://localhost:4000/users/getLibrariesGeneral', {
+            }).then(async response => {
+               // console.table(response.data.data.message.libraries);
+                setLibraries(response.data.data.message.libraries);
+                console.table(libraries);
+                sessionStorage.setItem('Libraries', JSON.stringify(response.data.data.message.libraries));
+                //window.location.assign('/manager/Books');
+                
+            }).catch(error => {
+          
+            });
+            
+            await axios.get('http://localhost:4000/users/getCategory', {
+            }).then(async response => {
+                // console.table(response.data.data.message.Categories)
+                sessionStorage.setItem('Categories', JSON.stringify(response.data.data.message.Categories));
+                setLoading(false);
+                //window.location.assign('/manager/Books');
+    
+            }).catch(error => {
+    
+            });
+            window.location.assign('/Home');}
             else if(response.data.data.message.Type == 1){
                 window.location.assign('/manager/home');
             }
@@ -77,6 +91,7 @@ const Login = (props) => {
             }
         }
         )
+        
 
     }
 
