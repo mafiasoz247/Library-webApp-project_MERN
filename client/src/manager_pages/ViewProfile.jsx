@@ -191,7 +191,7 @@ const ViewProfile = (props) => {
                         <div className='changepass'> <ResponsiveDialog></ResponsiveDialog> </div>
                     </Toolbar>
 
-                    <Toolbar> <div className='updatepass'><Button autoFocus onClick={handleUpdate} > Update </Button></div></Toolbar>
+                    <Toolbar> <div className='updatepass'><Button  onClick={handleUpdate} > Update </Button></div></Toolbar>
 
 
 

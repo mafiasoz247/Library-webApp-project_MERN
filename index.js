@@ -44,7 +44,9 @@ app.use(
             { url: "/users/getBookCategoryWise", methods: ["GET"] }  ,
             { url: "/users/newsletter", methods: ["POST"] },
             { url: "/users/getEvents", methods: ["GET"] },
-            { url: "/users/getCategory", methods: ["GET"] }
+            { url: "/users/getCategory", methods: ["GET"] },
+            { url: "/users/getBooks", methods: ["GET"] },
+            { url: "/users/getLibrariesGeneral", methods: ["GET"] }
 
         ],
     })

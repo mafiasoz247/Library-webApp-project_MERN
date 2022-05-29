@@ -80,7 +80,7 @@ exports.CustomerContact = (req, res, next) => {
 
 exports.getBooks = (req, res, next) => {
 
-    customerService.getBooks({ req }, (error, result) => {
+    customerService.getBooks({  }, (error, result) => {
 
         if (error) {
             return next(error);

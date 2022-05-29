@@ -89,3 +89,14 @@ a.nav-links{
 .menu-icon{
     display: none;
 }
+
+.NavbarhomeItems{
+    /* background: linear-gradient(90deg, #2193b0 0%, #2193b0); */
+    background: linear-gradient(90deg, #7192df 0%, #b399dd 100%);
+    /* background: black; */
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+}

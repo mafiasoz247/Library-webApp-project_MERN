@@ -129,7 +129,7 @@ const ViewBooks = (props) => {
                 <TableBody>
                     {recordsAfterPagingAndSorting().map(item => (
                         <TableRow key={item.Book_ID}>
-                            <TableCell> {item.Book_ID} </TableCell>
+                            <TableCell>{item.Book_ID} </TableCell>
                             <TableCell> {item.Title} </TableCell>
                             <TableCell> {item.Category_ID} </TableCell>
                             <TableCell> {item.Price} </TableCell>

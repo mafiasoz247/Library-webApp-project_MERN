@@ -3,6 +3,7 @@ import axios from 'axios';
 import { setUserSession, setUserIDSession, getUser, removeUserSession, removeUserIDSession } from "../Utils/Common";
 import ReactDOM from 'react-dom';
 import '../Admin_Components/LoginForm.css'
+import { BookSharp } from '@material-ui/icons';
 
 const Login = (props) => {
 
@@ -10,11 +11,32 @@ const Login = (props) => {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [Books, setBooks] = useState();
+    const[libraries, setLibraries] = useState();
 
     const handleLogin = async () => {
         setError(null);
         setLoading(true);
-        axios.post("http://localhost:4000/users/login", {
+        
+        await axios.get('http://localhost:4000/users/getBooks', {
+        }).then(async response => {
+            setBooks(response.data.data.result.data);
+            sessionStorage.setItem('Books', JSON.stringify(response.data.data.result.data));
+            //window.location.assign('/manager/Books');
+            
+        }).catch(error => {
+      
+        });
+        await axios.get('http://localhost:4000/users/getLibrariesGeneral', {
+        }).then(async response => {
+            setLibraries(response.data.data.result.data);
+            sessionStorage.setItem('Libraries', JSON.stringify(response.data.data.result.data));
+            //window.location.assign('/manager/Books');
+            
+        }).catch(error => {
+      
+        });
+        await axios.post("http://localhost:4000/users/login", {
             email: email,
             password: password
         }).then(async response => {
@@ -41,7 +63,7 @@ const Login = (props) => {
             }// console.log('error >>>', error);
             )
             if (response.data.data.message.Type == 2)
-            window.location.assign('/dashboard');
+            window.location.assign('/Home');
             else if(response.data.data.message.Type == 1){
                 window.location.assign('/manager/home');
             }

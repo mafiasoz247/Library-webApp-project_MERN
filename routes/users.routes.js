@@ -68,7 +68,7 @@ router.get("/getQueries", managerController.getQueries);
 router.get("/getLibrary", managerController.getLibrary);
 router.patch("/statusQuery", managerController.statusQuery);
 router.patch("/getOrder_ItemsManager", managerController.getOrder_ItemsManager);
-
+router.get("/getLibrariesGeneral", generalController.getLibraries);
 
 
 router.get("/getEvents", customerController.getEvents);

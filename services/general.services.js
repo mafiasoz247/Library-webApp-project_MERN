@@ -310,6 +310,24 @@ async function updatePassword({ req, token }, callback) {
     });
 
 };
+
+async function getLibraries({ token }, callback) {
+
+    let selectQuery = 'SELECT ??,?? FROM ?? ';
+    let query = mysql.format(selectQuery, ["Name", "Library_ID", "Libraries"]);
+    db.query(query, (err, libraries) => {
+        if (err) {
+            return callback(err);
+        }
+
+        else {
+            return callback(null, { libraries });
+        };
+
+    })
+
+};
+
 async function getCategory({ req }, callback) {
 
 
@@ -335,6 +353,7 @@ module.exports = {
     userProfile,
     updateProfile,
     updatePassword,
-    getCategory
+    getCategory,
+    getLibraries
 
 };

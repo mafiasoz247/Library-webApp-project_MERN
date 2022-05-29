@@ -8,36 +8,8 @@ const res = require("express/lib/response");
 
 async function getBooks({ req }, callback) {
 
-    if (req.body.library === undefined) {
-        return callback({ message: "Library ID Required!" });
-    }
-
-    let lib = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ?';
-    let querylib = mysql.format(lib, ["Libraries", "Library_ID", req.body.library]);
-
-    db.query(querylib, (err, info) => {
-        if (err) {
-            return callback(err);
-        }
-        if (info[0].total != 1) {
-            return callback({
-                message: "Invalid Library ID"
-            });
-        }
-
-        else {
-
-            let selectQuery3 = 'SELECT  ??, ?? FROM ?? WHERE ?? = ?';
-            let query3 = mysql.format(selectQuery3, ["Name", "Category_ID", "CATEGORY", "Library_ID", req.body.library]);
-            db.query(query3, (err, Categories) => {
-                if (err) {
-                    return callback(err);
-                }
-
-                else {
-                    let flag = '0';
-                    let selectQuery = `SELECT Book_ID, Title, Author, Price, Book_Image FROM ?? As B INNER JOIN ?? As C ON B.??=C.?? INNER JOIN ?? L ON C.??=L.?? WHERE C.?? = ? AND B.?? = ?`;
-                    let query = mysql.format(selectQuery, ["BOOKS", "CATEGORY", "Category_ID", "Category_ID", "LIBRARIES", "Library_ID", "Library_ID", "Library_ID", req.body.library, "Delete_Flag", flag]);
+                    let selectQuery = `SELECT ??,??, ??, ??, ??, ?? FROM ??`
+                    let query = mysql.format(selectQuery, ["Book_ID","Category_ID", "Title", "Author", "Price", "Book_Image", "BOOKS"]);
 
 
                     db.query(query, (err, data) => {
@@ -50,17 +22,13 @@ async function getBooks({ req }, callback) {
                             });
                         }
                         else {
-                            return callback(null, { data, Categories });
+                            return callback(null, { data });
                         };
 
                     })
 
-                };
+                ;
 
-            })
-
-        }
-    })
 };
 
 async function getOneBook({ req }, callback) {

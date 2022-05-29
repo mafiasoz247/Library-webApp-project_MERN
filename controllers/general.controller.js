@@ -136,3 +136,19 @@ exports.getCategory = (req, res, next) => {
         });
     })
 };
+
+exports.getLibraries = (req, res, next) => {
+    
+
+    userService.getLibraries({ req }, (error, result) => {
+        if (error) {
+            return next(error);
+        }
+        return res.status(200).send({
+            Status: "Success",
+            data: {
+                message: result
+            },
+        });
+    });
+};

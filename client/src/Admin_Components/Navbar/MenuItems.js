@@ -5,7 +5,7 @@ export const MenuItems = [
         cName: 'nav-links'
     },
     {
-        title: 'Dashboard',
+        title: 'Profile',
         url: '/dashboard',
         cName: 'nav-links'
     },
@@ -47,8 +47,8 @@ export const MenuItemsAdmin = [
 ]
 export const LoggedIn = [
     {
-        title: 'My Profile',
-        url: '/dashboard',
+        title: 'My Cart',
+        url: '/cart',
         cName: 'nav-links'
     },
     {
