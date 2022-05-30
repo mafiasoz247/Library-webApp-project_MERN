@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
+import { useTheme} from '@mui/material/styles';
 import EditOutlined from '@material-ui/icons/EditOutlined';
 import CheckIcon from '@mui/icons-material/Check';
 import Notification from '../Admin_Components/Notifications.js';
@@ -19,7 +19,23 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import ResponsiveDialog from '../Admin_Components/Popup_password.js';
+import { makeStyles } from '@material-ui/core';
+import ViewReview from './ViewReview.jsx';
+import ResponsiveDialog3 from '../Admin_Components/Popup_cart.js';
 
+const useStyles = makeStyles(theme => ({
+   
+    
+    
+    paperbox: {
+        backgroundColor: "#FFFFFF",
+        background: "#ffffff",
+        marginTop: "50rem",
+       
+        
+    },
+     
+}))
 
 
 const ViewBook= (props) => {
@@ -39,11 +55,12 @@ const ViewBook= (props) => {
     const cm = checkManager();
     const [currentBook, setCurrentBook] = React.useState(JSON.parse(sessionStorage.getItem('CurrentBook')))
     const [currentBookReviews, setCurrentBookReviews] = React.useState(sessionStorage.getItem('CurrentBookReviews'));
+    const classes = useStyles();
 
     //console.log(Phone);
 
     React.useEffect(() => {
-        
+        console.log(currentBookReviews);
         let config = {
             headers: {
                 Authorization: "basic " + token
@@ -80,9 +97,10 @@ const ViewBook= (props) => {
                 // window.location.assign('/ViewBook');
     
             }).catch(error => {
-                if (error.response.status === 500)
-                sessionStorage.setItem('CurrentBookReviews', "No reviews");
-            });
+                if (error.response.status === 500){
+                sessionStorage.setItem('CurrentBookReviews', "");
+                setCurrentBookReviews('');
+        }});
         }
         fetchstuff();
       }, []);
@@ -164,37 +182,57 @@ const ViewBook= (props) => {
 
     return (
         <div>
-            <Toolbar></Toolbar>
+            <br/><br/>
 
-            <div className='booktitle'> <h1 ><center>{currentBook[0].Title}</center></h1> </div>
-
-
-            <Toolbar> <div className='bookimg'><img className='bookimg' src={currentBook[0].Book_Image} ></img></div></Toolbar>
            
-            {/* <Box
+            <Box
                 sx={{
                     display: 'flex',
                     flexWrap: 'wrap',
-                    marginLeft: '39rem',
-                    marginTop: '-26rem',
+                    marginLeft: '3rem',
+                    marginTop: '0rem',
+                    marginBottom: '3rem',
+                    alignSelf:"center",
                     '& > :not(style)': {
                         m: 1,
-                        width: 515,
-                        height: 330,
+                        width: "100rem",
+                        height: "auto",
+                        maxWidth: "100rem",
+                        minWidth:"20rem",
+                        padding:"2rem"
                     },
                 }}
-            >
-                 */}
-              <Toolbar>  <div className='bookauth'> <h5 ><center> Book Author: {currentBook[0].Author}</center></h5> </div>
-              </Toolbar>
-                      
-
-                    
-
-
-
+            > <Paper className = {classes.paperbox} elevation={4}>
+                 <div className='booktitle'> <h1 ><center>{currentBook[0].Title}</center></h1> </div>
+                 <Toolbar> 
+                            <div ><img className='bookimg' src={currentBook[0].Book_Image} ></img></div>
                 
-            {/* </Box> */}
+                <Toolbar> <div className='bookauth'> <h5 ><center><b> Author: </b> {currentBook[0].Author}</center></h5> </div></Toolbar>
+                <Toolbar> <div className='bookde'> <h5 ><center><b> Description: </b></center></h5> </div></Toolbar>   
+                <Toolbar> <div className='bookdesc'> <h6 > {currentBook[0].Description} </h6> </div></Toolbar>
+                
+                </Toolbar>
+
+               <Box
+               sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    marginLeft: '80rem',
+                    marginTop: '0rem',
+                    '& > :not(style)': {
+                        m: 1,
+                        width: "100rem",
+                        height: "auto",
+                        maxWidth: "100rem",
+                        minWidth:"20rem",
+                        padding:"2rem"
+                    },}}> <Toolbar> <div className='cart'><ResponsiveDialog3></ResponsiveDialog3></div>  <Toolbar><h2 align="right"> <b>Price:</b> {currentBook[0].Price} </h2></Toolbar> </Toolbar>
+               </Box>
+            </Paper>
+            </Box>
+               
+           <ViewReview
+           child = {currentBookReviews}></ViewReview>
 
 
 

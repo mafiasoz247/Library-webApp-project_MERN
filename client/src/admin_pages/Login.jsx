@@ -13,7 +13,7 @@ const Login = (props) => {
     const [password, setPassword] = useState('');
     const [Books, setBooks] = useState();
     const[libraries, setLibraries] = useState();
-
+    const cart = [" "]
     const handleLogin = async () => {
         setError(null);
         setLoading(true);
@@ -23,6 +23,7 @@ const Login = (props) => {
             email: email,
             password: password
         }).then(async response => {
+            sessionStorage.setItem("cart",JSON.stringify(cart));
             setLoading(false);
             setError(null);
             setLoading(true);

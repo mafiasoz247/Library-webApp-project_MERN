@@ -454,7 +454,7 @@ async function CustomerContact({ req, token }, callback) {
 
 };
 
-async function getReviews({ req,token }, callback) {
+async function getReviews({ req, token }, callback) {
 
 
     if (req.body.book === undefined) {
@@ -476,12 +476,22 @@ async function getReviews({ req,token }, callback) {
                 });
             }
             else {
-                return callback(null, { Reviews });
 
-            };
+                let selectQuery4 = 'SELECT  R.??, R.?? , U.?? FROM ?? AS R INNER JOIN ?? AS U on R.?? = U.??  WHERE ?? = ?';
+                let query4 = mysql.format(selectQuery4, ["Review", "Rating","Name", "REVIEWS", "Users","User_ID","User_ID","Book_ID", req.body.book]);
+                db.query(query4, (err, Reviews) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    return callback(null, { Reviews });
+
+
+
+                })
+
+            }
 
         })
-
     }
 }
 async function giveReview({ req, token }, callback) {
