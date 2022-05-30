@@ -29,6 +29,7 @@ import ViewCategoriesM from './manager_pages/ViewCategoriesM'
 import ViewQueries from './manager_pages/ViewQueries'
 import ViewReviews from './manager_pages/ViewReviews'
 import ViewProfile from './manager_pages/ViewProfile';
+import ViewBook from './customer_pages/ViewBook';
 // const Home = lazy(() => import("./pages/Home"));
 // const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
@@ -137,11 +138,12 @@ function App(props) {
               
               <Switch>
               
-              <Route exact path='/Home' component={Home} />
-              <Route exact path='/' component={Login} />
+              <PrivateRoute exact path='/Home' component={Home} />
+              <PublicRoute exact path='/' component={Login} />
               <PublicRoute exact path='/login' component={Login} />
               <PublicRoute exact path='/register' component={Register} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
+              <PrivateRoute exact path='/ViewBook' component={ViewBook} />
               <Route exact path='/events' component={Events} />
               <Route  path="*" component={PageNotFound} />
               </Switch>

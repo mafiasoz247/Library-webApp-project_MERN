@@ -38,29 +38,8 @@ const ViewOrderItems = (props) => {
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const classes = useStyles();
 
-    useEffect(() => {
-        const fetchOrder = async () => {
-            setLoading(true);
-            let config = {
-                headers: {
-                    Authorization: "basic " + token
-                }
-            }
-            await axios.get('http://localhost:4000/users/getOrder_ItemsManager', config, {
-            }).then(async response => {
-                setCurrentOrder(response.data.data.message.order_items);
-                sessionStorage.setItem('CurrentOrder', JSON.stringify(response.data.data.message.order_items));
-                setLoading(false);
-                //window.location.assign('/manager/Books');
-                
-            }).catch(error => {
-          
-            });
-          
-          };
-     
-        fetchOrder();
-    }, []);
+    
+        
 
     
     const {

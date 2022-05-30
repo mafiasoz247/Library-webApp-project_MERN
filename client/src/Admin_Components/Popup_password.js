@@ -16,7 +16,7 @@ import Input from './Input';
 import { InputAdornment } from '@mui/material';
 import { Toolbar } from '@material-ui/core';
 import TextField from '@mui/material/TextField'
-import Navbar from  "./Navbar/Navbar.js"
+
 
 export default function ResponsiveDialog(props) {
     const [open, setOpen] = React.useState(false);
@@ -183,7 +183,6 @@ export default function ResponsiveDialog(props) {
 
                     {checkpassword ? <Button autoFocus onClick={handleClick} > Update </Button> : <Button disabled autoFocus onClick={handleClick} > Update </Button> }
                     
-
 
                 </DialogActions>
             </Dialog>

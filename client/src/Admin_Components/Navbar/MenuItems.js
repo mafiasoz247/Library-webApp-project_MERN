@@ -70,3 +70,8 @@ export const LoggedOut = [
         cName: 'nav-links'
     },
 ]
+
+export const MenuItemsnl = [
+    
+    
+]

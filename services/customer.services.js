@@ -486,7 +486,7 @@ async function CustomerContact({ req, token }, callback) {
 
 };
 
-async function getReviews({ req, token }, callback) {
+async function getReviews({ req,token }, callback) {
 
 
     if (req.body.book === undefined) {
@@ -526,6 +526,8 @@ async function getReviews({ req, token }, callback) {
         })
     }
 }
+
+
 
 
 async function giveReview({ req, token }, callback) {

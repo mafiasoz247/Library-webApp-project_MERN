@@ -168,4 +168,17 @@ max-width: 60%;
 margin-top: 0rem;
 margin-bottom: 50rem;
 }
-
+.bookimg{
+  /* width: 14rem;
+  height: 14rem; */
+  margin-left: 2rem;
+  margin-top: 0.5rem;
+  /* margin-right: auto; */
+}
+.booktitle{
+  margin-left: 0rem;
+}
+.bookauth{
+  margin-top: -64rem;
+  margin-left: 42.8rem;
+}

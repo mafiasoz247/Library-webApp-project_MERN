@@ -57,8 +57,9 @@ router.get("/getBooksLibrary", managerController.getBooksLibrary);
 
 router.post("/RequestCategory", managerController.RequestCategory);
 
-router.patch("/getReviews", customerController.getReviews);
+
 router.get("/getMyReviews", customerController.getMyReviews);
+router.patch("/getreviewsinglebook", customerController.getReviews);
 router.post("/giveReview",customerController.giveReview);
 router.get("/seeReviewsLibrary", managerController.seeReviews);
 router.delete("/deleteReviewLibrary", managerController.deleteReview);
