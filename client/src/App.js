@@ -31,6 +31,8 @@ import ViewReviews from './manager_pages/ViewReviews'
 import ViewProfile from './manager_pages/ViewProfile';
 import ViewBook from './customer_pages/ViewBook';
 import Cart from './customer_pages/Cart';
+import MyReviews from './customer_pages/MyReviews';
+
 // const Home = lazy(() => import("./pages/Home"));
 // const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
@@ -145,6 +147,7 @@ function App(props) {
               <PublicRoute exact path='/register' component={Register} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
               <PrivateRoute exact path='/ViewBook' component={ViewBook} />
+              <PrivateRoute exact path='/MyReviews' component={MyReviews} />
               <Route exact path='/events' component={Events} />
               <Route  path="*" component={PageNotFound} />
               </Switch>
