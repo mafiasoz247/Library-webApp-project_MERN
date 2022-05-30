@@ -91,7 +91,7 @@ class Navbar extends Component {
             this.token ? ( this.admin ?
               <Button onClick={() => window.location.assign('/admin/home')}>Home</Button> :
               this.manager ?  <nbsp></nbsp> : 
-              <Button onClick={() => window.location.assign('/cart')}>My Cart</Button>
+              <Button onClick={() => window.location.assign('/Cart')}>My Cart</Button>
             )
               : (
                 <Button onClick={() => window.location.assign('/login')}>Login</Button>

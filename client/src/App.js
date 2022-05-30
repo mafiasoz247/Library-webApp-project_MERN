@@ -30,6 +30,7 @@ import ViewQueries from './manager_pages/ViewQueries'
 import ViewReviews from './manager_pages/ViewReviews'
 import ViewProfile from './manager_pages/ViewProfile';
 import ViewBook from './customer_pages/ViewBook';
+import Cart from './customer_pages/Cart';
 // const Home = lazy(() => import("./pages/Home"));
 // const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
@@ -137,7 +138,7 @@ function App(props) {
               :
               
               <Switch>
-              
+              <PrivateRoute exact path='/Cart' component={Cart} />
               <PrivateRoute exact path='/Home' component={Home} />
               <PublicRoute exact path='/' component={Login} />
               <PublicRoute exact path='/login' component={Login} />
