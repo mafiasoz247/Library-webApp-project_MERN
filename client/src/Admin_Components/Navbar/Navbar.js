@@ -79,6 +79,7 @@ class Navbar extends Component {
     }
     
 
+
     return (
       <nav className="NavbarItems">
         <h1 className="navbar-logo">Library{/*<i className="fab fa-react"></i>*/}</h1>
@@ -119,18 +120,8 @@ class Navbar extends Component {
               </a>
             </li>
             <li >
-              <a className="nav-links" href="#" onClick={handleOrders} >
-                Orders
-              </a>
-            </li>
-            <li >
-              <a className="nav-links" href="#" onClick={handleReviews} >
-                Reviews
-              </a>
-            </li>
-            <li >
               <a className="nav-links" href="/Contact"  >
-                Contact
+                Help
               </a>
             </li></> 
             ): ""

@@ -18,7 +18,7 @@ import { Toolbar } from '@material-ui/core';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import ResponsiveDialog from '../Admin_Components/Popup_password.js';
+import ResponsiveDialog from '../Admin_Components/Popup_review.js';
 import { makeStyles } from '@material-ui/core';
 
 
@@ -30,6 +30,13 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: "#FFFFFF",
         background: "#ffffff",
         marginTop: "50rem",
+       
+        
+    },
+    add: {
+        // backgroundColor: "#FFFFFF",
+        // background: "#ffffff",
+        marginLeft: "50rem",
        
         
     },
@@ -134,7 +141,9 @@ sx={{
     },
 }}
 > <Paper className = {classes.paperbox} elevation={4}>
+<ResponsiveDialog></ResponsiveDialog>
  <div className='booktitle'> <h1 ><center>Reviews </center></h1> </div>
+ 
  
 { (reviews.length < '1' ) ? <h3><u>No reviews to show!</u></h3> : Object.values(reviews).map( item => {
     console.log(reviews.length);

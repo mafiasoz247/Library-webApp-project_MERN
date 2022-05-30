@@ -101,6 +101,14 @@ const Dashboard = (props) => {
         setPhone(e.target.value);
     }
 
+    const handleOrders = async () => {
+
+        
+    };
+    const handleReviews = async () => {
+
+        
+    };
     const handleUpdate = async () => {
 
         let config = {
@@ -170,11 +178,15 @@ const Dashboard = (props) => {
                     '& > :not(style)': {
                         m: 1,
                         width: 515,
-                        height: 330,
+                        height: 390,
                     },
                 }}
-            >
+            >    
                 <Paper elevation={12} >
+                    <Toolbar>
+                        <div className='myorders'>  <Button variant="contained" onClick={handleOrders}> My Orders </Button></div>
+                         <div className='myreviews'> <Button  variant="contained" onClick={handleReviews}> My Reviews   </Button></div>
+                    </Toolbar>
                     <Toolbar>
                         <div className='Titlee'>  <TextField id="outlined-search" label="Name" type="search" InputLabelProps={{ shrink: true, }} onChange={handleChangeName} value={Name} /></div>
                         <div className='ISBNe'> <TextField disabled id="outlined-read-only-input" label="Email" defaultValue={Email} InputProps={{ readOnly: true, }} helperText="*Not Changeable" /></div>
@@ -191,9 +203,17 @@ const Dashboard = (props) => {
 
                     <Toolbar>
                         <div className='changepass'> <ResponsiveDialog></ResponsiveDialog> </div>
-                    </Toolbar>
 
+                     
+              
+                    </Toolbar>
+                 
+                        
+                    
+                        
+                    
                     <Toolbar> <div className='updatepass'><Button  onClick={handleUpdate} > Update </Button></div></Toolbar>
+                    
 
 
 
