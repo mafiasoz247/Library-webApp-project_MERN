@@ -7,7 +7,7 @@ import { Button } from './Button';
 import { checkManager,checkAdmin,checkToken, setUserIDSession, getUser, removeUserSession, removeUserIDSession, getToken } from "../../Utils/Common";
 import axios from 'axios';
 import Notification from '../Notifications';
-
+import ResponsiveDialog from '../Popup_password';
 
 class Navbar extends Component {
 
@@ -15,6 +15,7 @@ class Navbar extends Component {
   token = checkToken()
   admin = checkAdmin();
   manager = checkManager();
+  href = null;
   handleClick = () => {
     this.setState({ clicked: !this.state.clicked })
   }
@@ -44,7 +45,17 @@ class Navbar extends Component {
       })
       window.location.assign('/login');
     }
-
+    const handleOrders = async () => {
+      
+      console.log("You did it");
+     
+    }
+    const handleReviews = async () => {
+      
+      console.log("You did it");
+     
+    }
+    
 
     return (
       <nav className="NavbarItems">
@@ -74,17 +85,37 @@ class Navbar extends Component {
             )}
           ): 
           token ? 
-          MenuItems.map((item, index) => {
-            return (
-              <li key={index}>
-                <a className={item.cName}  href={item.url} >
-                  {item.title}
+            (<>
+              <li >
+                <a className="nav-links"  href="/Home" >
+                  Home
                 </a>
-              </li>
-            )}
-           ) : ""
-      
-          }
+              </li> 
+              <li >
+              <a className="nav-links"  href="/Dashboard" >
+                Profile
+              </a>
+            </li>
+            <li >
+              <a className="nav-links" href="#" onClick={handleOrders} >
+                Orders
+              </a>
+            </li>
+            <li >
+              <a className="nav-links" href="#" onClick={handleReviews} >
+                Reviews
+              </a>
+            </li>
+            <li >
+              <a className="nav-links" href="/Contact"  >
+                Contact
+              </a>
+            </li></> 
+            ): ""
+            
+            
+           
+            }
           </ul>
         <ul className='nav-menu-right'>
           {
