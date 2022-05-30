@@ -108,7 +108,7 @@ export default function useGrid(records, headCells, filterFn, filterFnCID, filte
     }
     
     const recordsAfterPagingAndSorting = () => {
-        return filterFn.fn(filterFnCID.fnc(filterFnLID.fnl(records).slice(page * rowsPerPage, (page + 1) * rowsPerPage)));
+        return filterFnLID.fnl(filterFnCID.fnc(filterFn.fn(records))).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
     }
 
     return {

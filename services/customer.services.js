@@ -10,8 +10,8 @@ async function getBooks({ req }, callback) {
 
 
 
-    let selectQuery = `SELECT ??,??, ??, ??, ??, ?? FROM ??`
-    let query = mysql.format(selectQuery, ["Book_ID", "Category_ID", "Title", "Author", "Price", "Book_Image", "BOOKS"]);
+    let selectQuery = `SELECT ??,??, ??, ??, ??, ??, ?? FROM ??`
+    let query = mysql.format(selectQuery, ["Book_ID", "Category_ID", "Title", "Author","Library_ID", "Price", "Book_Image", "BOOKS"]);
 
 
     db.query(query, (err, data) => {
