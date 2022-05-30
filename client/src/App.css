@@ -169,16 +169,52 @@ margin-top: 0rem;
 margin-bottom: 50rem;
 }
 .bookimg{
-  /* width: 14rem;
-  height: 14rem; */
+  /* width: 24rem;
+  height: 32rem; */
+  width: 350px;
+  height: 500px;
   margin-left: 2rem;
-  margin-top: 0.5rem;
+  margin-top: 2rem;
   /* margin-right: auto; */
 }
 .booktitle{
-  margin-left: 0rem;
+  /* margin-left: -10rem; */
 }
 .bookauth{
-  margin-top: -64rem;
-  margin-left: 42.8rem;
+  /* margin-top: -28rem;
+  margin-left: 9rem;
+  min-width: 100%; */
+}
+.bookde{
+  /* margin-top: -20rem;
+  margin-left: -5rem; */
+}
+.bookdesc{
+  /* margin-top: -47rem; */
+  /* margin-left: -10.5rem;
+  width: auto; */
+}
+.bookprice{
+  /* margin-top: -47rem; */
+  /* margin-left: -10.5rem;
+  width: auto; */
+  /* margin: auto; */
+  align-self: flex-end;
+  /* align-self: flex-end; */
+}
+
+/* .h2{
+  /* margin-top: -47rem; */
+  /* margin-left: -10.5rem;
+  width: auto; */
+  /* margin: auto; */
+  /* text-align: right; */
+  /* align-self: flex-end; */
+.cart{
+  margin-left: -15rem;
+  margin-right: 4rem;
+}
+
+.cquantity{
+  margin-left: 3rem;
 }

@@ -74,7 +74,7 @@ const Home = (props) => {
     const [libraries,setLibraries] = React.useState(JSON.parse(sessionStorage.getItem('Libraries')));
     const [LibraryID,setLibraryID] = React.useState();
     const [currentBook, setCurrentBook] = React.useState();
-    const [currentBookReviews, setCurrentBookReviews] = React.useState();
+    const [currentBookReviews2, setCurrentBookReviews] = React.useState();
 
 
     useEffect(() => {
@@ -190,8 +190,8 @@ const Home = (props) => {
                 
             }).then(async response => {
              //   console.table(response.data.data.result.book);
-                setCurrentBook(response.data.data.result.book);
-                sessionStorage.setItem('CurrentBook', JSON.stringify(response.data.data.result.book));
+                setCurrentBook(response.data.data.result.data[0]);
+                sessionStorage.setItem('CurrentBook', JSON.stringify(response.data.data.result.data[0]));
                 // window.location.assign('/ViewBook');
     
             }).catch(error => {
@@ -207,8 +207,8 @@ const Home = (props) => {
             }).then(async response => {
                console.table(response.data.data.message.Reviews);
                 setCurrentBookReviews(response.data.data.message.Reviews);
-                sessionStorage.setItem('CurrentBookReviews', JSON.stringify(response.data.data.message.Reviews));
-                window.location.assign('/ViewBook');
+                await sessionStorage.setItem('CurrentBookReviews', JSON.stringify(response.data.data.message.Reviews));
+                // window.location.assign('/ViewBook');
     
             }).catch(error => {
                 if (error.response.status === 500)
@@ -301,7 +301,9 @@ const Home = (props) => {
                 <TblPagination />
                 <br/>
                 <ImageList cols={5} gap={50}>
-                    {recordsAfterPagingAndSorting().map((item) => (
+                    {
+                    recordsAfterPagingAndSorting().map((item) => (
+                        item.Quantity==0 ? "":
                         <ImageListItem key={item.Book_Image}>
                             
                             <img
@@ -311,7 +313,9 @@ const Home = (props) => {
                                 loading="lazy"
                                 width="40px"
                                 height="40px"
-                                onClick={handleBookPage}
+                                // value = {item.Book_ID}
+                                // defaultValue = {item.Book_ID}
+                                // onClick={handleBookPage}
                             />
                             {/* <ImageListItemBar position="below" value={item.Book_ID} title={item.Title} onClick={handleBookPage} /> */}
                         <Button defaultValue={item.Book_ID} value={item.Book_ID} onClick={handleBookPage}>{item.Title}</Button>
