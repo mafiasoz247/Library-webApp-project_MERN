@@ -129,14 +129,14 @@ export default function ResponsiveDialog3(props) {
         }).then(async response => {
             setCurrentBook(response.data.data.result.data);
             sessionStorage.setItem('CurrentBook', JSON.stringify(response.data.data.result.data));
-            setAuthor(JSON.parse(sessionStorage.getItem('CurrentBook'))[0].Author);
-            setPrice(JSON.parse(sessionStorage.getItem('CurrentBook'))[0].Price);
-            setDescription(JSON.parse(sessionStorage.getItem('CurrentBook'))[0].Description);
-            setCategoryID(JSON.parse(sessionStorage.getItem('CurrentBook'))[0].Category_ID);
-            setQuantity(JSON.parse(sessionStorage.getItem('CurrentBook'))[0].Quantity);
-            setISBN(JSON.parse(sessionStorage.getItem('CurrentBook'))[0].ISBN);
-            setTitle(JSON.parse(sessionStorage.getItem('CurrentBook'))[0].Title);
-            setBookImage(JSON.parse(sessionStorage.getItem('CurrentBook'))[0].Book_Image)
+            setAuthor(JSON.parse(sessionStorage.getItem('CurrentBook')).Author);
+            setPrice(JSON.parse(sessionStorage.getItem('CurrentBook')).Price);
+            setDescription(JSON.parse(sessionStorage.getItem('CurrentBook')).Description);
+            setCategoryID(JSON.parse(sessionStorage.getItem('CurrentBook')).Category_ID);
+            setQuantity(JSON.parse(sessionStorage.getItem('CurrentBook')).Quantity);
+            setISBN(JSON.parse(sessionStorage.getItem('CurrentBook')).ISBN);
+            setTitle(JSON.parse(sessionStorage.getItem('CurrentBook')).Title);
+            setBookImage(JSON.parse(sessionStorage.getItem('CurrentBook')).Book_Image)
            
             setLoading(false);
             //window.location.assign('/manager/Books');
@@ -216,15 +216,16 @@ export default function ResponsiveDialog3(props) {
         setPrice(e.target.value);
     }
     const getQuantity = () => {
-        return CurrentBook[0].Quantity
+        return CurrentBook.Quantity
     }
     const handleClickAdd = async () => {
         setLoading(true);
-    
+        // console.log(sessionStorage.getItem('CURRENTCARTLIBRARY') == '"empty"');
+        if (sessionStorage.getItem('CURRENTCARTLIBRARY').length == '"empty"' ){
        await setCart(sessionStorage.getItem(JSON.parse(sessionStorage.getItem('cart'))));
        console.log(cart);
        await setCurrentBook(sessionStorage.getItem(JSON.parse(sessionStorage.getItem('CurrentBook'))));
-       cart.push({ Book_ID : CurrentBook[0].Book_ID , quantity: Quantity, period: Period});
+       cart.push({ Book_ID : CurrentBook.Book_ID , quantity: Quantity, period: Period});
        sessionStorage.setItem("cart",JSON.stringify(cart));
         setOpen(false);
         setNotify({
@@ -232,9 +233,18 @@ export default function ResponsiveDialog3(props) {
             message: "Added to cart successfully",
             type: 'success'
         })
+        sessionStorage.setItem("CURRENTCARTLIBRARY", JSON.stringify(CurrentBook.Library_ID));
         setTimeout(function () {
             window.location.reload(false);
         }, 1000)
+
+    } else {
+        setNotify({
+            isOpen: true,
+            message: "Cannot add book to cart as another book from differnet library is already added",
+            type: 'error'
+        })
+    }
     }
 
 

@@ -14,6 +14,7 @@ const Login = (props) => {
     const [Books, setBooks] = useState();
     const[libraries, setLibraries] = useState();
     const cart = [" "]
+    const CURRENTCARTLIBRARY = "empty";
     const handleLogin = async () => {
         setError(null);
         setLoading(true);
@@ -24,6 +25,7 @@ const Login = (props) => {
             password: password
         }).then(async response => {
             sessionStorage.setItem("cart",JSON.stringify(cart));
+            sessionStorage.setItem("CURRENTCARTLIBRARY",JSON.stringify(CURRENTCARTLIBRARY));
             setLoading(false);
             setError(null);
             setLoading(true);

@@ -57,26 +57,26 @@ export default function ViewReview(props) {
     const classes = useStyles();
     const reviews = props.child;
     //console.log(Phone);
-console.log(reviews.length);
+// console.log(reviews.length);
     React.useEffect(() => {
         
         let config = {
             headers: {
                 Authorization: "basic " + token
             },
-            book : currentBook[0].Book_ID
+            book : currentBook.Book_ID
         }
         const fetchstuff = async () => {
         await axios.patch('http://localhost:4000/users/getOneBook', config, {
             headers: {
                 Authorization: "basic " + token
             },
-            book : currentBook[0].Book_ID
+            book : currentBook.Book_ID
                 
             }).then(async response => {
              //   console.table(response.data.data.result.book);
-                setCurrentBook(response.data.data.result.book);
-                sessionStorage.setItem('CurrentBook', JSON.stringify(response.data.data.result.book));
+                setCurrentBook(response.data.data.result.data[0]);
+                sessionStorage.setItem('CurrentBook', JSON.stringify(response.data.data.result.data[0]));
                 // window.location.assign('/ViewBook');
     
             }).catch(error => {
@@ -87,7 +87,7 @@ console.log(reviews.length);
             headers: {
                 Authorization: "basic " + token
             },
-            book : currentBook[0].Book_ID
+            book : currentBook.Book_ID
                 
             }).then(async response => {
             //    console.table(response.data.data.message.Reviews);
@@ -135,8 +135,8 @@ sx={{
 }}
 > <Paper className = {classes.paperbox} elevation={4}>
  <div className='booktitle'> <h1 ><center>Reviews </center></h1> </div>
-
-{(reviews.length < '1' ) ? <h3><u>No reviews to show!</u></h3> :  Object.values(reviews).map( item => {
+ 
+{ (reviews.length < '1' ) ? <h3><u>No reviews to show!</u></h3> : Object.values(reviews).map( item => {
     console.log(reviews.length);
    return ( <><Toolbar> <div className='bookde'> <h5 ><center><b> Rating: {item.Rating} / 10 </b></center></h5> </div></Toolbar> 
    <Toolbar> <div className='bookde'> <h5 ><center><b> Name: {item.Name}  </b></center></h5> </div></Toolbar>  

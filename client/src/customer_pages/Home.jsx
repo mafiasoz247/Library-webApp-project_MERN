@@ -190,8 +190,8 @@ const Home = (props) => {
                 
             }).then(async response => {
              //   console.table(response.data.data.result.book);
-                setCurrentBook(response.data.data.result.book);
-                sessionStorage.setItem('CurrentBook', JSON.stringify(response.data.data.result.book));
+                setCurrentBook(response.data.data.result.data[0]);
+                sessionStorage.setItem('CurrentBook', JSON.stringify(response.data.data.result.data[0]));
                 // window.location.assign('/ViewBook');
     
             }).catch(error => {
@@ -208,7 +208,7 @@ const Home = (props) => {
                console.table(response.data.data.message.Reviews);
                 setCurrentBookReviews(response.data.data.message.Reviews);
                 await sessionStorage.setItem('CurrentBookReviews', JSON.stringify(response.data.data.message.Reviews));
-                window.location.assign('/ViewBook');
+                // window.location.assign('/ViewBook');
     
             }).catch(error => {
                 if (error.response.status === 500)

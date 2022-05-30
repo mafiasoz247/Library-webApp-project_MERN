@@ -10,11 +10,20 @@ export const MenuItems = [
         cName: 'nav-links'
     },
     {
-        title: 'Books',
-        url: '/dashboard',
+        title: 'Orders',
+        url: '/OrderHistory',
         cName: 'nav-links'
     },
-    
+    {
+        title: 'Reviews',
+        url: '/MyReviews',
+        cName: 'nav-links'
+    },
+    {
+        title: 'Contact',
+        url: '/Contact',
+        cName: 'nav-links'
+    },
     
 ]
 export const MenuItemsManager = [

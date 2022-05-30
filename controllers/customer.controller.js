@@ -22,21 +22,6 @@ exports.getOrdersCustomer = (req, res, next) => {
 
 };
 
-exports.newsletter = (req, res, next) => {
-
-    customerService.newsletter({ req }, (error, result) => {
-        if (error) {
-            return next(error);
-        }
-        return res.status(200).send({
-            Status: "Success",
-            data: {
-                message: result
-            },
-        });
-    });
-
-};
 
 exports.getOrder_ItemsCustomer = (req, res, next) => {
 
@@ -120,7 +105,24 @@ exports.getReviews = (req, res, next) => {
             },
         });
     });
-}; // add to unless
+}; 
+
+exports.getMyReviews = (req, res, next) => {
+
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(' ')[1];
+    customerService.getMyReviews({ req, token }, (error, result) => {
+        if (error) {
+            return next(error);
+        }
+        return res.status(200).send({
+            Status: "Success",
+            data: {
+                message: result
+            },
+        });
+    });
+}; 
 
 exports.giveReview = (req, res, next) => {
 
@@ -176,19 +178,7 @@ exports.deleteReview = (req, res, next) => {
     });
 };
 
-exports.getBookCategoryWise = (req, res, next) => {
-    customerService.getBookCategoryWise({ req }, (error, result) => {
-        if (error) {
-            return next(error);
-        }
-        return res.status(200).json({
-            Status: "Success",
-            data: {
-                result
-            },
-        });
-    })
-};
+
 
 exports.order = (req, res, next) => {
     const authHeader = req.headers["authorization"];
@@ -205,8 +195,7 @@ exports.order = (req, res, next) => {
             },
         });
     });
-};// user.order not written probably change it
-
+};
 exports.getEvents = (req, res, next) => {
 
   //  const authHeader = req.headers["authorization"];
