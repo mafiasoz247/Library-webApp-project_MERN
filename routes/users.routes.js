@@ -17,19 +17,19 @@ router.delete("/logout", generalController.logout);
 router.get("/getCategory", generalController.getCategory);
 
 
-router.post("/newsletter", customerController.newsletter);
+
 
 
 router.post("/CreateLibrary", adminController.CreateLibrary);
 router.post("/CreateBook", managerController.CreateBook);
 
-router.get("/getOneBook", customerController.getOneBook);
+router.patch("/getOneBook", customerController.getOneBook);
 router.get("/getBooks", customerController.getBooks);
-router.get("/getBookCategoryWise", customerController.getBookCategoryWise);
+
 
 router.post("/order", customerController.order);
-router.get("/getOrdersCustomer", customerController.getOrdersCustomer);
-router.get("/getOrder_ItemsCustomer", customerController.getOrder_ItemsCustomer);
+router.patch("/getOrdersCustomer", customerController.getOrdersCustomer);
+router.patch("/getOrder_ItemsCustomer", customerController.getOrder_ItemsCustomer);
 router.get("/getOrdersLibrary", managerController.getOrdersLibrary);
 
 router.patch("/updateProfile", generalController.updateProfile);
@@ -57,7 +57,8 @@ router.get("/getBooksLibrary", managerController.getBooksLibrary);
 
 router.post("/RequestCategory", managerController.RequestCategory);
 
-router.get("/getReviews", customerController.getReviews);
+router.patch("/getReviews", customerController.getReviews);
+router.get("/getMyReviews", customerController.getMyReviews);
 router.post("/giveReview",customerController.giveReview);
 router.get("/seeReviewsLibrary", managerController.seeReviews);
 router.delete("/deleteReviewLibrary", managerController.deleteReview);

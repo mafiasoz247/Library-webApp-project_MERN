@@ -39,10 +39,9 @@ app.use(
         path: [
             { url: "/users/login", methods: ["POST"]},
             { url: "/users/register", methods: ["POST"] },
-            { url: "/users/getOneBook", methods: ["GET"] },
+            { url: "/users/getOneBook", methods: ["PATCH"] },
             { url: "/users/GetBooks", methods: ["GET"] },
-            { url: "/users/getBookCategoryWise", methods: ["GET"] }  ,
-            { url: "/users/newsletter", methods: ["POST"] },
+            { url: "/users/getBookCategoryWise", methods: ["GET"] } ,
             { url: "/users/getEvents", methods: ["GET"] },
             { url: "/users/getCategory", methods: ["GET"] },
             { url: "/users/getBooks", methods: ["GET"] },
