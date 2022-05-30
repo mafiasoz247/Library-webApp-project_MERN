@@ -23,7 +23,7 @@ import ResponsiveDialog from '../Admin_Components/Popup_password.js';
 
 
 const Dashboard = (props) => {
-
+    const [myOrders, setmyOrders] = React.useState(JSON.parse(sessionStorage.getItem('myOrders')));
     const [notify, setNotify] = React.useState({ isOpen: false, message: '', type: '' });
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
@@ -102,6 +102,23 @@ const Dashboard = (props) => {
     }
 
     const handleOrders = async () => {
+        
+        setLoading(true);
+            let config = {
+                headers: {
+                    Authorization: "basic " + token
+                }
+            }
+            await axios.get('http://localhost:4000/users/getOrdersCustomer', config, {
+            }).then(async response => {
+                setmyOrders(response.data.data.message.info);
+                sessionStorage.setItem('myOrders', JSON.stringify(response.data.data.message.info));
+                setLoading(false);
+                window.location.assign('/OrderHistory');
+
+            }).catch(error => {
+
+            });
 
         
     };

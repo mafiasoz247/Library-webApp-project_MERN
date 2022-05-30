@@ -375,8 +375,8 @@ async function getOrder_ItemsCustomer({ req, token }, callback) {
 
 
 
-                                    let selectQuery = 'SELECT B.??,B.??,B.??,A.??,A.??,A.?? FROM ?? as A INNER JOIN ?? as B ON A.?? = B.??  WHERE A.?? = ?';
-                                    let query = mysql.format(selectQuery, ["Title", "Author", "Price", "Quantity", "Period", "Line_Total", "ORDER_ITEMS", "BOOKS", "Book_ID", "Book_ID", "Order_ID", req.body.order]);
+                                    let selectQuery = 'SELECT B.??,B.??,B.??,B.??,A.??,A.??,A.?? FROM ?? as A INNER JOIN ?? as B ON A.?? = B.??  WHERE A.?? = ?';
+                                    let query = mysql.format(selectQuery, ["Book_Image","Title", "Author", "Price", "Quantity", "Period", "Line_Total", "ORDER_ITEMS", "BOOKS", "Book_ID", "Book_ID", "Order_ID", req.body.order]);
 
                                     db.query(query, (err, order_items) => {
                                         if (err) {

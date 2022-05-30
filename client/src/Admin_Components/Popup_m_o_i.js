@@ -6,7 +6,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
 import axios from 'axios';
-import { getToken } from '../Utils/Common';
+import { getToken , checkManager} from '../Utils/Common';
+
 
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
@@ -20,11 +21,13 @@ export default function ResponsiveDialog3(props) {
     const [maxWidth, setMaxWidth] = React.useState('sm');
 
     const [CurrentOrder, setCurrentOrder] = React.useState(null);
+    const [CurrentOrderItem, setCurrentOrderItem] = React.useState(null);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const token = getToken();
     const Order_ID = props.Order_ID;
     const [loading, setLoading] = React.useState(false);
+    const manager = checkManager();
 
 
     React.useEffect(() => {
@@ -32,7 +35,7 @@ export default function ResponsiveDialog3(props) {
     }, []);
 
     const handleClickOpen = async () => {
-        console.log(Order_ID);
+        
         let config = {
             headers: {
                 Authorization: "basic " + token
@@ -62,6 +65,35 @@ export default function ResponsiveDialog3(props) {
     };
 
 
+    const handleClickOpenCustomer = async () => {
+       
+        let config = {
+            headers: {
+                Authorization: "basic " + token
+            },
+
+            order: Order_ID
+        }
+        await axios.patch('http://localhost:4000/users/getOrder_ItemsCustomer', config, {
+            headers: {
+                Authorization: "basic " + token
+            },
+
+            order: Order_ID
+        }).then(async response => {
+            setCurrentOrderItem(response.data.data.message.order_items);
+            sessionStorage.setItem('CurrentOrderItem', JSON.stringify(response.data.data.message.order_items));
+
+
+            setLoading(false);
+            window.location.assign('/OrderHistoryItems');
+
+        }).catch(error => {
+
+        });
+
+        setOpen(true);
+    };
 
 
 
@@ -75,7 +107,7 @@ export default function ResponsiveDialog3(props) {
     return (
         <div>
 
-            <Button variant="outlined" onClick={handleClickOpen}>
+            <Button variant="outlined" onClick={manager ? handleClickOpen : handleClickOpenCustomer}>
                 < FormatListBulletedIcon></FormatListBulletedIcon>          </Button>
            
             
