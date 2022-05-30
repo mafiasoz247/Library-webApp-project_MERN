@@ -72,7 +72,7 @@ const Home = (props) => {
     const [textboxvalue, setTextBoxValues] = useState();
     const [CategoryID, setCategoryID] = React.useState(null);
     const [libraries,setLibraries] = React.useState(JSON.parse(sessionStorage.getItem('Libraries')));
-    const [LibraryID,setLibraryID] = React.useState();
+    const [LibraryID,setLibraryID] = React.useState(1);
     const [currentBook, setCurrentBook] = React.useState();
     const [currentBookReviews2, setCurrentBookReviews] = React.useState();
 
@@ -91,6 +91,7 @@ const Home = (props) => {
             await axios.get('http://localhost:4000/users/getCategory', config, {
             }).then(async response => {
                 // console.table(response.data.data.message.Categories)
+                setCategories(response.data.data.message.Categories);
                 sessionStorage.setItem('Categories', JSON.stringify(response.data.data.message.Categories));
                 setLoading(false);
                 //window.location.assign('/manager/Books');
@@ -159,8 +160,10 @@ const Home = (props) => {
        
     }
     const handleChangeLibraryID = event => {
+        
         setLibraryID(event.target.value);
-        // console.log(LibraryID);
+        // console.log(event.target.value);
+        
         setFilterFnLID({
             fnl: items => {
                 if (event.target.value == null)
