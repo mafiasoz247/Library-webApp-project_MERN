@@ -72,7 +72,7 @@ const Home = (props) => {
     const [textboxvalue, setTextBoxValues] = useState();
     const [CategoryID, setCategoryID] = React.useState(null);
     const [libraries,setLibraries] = React.useState(JSON.parse(sessionStorage.getItem('Libraries')));
-    const [LibraryID,setLibraryID] = React.useState(1);
+    const [LibraryID,setLibraryID] = React.useState(null);
     const [currentBook, setCurrentBook] = React.useState();
     const [currentBookReviews2, setCurrentBookReviews] = React.useState();
 
