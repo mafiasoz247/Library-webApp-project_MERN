@@ -42,7 +42,7 @@ async function getOneBook({ req }, callback) {
 
 
     let selectQuery = `SELECT ??,??, ??, ??, ??, ??, ??, ??, ?? FROM ?? WHERE ?? = ?`;
-    let query = mysql.format(selectQuery, ["Library_ID","Book_ID", "Title", "ISBN", "Author", "Price", "Book_Image", "Description", "Quantity","BOOKS", "Book_ID", req.body.book]);
+    let query = mysql.format(selectQuery, ["Library_ID", "Book_ID", "Title", "ISBN", "Author", "Price", "Book_Image", "Description", "Quantity", "BOOKS", "Book_ID", req.body.book]);
 
     db.query(query, (err, data) => {
         if (err) {
@@ -486,7 +486,7 @@ async function CustomerContact({ req, token }, callback) {
 
 };
 
-async function getReviews({ req,token }, callback) {
+async function getReviews({ req, token }, callback) {
 
 
     if (req.body.book === undefined) {
@@ -632,91 +632,87 @@ async function giveReview({ req, token }, callback) {
 async function getMyReviews({ req, token }, callback) {
 
 
-    if (req.body.User_ID === undefined) {
-        return callback({ message: "User ID Required!" });
-    }
 
-    else {
-        let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
-        let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
-        db.query(query, (err, data) => {
-            if (err) {
-                return callback(err);
-            }
-            if (data[0].total == 0) {
-                return callback({
-                    message: "Deleted Token, Cannot access Order"
-                });
-            }
-            else {
+    let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
+    let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
+    db.query(query, (err, data) => {
+        if (err) {
+            return callback(err);
+        }
+        if (data[0].total == 0) {
+            return callback({
+                message: "Deleted Token, Cannot access Order"
+            });
+        }
+        else {
 
-                let selectQuery = 'SELECT ??, A1.?? FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
-                let query = mysql.format(selectQuery, ["Type", "User_ID", "USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
+            let selectQuery = 'SELECT ??, A1.?? FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
+            let query = mysql.format(selectQuery, ["Type", "User_ID", "USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
 
-                db.query(query, (err, info) => {
-                    if (err) {
-                        return callback(err);
-                    }
+            db.query(query, (err, info) => {
+                if (err) {
+                    return callback(err);
+                }
 
-                    if (info[0].Type != 2) {
-                        return callback({
-                            message: "Access Violation!"
-                        });
+                if (info[0].Type != 2) {
+                    return callback({
+                        message: "Access Violation!"
+                    });
 
-                    }
-                    else {
+                }
+                else {
 
-                        let selectQuery1 = 'SELECT User_ID FROM ?? WHERE ?? = ? LIMIT 1';
-                        let query1 = mysql.format(selectQuery1, ["TOKENS_USER", "Token", token]);
+                    let selectQuery1 = 'SELECT User_ID FROM ?? WHERE ?? = ? LIMIT 1';
+                    let query1 = mysql.format(selectQuery1, ["TOKENS_USER", "Token", token]);
 
-                        db.query(query1, (err, data) => {
-                            if (err) {
-                                return callback(err);
-                            }
+                    db.query(query1, (err, data) => {
+                        if (err) {
+                            return callback(err);
+                        }
 
-                            else {
+                        else {
 
-                                let User_ID = data[0].User_ID;
+                            let User_ID = data[0].User_ID;
 
-                                let selectQuery3 = 'SELECT  COUNT(*) as "total",??, ?? FROM ?? WHERE ?? = ?';
-                                let query3 = mysql.format(selectQuery3, ["Review", "Rating", "REVIEWS", "User_ID", User_ID]);
-                                db.query(query3, (err, Reviews) => {
-                                    if (err) {
-                                        return callback(err);
-                                    }
+                            let selectQuery3 = 'SELECT  COUNT(*) as "total",??, ?? FROM ?? WHERE ?? = ?';
+                            let query3 = mysql.format(selectQuery3, ["Review", "Rating", "REVIEWS", "User_ID", User_ID]);
+                            db.query(query3, (err, Reviews) => {
+                                if (err) {
+                                    return callback(err);
+                                }
 
-                                    if (Reviews[0].total == 0) {
-                                        return callback({
-                                            message: "No Reviews to show!"
-                                        });
-                                    }
-                                    else {
+                                if (Reviews[0].total == 0) {
+                                    return callback({
+                                        message: "No Reviews to show!"
+                                    });
+                                }
+                                else {
 
-                                        let selectQuery4 = 'SELECT  R.??, R.?? , B.??,B.?? FROM ?? AS R INNER JOIN ?? AS B on R.?? = B.??  WHERE R.?? = ?';
-                                        let query4 = mysql.format(selectQuery4, ["Review", "Rating", "Title", "Book_Image", "REVIEWS", "Books", "Book_ID", "Book_ID", "User_ID", User_ID]);
-                                        db.query(query4, (err, Reviews) => {
-                                            if (err) {
-                                                return callback(err);
-                                            }
-                                            return callback(null, { Reviews });
+                                    let selectQuery4 = 'SELECT  R.??, R.?? , B.??,B.?? FROM ?? AS R INNER JOIN ?? AS B on R.?? = B.??  WHERE R.?? = ?';
+                                    let query4 = mysql.format(selectQuery4, ["Review", "Rating", "Title", "Book_Image", "REVIEWS", "Books", "Book_ID", "Book_ID", "User_ID", User_ID]);
+                                    db.query(query4, (err, Reviews) => {
+                                        if (err) {
+                                            return callback(err);
+                                        }
+                                        return callback(null, { Reviews });
 
 
 
-                                        })
+                                    })
 
-                                    }
+                                }
 
-                                })
+                            })
 
-                            }
-                        })
-                    }
-                })
+                        }
+                    })
+                }
+            })
 
-            }
-        })
-    }
+        }
+    })
 }
+
 
 async function updateReview({ req, token }, callback) {
 
