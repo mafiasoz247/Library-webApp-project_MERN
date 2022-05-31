@@ -19,7 +19,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import ResponsiveDialog from '../Admin_Components/Popup_password.js';
-
+//import useState from 'react';
 
 
 const Dashboard = (props) => {
@@ -37,6 +37,8 @@ const Dashboard = (props) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const cm = checkManager();
+    const [myReviews, setmyReviews] = React.useState("");
+
     //console.log(Phone);
 
     React.useEffect(() => {
@@ -105,10 +107,30 @@ const Dashboard = (props) => {
 
         
     };
+
     const handleReviews = async () => {
 
-        
+        setLoading(true);
+        let config = {
+            headers: {
+                Authorization: "basic " + token
+            }
+        }
+        await axios.get('http://localhost:4000/users/getMyReviews', config, {
+        }).then(async response => {
+
+            setmyReviews(response.data.data.message.Reviews);
+            sessionStorage.setItem('myReviews', JSON.stringify(response.data.data.message.Reviews));
+            
+            console.table(response.data.data.message.Reviews)
+            setLoading(false);
+            window.location.assign('/MyReviews');
+
+        }).catch(error => {
+
+        });        
     };
+
     const handleUpdate = async () => {
 
         let config = {

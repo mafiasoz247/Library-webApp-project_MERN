@@ -34,7 +34,7 @@ const headCells = [
 
 const MyReviews = (props) => {
 
-    const [myReviews, setmyReviews] = useState("");
+    const [myReviews, setmyReviews] =useState(JSON.parse(sessionStorage.getItem('myReviews')));
 
     const [loading, setLoading] = useState(false);
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
@@ -114,7 +114,8 @@ const MyReviews = (props) => {
                     <TblHead />
                     <TableBody>
                         {recordsAfterPagingAndSorting().map(item => (
-                            <TableRow key={ item.Title}>
+                            <TableRow key={item.Title}>
+                                <TableCell> {<img src={item.Book_Image} width="160" height="228"></img>} </TableCell>
                                 <TableCell> {item.Title} </TableCell>
                                 <TableCell> {item.Review} </TableCell>
                                 <TableCell> {item.Rating}/10</TableCell>

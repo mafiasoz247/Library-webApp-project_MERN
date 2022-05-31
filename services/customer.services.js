@@ -55,61 +55,60 @@ async function getOneBook({ req }, callback) {
     })
 };
 
-async function getCartDetails({ req }, callback) {
+async function getCartDetails({ req, token }, callback) {
 
     if (req.body.books === undefined) {
         return callback({ message: "Books Required!" });
-    }else{
+    } else {
 
-          // Book Image, Title, Price
-    let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
-    let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
-    db.query(query, (err, data) => {
-        if (err) {
-            return callback(err);
-        }
-        if (data[0].total == 0) {
-            return callback({
-                message: "Deleted Token, Cannot Access Cart Details"
-            });
-        }
-        else {
+        // Book Image, Title, Price
+        let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
+        let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
+        db.query(query, (err, data) => {
+            if (err) {
+                return callback(err);
+            }
+            if (data[0].total == 0) {
+                return callback({
+                    message: "Deleted Token, Cannot Access Cart Details"
+                });
+            }
+            else {
 
-            let selectQuery = 'SELECT ??, A1.?? FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
-            let query = mysql.format(selectQuery, ["Type", "User_ID", "USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
+                let selectQuery = 'SELECT ??, A1.?? FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
+                let query = mysql.format(selectQuery, ["Type", "User_ID", "USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
 
-            db.query(query, (err, info) => {
-                if (err) {
-                    return callback(err);
-                }
+                db.query(query, (err, info) => {
+                    if (err) {
+                        return callback(err);
+                    }
 
-                if (info[0].Type != 2) {
-                    return callback({
-                        message: "Access Violation! Only Customer can access Cart Details"
-                    });
-                }
-                else {
-                    let book_IDs = req.body.books.map(Book => Book.Book_ID);
+                    if (info[0].Type != 2) {
+                        return callback({
+                            message: "Access Violation! Only Customer can access Cart Details"
+                        });
+                    }
+                    else {
+                        let book_IDs = req.body.books.map(Book => Book.Book_ID);
 
+                        let QueryID = 'SELECT ??,??,?? FROM ?? WHERE ?? IN (?)';
+                        let mainQueryID = mysql.format(QueryID, ["Book_Image", "Title", "Price", "BOOKS", "Book_ID", book_IDs]);
 
-                    let QueryID = 'SELECT ??,??,?? as flag,??  FROM ?? WHERE ?? IN (?)';
-                    let mainQueryID = mysql.format(QueryID, ["Book_ID", "Quantity", "Delete_Flag", "Title", "BOOKS", "Book_ID", book_IDs]);
-
-                    db.query(mainQueryID, (err, b) => {
-                        if (err) {
-                            return callback(err);
-                        }
-
-                        else { }
-                    });
-                }
-            });
-        }
-    });
-
+                        db.query(mainQueryID, (err, details) => {
+                            if (err) {
+                                return callback(err);
+                            }
+                            else {
+                                return callback(null, { details });
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
-  
+
 };
 
 
@@ -242,9 +241,7 @@ async function order({ req, token }, callback) {
                                                                                             return callback(error);
                                                                                         }
                                                                                     });
-
-
-
+                                                                                
 
                                                                                 if (i == req.body.books.length - 1) {
                                                                                     let updateQuery = 'UPDATE ?? SET ?? = ?  WHERE ?? = ?';
