@@ -10,8 +10,9 @@ async function getBooks({ req }, callback) {
 
 
     let q =0;
-    let selectQuery = `SELECT ??,??, ??, ??, ??, ??, ?? FROM ?? WHERE ?? <> ?`
-    let query = mysql.format(selectQuery, ["Book_ID", "Category_ID", "Title", "Author", "Library_ID", "Price", "Book_Image", "BOOKS", "Quantity",q]);
+    let flag = 0;
+    let selectQuery = `SELECT ??,??, ??, ??, ??, ??, ?? FROM ?? WHERE ?? > ? AND ?? = ?`
+    let query = mysql.format(selectQuery, ["Book_ID", "Category_ID", "Title", "Author", "Library_ID", "Price", "Book_Image", "BOOKS", "Quantity",q, "Delete_Flag", flag]);
 
 
     db.query(query, (err, data) => {
