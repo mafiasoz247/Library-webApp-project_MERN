@@ -22,6 +22,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { TrainRounded } from '@material-ui/icons';
 // import EditOutlined from '@material-ui/icons/EditOutlined';
 
 
@@ -219,9 +220,16 @@ export default function ResponsiveDialog3(props) {
         return CurrentBook.Quantity
     }
     const handleClickAdd = async () => {
+        let flag = false;
+        //  console.log(((JSON.parse(sessionStorage.getItem('cart'))[1].Book_ID) == CurrentBook.Book_ID))
+        for (let i = 0 ; i <JSON.parse(sessionStorage.getItem('cart')).length ; i++ ){
+            if ((JSON.parse(sessionStorage.getItem('cart'))[i].Book_ID) == CurrentBook.Book_ID){
+                        flag = true;       
+            }
+        }
         setLoading(true);
-        // console.log(sessionStorage.getItem('CURRENTCARTLIBRARY') == '"empty"');
-        if (sessionStorage.getItem('CURRENTCARTLIBRARY').length == '"empty"' ){
+        //  console.log(sessionStorage.getItem('CURRENTCARTLIBRARY') == '"empty"');|| sessionStorage.getItem('CURRENTCARTLIBRARY')== CurrentBook.Library_ID
+        if (sessionStorage.getItem('CURRENTCARTLIBRARY') == '"empty"' || (sessionStorage.getItem('CURRENTCARTLIBRARY')== CurrentBook.Library_ID && !flag) ){
        await setCart(sessionStorage.getItem(JSON.parse(sessionStorage.getItem('cart'))));
        console.log(cart);
        await setCurrentBook(sessionStorage.getItem(JSON.parse(sessionStorage.getItem('CurrentBook'))));
@@ -238,14 +246,22 @@ export default function ResponsiveDialog3(props) {
             window.location.reload(false);
         }, 1000)
 
-    } else {
+    } else if(flag)  {
         setNotify({
             isOpen: true,
-            message: "Cannot add book to cart as another book from differnet library is already added",
+            message: "Book already added to cart!",
             type: 'error'
         })
-    }
-    }
+        setError("Book already added to cart!");
+    } else{
+        setNotify({
+            isOpen: true,
+            message: "Cannot add book to cart as another book from different library is already added",
+            type: 'error'
+        })
+    setError("Cannot add book to cart as another book from different library is already added");
+    }    
+}
 
 
     return (

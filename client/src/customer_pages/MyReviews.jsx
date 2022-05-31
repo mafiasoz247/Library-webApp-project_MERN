@@ -5,10 +5,12 @@ import {getToken } from "../Utils/Common";
 import useTable from '../Admin_Components/useTable';
 import { makeStyles,TableBody, TableRow, TableCell } from '@material-ui/core';
 import CheckIcon from '@mui/icons-material/Check';
-import ResponsiveDialog from '../Admin_Components/Popup_3';
+import ResponsiveDialog from '../Admin_Components/Popup_delete_review';
+import ResponsiveDialog2 from '../Admin_Components/Popup_edit_review';
 import { Toolbar,InputAdornment } from '@material-ui/core';
 import Input from '../Admin_Components/Input';
 import { Search } from '@material-ui/icons';
+import DeleteIcon from '@mui/icons-material/Delete';
 //import UpdateIcon from '@mui/icons-material/Update';
 
 const useStyles = makeStyles(theme => ({
@@ -120,16 +122,18 @@ const MyReviews = (props) => {
                                 <TableCell> {item.Review} </TableCell>
                                 <TableCell> {item.Rating}/10</TableCell>
                                 <TableCell>
-                                    {/* <ResponsiveDialog
-                                    >
-                                        <CheckIcon fontSize="small" />
-                                    </ResponsiveDialog>
-                                </TableCell>
-                                <TableCell>
-                                    <ResponsiveDialog
-                                    >
-                                        <CheckIcon fontSize="small" />
-                                    </ResponsiveDialog> */}
+                                    {/* {<ResponsiveDialog2
+                                // Book_ID = {item.Book_ID},
+                                // rating = {item.Rating},  
+                                // review = {item.Review}     
+                            /> */}
+                            </TableCell>
+                            <TableCell>
+                            <ResponsiveDialog>
+                                
+                            Book_ID = {item.Book_ID}
+                                    <DeleteIcon fontSize="small" /> 
+                            </ResponsiveDialog>
                                 </TableCell>
                             </TableRow>
                         ))}

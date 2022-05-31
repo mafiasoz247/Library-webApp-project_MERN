@@ -9,7 +9,6 @@ import ResponsiveDialog from '../Admin_Components/Popup_3';
 import { Toolbar,InputAdornment } from '@material-ui/core';
 import Input from '../Admin_Components/Input';
 import { Search } from '@material-ui/icons';
-//import UpdateIcon from '@mui/icons-material/Update';
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -30,15 +29,13 @@ const headCells = [
     { id: 'Quantity', label: 'Quantity' },
     { id: 'Line_Total', label: 'Line Total' },
     { id: 'actions', label: 'Remove' }
-
+    
 ]
-
-
 
 const Cart = (props) => {
     
-    const [books, setItems] = useState(JSON.parse(sessionStorage.getItem('Books')));
-
+    const [cart, setCart] = useState(JSON.parse(sessionStorage.getItem('cart')));
+    const [cartDetails, setCartDetails] = useState("");
 
     const [loading, setLoading] = useState(false);
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
@@ -46,11 +43,11 @@ const Cart = (props) => {
     const classes = useStyles();
     const token = getToken();
 
-    var arrayLength = books.length;
-    console.log(books.length)
+    var arrayLength = cart.length;
+    console.log(Cart.length)
 
     for (var i = 0; i < arrayLength; i++) { 
-        console.log(books[i]);
+        console.log(cart[i]);
         //Do something
     }   
 
@@ -60,14 +57,14 @@ const Cart = (props) => {
             headers: {
                 Authorization: "basic " + token
             },
-            books: books
+            //books: books
         }
         await axios.post('http://localhost:4000/users/order', config, {
             headers: {
                 Authorization: "basic " + token
             },
 
-            books: books
+            //books: books 
 
         }).then(async response => {
 
@@ -96,7 +93,7 @@ const Cart = (props) => {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-    } = useTable(books, headCells, filterFn);
+    } = useTable(cart, headCells, filterFn);
 
     return (
         <div>

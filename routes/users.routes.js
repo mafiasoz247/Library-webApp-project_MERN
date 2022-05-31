@@ -28,7 +28,7 @@ router.get("/getBooks", customerController.getBooks);
 
 
 router.post("/order", customerController.order);
-router.patch("/getOrdersCustomer", customerController.getOrdersCustomer);
+router.get("/getOrdersCustomer", customerController.getOrdersCustomer);
 router.patch("/getOrder_ItemsCustomer", customerController.getOrder_ItemsCustomer);
 router.get("/getOrdersLibrary", managerController.getOrdersLibrary);
 
