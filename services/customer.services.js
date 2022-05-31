@@ -9,20 +9,16 @@ const res = require("express/lib/response");
 async function getBooks({ req }, callback) {
 
 
-
-    let selectQuery = `SELECT ??,??, ??, ??, ??, ??, ?? FROM ??`
-    let query = mysql.format(selectQuery, ["Book_ID", "Category_ID", "Title", "Author", "Library_ID", "Price", "Book_Image", "BOOKS"]);
+    let q =0;
+    let selectQuery = `SELECT ??,??, ??, ??, ??, ??, ?? FROM ?? WHERE ?? <> ?`
+    let query = mysql.format(selectQuery, ["Book_ID", "Category_ID", "Title", "Author", "Library_ID", "Price", "Book_Image", "BOOKS", "Quantity",q]);
 
 
     db.query(query, (err, data) => {
         if (err) {
             return callback(err);
         }
-        if (data[0].total == 0) {
-            return callback({
-                message: "No Books to show!"
-            });
-        }
+        
         else {
             return callback(null, { data });
         };
