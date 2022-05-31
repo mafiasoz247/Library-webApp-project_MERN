@@ -53,12 +53,66 @@ async function getOneBook({ req }, callback) {
             return callback(null, { data });
         };
     })
-}
+};
 
+async function getCartDetails({ req, token }, callback) {
+
+    if (req.body.books === undefined) {
+        return callback({ message: "Books Required!" });
+    } else {
+
+        // Book Image, Title, Price
+        let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
+        let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
+        db.query(query, (err, data) => {
+            if (err) {
+                return callback(err);
+            }
+            if (data[0].total == 0) {
+                return callback({
+                    message: "Deleted Token, Cannot Access Cart Details"
+                });
+            }
+            else {
+
+                let selectQuery = 'SELECT ??, A1.?? FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
+                let query = mysql.format(selectQuery, ["Type", "User_ID", "USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
+
+                db.query(query, (err, info) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    if (info[0].Type != 2) {
+                        return callback({
+                            message: "Access Violation! Only Customer can access Cart Details"
+                        });
+                    }
+                    else {
+                        let book_IDs = req.body.books.map(Book => Book.Book_ID);
+
+                        let QueryID = 'SELECT ??,??,?? FROM ?? WHERE ?? IN (?)';
+                        let mainQueryID = mysql.format(QueryID, ["Book_Image", "Title", "Price", "BOOKS", "Book_ID", book_IDs]);
+
+                        db.query(mainQueryID, (err, details) => {
+                            if (err) {
+                                return callback(err);
+                            }
+                            else {
+                                return callback(null, { details });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+
+};
 
 
 async function order({ req, token }, callback) {
-
 
 
     if (req.body.books === undefined) {
@@ -66,7 +120,6 @@ async function order({ req, token }, callback) {
     }
 
     else {
-
 
         let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
         let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
@@ -78,8 +131,6 @@ async function order({ req, token }, callback) {
                 return callback({
                     message: "Deleted Token, Cannot place Order"
                 });
-
-
             }
             else {
 
@@ -95,7 +146,6 @@ async function order({ req, token }, callback) {
                         return callback({
                             message: "Access Violation! Only customer can place order"
                         });
-
                     }
                     else {
                         let book_IDs = req.body.books.map(Book => Book.Book_ID);
@@ -117,7 +167,7 @@ async function order({ req, token }, callback) {
 
 
                                     check--;
-                                    console.log(b[i].flag);
+                                    
                                     let book = req.body.books.find(book => book.Book_ID === b[i].Book_ID);
                                     if (b[i].flag === '1') {
 
@@ -190,9 +240,7 @@ async function order({ req, token }, callback) {
                                                                                             return callback(error);
                                                                                         }
                                                                                     });
-
-
-
+                                                                                
 
                                                                                 if (i == req.body.books.length - 1) {
                                                                                     let updateQuery = 'UPDATE ?? SET ?? = ?  WHERE ?? = ?';
@@ -248,11 +296,7 @@ async function order({ req, token }, callback) {
         })
 
     }
-}
-
-
-
-
+};
 
 async function getOrdersCustomer({ req, token }, callback) {
 
@@ -402,8 +446,6 @@ async function getOrder_ItemsCustomer({ req, token }, callback) {
 
 };
 
-
-
 async function CustomerContact({ req, token }, callback) {
 
     if (req.body.library === undefined) {
@@ -412,15 +454,13 @@ async function CustomerContact({ req, token }, callback) {
     if (req.body.subject === undefined) {
         return callback({ message: "Subject is Required!" });
     }
-    if (req.body.name === undefined) {
-        return callback({ message: "Name is Required!" });
-    }
+   
     if (req.body.description === undefined) {
         return callback({ message: "Description is Required!" });
     }
 
-    let selectQuery = 'SELECT COUNT(*) as "total", B.?? FROM ?? as A INNER JOIN ?? as B on A.?? = B.?? WHERE ?? = ? ';
-    let query = mysql.format(selectQuery, ["Email", "TOKENS_USER", "USERS", "User_ID", "User_ID", "Token", token]);
+    let selectQuery = 'SELECT COUNT(*) as "total", B.??, B.?? FROM ?? as A INNER JOIN ?? as B on A.?? = B.?? WHERE ?? = ? ';
+    let query = mysql.format(selectQuery, ["Email","Name", "TOKENS_USER", "USERS", "User_ID", "User_ID", "Token", token]);
     db.query(query, (err, data) => {
         if (err) {
             return callback(err);
@@ -450,6 +490,7 @@ async function CustomerContact({ req, token }, callback) {
                 else {
 
                     email = data[0].Email;
+                    cname = data[0].Name
                     // Check if Library_ID actually exists
                     let lib = 'SELECT COUNT(*) as "total" from ?? where ?? = ?';
                     let querylib = mysql.format(lib, ["Libraries", "Library_ID", req.body.library]);
@@ -467,7 +508,7 @@ async function CustomerContact({ req, token }, callback) {
                             let q = '0';
                             let flag = '0';
                             db.query('INSERT INTO CONTACT_US(Subject, Description, Name, Email, Library_ID, Viewed_Flag, Manager_Query) VALUES (?,?, ?, ?, ?, ?, ?)'
-                                , [req.body.subject, req.body.description, req.body.name, email, req.body.library, flag, query],   //Inserting into database
+                                , [req.body.subject, req.body.description, cname, email, req.body.library, flag, q],   //Inserting into database
                                 (error, results, fields) => {
                                     if (error) {
                                         return callback(error);
@@ -526,9 +567,6 @@ async function getReviews({ req, token }, callback) {
         })
     }
 }
-
-
-
 
 async function giveReview({ req, token }, callback) {
 
@@ -630,8 +668,6 @@ async function giveReview({ req, token }, callback) {
 };
 
 async function getMyReviews({ req, token }, callback) {
-
-
 
     let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
     let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
@@ -829,6 +865,7 @@ module.exports = {
     giveReview,
     getReviews,
     getMyReviews,
-    getEvents
+    getEvents,
+    getCartDetails
 
 };

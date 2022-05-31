@@ -71,7 +71,6 @@ const MyReviews = (props) => {
 
     const handleSearch = e => {
         let target = e.target;
-
         setFilterFn({
             fn: items => {
                 if (target.value == "")

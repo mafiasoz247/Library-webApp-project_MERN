@@ -15,16 +15,32 @@ import { checkManager, getToken,setUserIDSession,setUserSession } from '../Utils
 import Input from '../Admin_Components/Input.js';
 import { InputAdornment } from '@mui/material';
 import { Toolbar } from '@material-ui/core';
-import TextField from '@mui/material/TextField';
+// import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import ResponsiveDialog from '../Admin_Components/Popup_password.js';
 //import useState from 'react';
-
-
-const Dashboard = (props) => {
+import { TextField } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+const useStyles = makeStyles(theme => ({
+    
+    box: {
+        width: '100%',
+        // marginLeft: '835px',
+        // marginBottom: "20px"
+    },
+    box2: {
+        width: '93%',
+        marginLeft: '1rem',
+        // marginBottom: "20px"
+    }
+}))
+const Contact = (props) => {
     const [myOrders, setmyOrders] = React.useState(JSON.parse(sessionStorage.getItem('myOrders')));
-    const [myReviews, setmyReviews] = React.useState(JSON.parse(sessionStorage.getItem('myReviews')));
     const [notify, setNotify] = React.useState({ isOpen: false, message: '', type: '' });
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
@@ -38,8 +54,13 @@ const Dashboard = (props) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const cm = checkManager();
-   
-
+    const [myReviews, setmyReviews] = React.useState("");
+    const classes = useStyles();
+    const [libraries,setLibraries] = React.useState(JSON.parse(sessionStorage.getItem("Libraries")));
+    const [LibraryID, setLibraryID] = React.useState(null);
+    const [Subject, setSubject] = React.useState("")
+    const [Description, setDescription] = React.useState("")
+    
     //console.log(Phone);
 
     React.useEffect(() => {
@@ -93,12 +114,12 @@ const Dashboard = (props) => {
 
 
 
-    const handleChangeAddress = e => {
-        setAddress(e.target.value);
+    const handleChangeDescription = e => {
+        setDescription(e.target.value);
     }
 
-    const handleChangeName = e => {
-        setName(e.target.value);
+    const handleChangeSubject = e => {
+        setSubject(e.target.value);
     }
     const handleChangePhone = e => {
         setPhone(e.target.value);
@@ -127,6 +148,7 @@ const Dashboard = (props) => {
     };
 
     const handleReviews = async () => {
+
         setLoading(true);
         let config = {
             headers: {
@@ -145,41 +167,40 @@ const Dashboard = (props) => {
 
         }).catch(error => {
 
-        });
-        
+        });        
     };
 
-    const handleUpdate = async () => {
+    const handleContact = async () => {
 
         let config = {
             headers: {
                 Authorization: "basic " + token
             },
 
-            name: Name,
-            address: Address,
-            contact: Phone
+            library: LibraryID,
+            subject: Subject,
+            description: Description
         }
-        await axios.patch('http://localhost:4000/users/updateProfile', config, {
+        await axios.post('http://localhost:4000/users/CustomerContact', config, {
             headers: {
                 Authorization: "basic " + token
             },
 
-            name: Name,
-            address: Address,
-            contact: Phone
+            library: LibraryID,
+            subject: Subject,
+            description: Description
 
         }).then(async response => {
 
             setLoading(false);
             setNotify({
                 isOpen: true,
-                message: "Profile updated successfully",
+                message: "Thank you for contacting us! ",
                 type: 'success'
             })
             
             setTimeout(function () {
-                window.location.reload(false);
+                window.location.assign("/Home");
             }, 1000);
             //window.location.assign('/manager/Books');
 
@@ -198,23 +219,27 @@ const Dashboard = (props) => {
 
         
     };
-
+    const handleChangeLibraryID = event => {
+        
+        setLibraryID(event.target.value);
+        // console.log(event.target.value);
+        
+       
+    }
     return (
         <div>
             <Toolbar></Toolbar>
 
-            <div className='mprof'> <h1 ><center> My Profile</center></h1> </div>
+            <div className='mprof'> <h1 ><center> Contact Us</center></h1> </div>
 
 
-            <Toolbar> <div className='profileimg'><img className='profileimg' src="https://png.pngtree.com/png-vector/20190704/ourlarge/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpg" ></img></div></Toolbar>
-            <div className='Manager'> <Toolbar><h1>{cm ? "Manager" : "Customer"} <h6></h6> {cm ? <h1> <center>{lname}</center></h1> : <h1> <center><Toolbar></Toolbar></center></h1>} </h1></Toolbar> </div>
-
+         
             <Box
                 sx={{
                     display: 'flex',
                     flexWrap: 'wrap',
                     marginLeft: '39rem',
-                    marginTop: '-26rem',
+                    marginTop: '5rem',
                     '& > :not(style)': {
                         m: 1,
                         width: 515,
@@ -224,35 +249,57 @@ const Dashboard = (props) => {
             >    
                 <Paper elevation={12} >
                     <Toolbar>
-                        <div className='myorders'>  <Button variant="contained" onClick={handleOrders}> My Orders </Button></div>
-                         <div className='myreviews'> <Button  variant="contained" onClick={handleReviews}> My Reviews   </Button></div>
+                        {/* <div className='myorders'>  <Button variant="contained" onClick={handleOrders}> My Orders </Button></div> */}
+                         {/* <div className='myreviews'> <Button  variant="contained" onClick={handleReviews}> My Reviews   </Button></div> */}
                     </Toolbar>
                     <Toolbar>
-                        <div className='Titlee'>  <TextField id="outlined-search" label="Name" type="search" InputLabelProps={{ shrink: true, }} onChange={handleChangeName} value={Name} /></div>
-                        <div className='ISBNe'> <TextField disabled id="outlined-read-only-input" label="Email" defaultValue={Email} InputProps={{ readOnly: true, }} helperText="*Not Changeable" /></div>
+                        <div className='Subject'>  <TextField className={classes.box}id="outlined-search" label="Subject" type="search"  onChange={handleChangeSubject} value={Subject} /></div>
+                       
+                    <FormControl variant="standard"  sx={{ m: 1, minWidth: 200, tabSize: "250px", background: "#FFFF", marginLeft:"3rem"}}>
+                    <InputLabel id="demo-simple-select-filled-label">Library</InputLabel>
+                    <Select
+                        className={classes.box}
+                        labelId="demo-simple-select-filled-label"
+                        id="demo-simple-select-filled"
+                        value={LibraryID}
+                        onChange={handleChangeLibraryID}
+                    >
+                       {/* <MenuItem value="">All</MenuItem> */}
+                                {
+                                    libraries.map(item => (
+                                        <MenuItem value={item.Library_ID}>{item.Name}</MenuItem>
+                                    ))
+                                }
+                    </Select>
+                    
+                </FormControl>
+                        {/* <div className='ISBNe'> <TextField disabled id="outlined-read-only-input" label="Email" defaultValue={Email} InputProps={{ readOnly: true, }} helperText="*Not Changeable" /></div> */}
                     </Toolbar>
 
                     <nbsp></nbsp><nbsp></nbsp><nbsp></nbsp>
-
+                                <br/>
                     <Toolbar>
-                        <div className='Address'>  <TextField id="outlined-search" label="Address" type="search" value={Address} InputLabelProps={{ shrink: true, }} onChange={handleChangeAddress} /> </div>
-                        <div className='Contact'> <TextField id="outlined-read-only-input" label="Contact" type="search" InputLabelProps={{ shrink: true, }} onChange={handleChangePhone} value={Phone} />    </div>
-
+                        {/* <div className='Address'>  <TextField id="outlined-search" label="Address" type="search" value={Address} InputLabelProps={{ shrink: true, }} onChange={handleChangeAddress} /> </div> */}
+                        {/* <div className='Contact'> <TextField id="outlined-read-only-input" label="Contact" type="search" InputLabelProps={{ shrink: true, }} onChange={handleChangePhone} value={Phone} />    </div> */}
+                        <TextField
+                    className={classes.box2}
+          id="outlined-multiline-static"
+          label="Description"
+          multiline
+          rows={6}
+          placeholder="Enter Query here"
+          onChange={handleChangeDescription}
+        />
 
                     </Toolbar>
 
-                    <Toolbar>
-                        <div className='changepass'> <ResponsiveDialog></ResponsiveDialog> </div>
-
-                     
-              
-                    </Toolbar>
+                   
                  
-                        
+                   <br/>     
                     
                         
                     
-                    <Toolbar> <div className='updatepass'><Button  onClick={handleUpdate} > Update </Button></div></Toolbar>
+                    <Toolbar> <div className='updatepass'><Button  onClick={handleContact} > Contact </Button></div></Toolbar>
                     
 
 
@@ -271,4 +318,4 @@ const Dashboard = (props) => {
 
 
 
-export default Dashboard;
+export default Contact;

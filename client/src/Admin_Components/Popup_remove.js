@@ -22,9 +22,11 @@ export default function ResponsiveDialog(props) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const token = getToken();
-    const Book_ID = props.bookID;
+    const Book = props.book;
+    const CURRENTCARTLIBRARY = "empty";
+    const Flag = props.flag;
+    //console.log(Library);
 
-    console.log(Book_ID)
 
 
     const handleClickOpen = () => {
@@ -34,56 +36,35 @@ export default function ResponsiveDialog(props) {
     const handleClose = () => {
         setOpen(false);
     };
-    
-    const handleDelete = async () => {
-        setLoading(true);
-
-        let config = {
-            headers: {
-                Authorization: "basic " + token
-            },
-            data:{
-                Book_ID: Book_ID
+    const handleBlock = async () => {
+       let cart;
+       let cartDetails;
+       let fulldetails;
+        cart = JSON.parse(sessionStorage.getItem('cart'))
+        cartDetails = JSON.parse(sessionStorage.getItem('cartdetails'))
+        fulldetails = JSON.parse(sessionStorage.getItem('fulldetails'))
+        for (let i=0;i<cart.length;i++){
+            if (cart[i].Book_ID == Book){
+                cart.splice(i, 1);
+                cartDetails.splice(i,1);
+                fulldetails.splice(i,1);
             }
-           
         }
-        await axios.delete("http://localhost:4000/users/deleteReview", config, {
-            headers: {
-                Authorization: "basic " + token
-            },
-            data:{
-                Book_ID: Book_ID
-            }
 
-        }).then(response => {
-            setLoading(false);
-            setNotify({
-                isOpen: true,
-                message: "Review Deleted!",
-                type: 'error'
-            })
+        sessionStorage.setItem("cart", JSON.stringify(cart));
+        sessionStorage.setItem("cartdetails", JSON.stringify(cartDetails));
+        sessionStorage.setItem("fulldetails", JSON.stringify(fulldetails));
+        if (cart.length < 1){
+            sessionStorage.setItem("CURRENTCARTLIBRARY",JSON.stringify(CURRENTCARTLIBRARY))
+        }
 
-
-        }).catch(error => {
-            setLoading(false);
-            if (error.response.status === 500) {
-                setNotify({
-                    isOpen: true,
-                    message: error.response.data.data.message,
-                    type: 'error'
-                })
-            }
-        })
-
-        setOpen(false);
-
-        setTimeout(function () {
-           window.location.reload(false);
-        }, 500);
-
-
+        window.location.assign("/Home");
     };
+   
 
+       
+
+       
 
     return (
         <div>
@@ -97,17 +78,25 @@ export default function ResponsiveDialog(props) {
                 aria-labelledby="responsive-dialog-title"
             >
                 <DialogTitle id="responsive-dialog-title">
-                    {"Delete Review"}
+                    {"Remove from cart"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Are you sure you want to delete this review?
+                        Do you want to remove book from cart?
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>                  
+                <DialogActions>
+                
                     
-                    <Button autoFocus onClick={handleClose} > Close </Button>
-                    <Button autoFocus color = "error" onClick={handleDelete} > Delete </Button>
+                <Button onClick={handleClose} autoFocus > Close </Button> 
+
+                    <Button autoFocus color="error" onClick={handleBlock} >Remove</Button> 
+                    
+                   
+                   
+                    
+                  
+                    
                 </DialogActions>
             </Dialog>
             <Notification

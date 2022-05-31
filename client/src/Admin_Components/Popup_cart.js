@@ -56,13 +56,15 @@ export default function ResponsiveDialog3(props) {
     const [Price, setPrice] = React.useState();
     const [BookImage, setBookImage] = React.useState();
     const [cart, setCart] = React.useState(JSON.parse(sessionStorage.getItem('cart')));
+    const [cartDetails, setCartDetails] = React.useState(JSON.parse(sessionStorage.getItem('cartdetails')));
     const [CurrentBook, setCurrentBook] = React.useState(JSON.parse(sessionStorage.getItem('CurrentBook')));
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const token = getToken();
     const Book_ID = props.Book_ID;
     const classes = useStyles();
-   
+    const [fulldetails, setfulldetails] = React.useState();
+
     // console.table(CurrentBook);
     //const request = props.request;
     //const Flag = props.flag;
@@ -79,6 +81,8 @@ export default function ResponsiveDialog3(props) {
     // CurrentBook.Price
 
     React.useEffect(() => {
+        
+      
         // for (let i = 1 ; i < CurrentBook[0].Quantity; i++){
         //     quantity[i-1] = i;
         // }
@@ -228,13 +232,41 @@ export default function ResponsiveDialog3(props) {
             }
         }
         setLoading(true);
-        //  console.log(sessionStorage.getItem('CURRENTCARTLIBRARY') == '"empty"');|| sessionStorage.getItem('CURRENTCARTLIBRARY')== CurrentBook.Library_ID
+        const lel = "[\"lol\"]"; 
         if (sessionStorage.getItem('CURRENTCARTLIBRARY') == '"empty"' || (sessionStorage.getItem('CURRENTCARTLIBRARY')== CurrentBook.Library_ID && !flag) ){
        await setCart(sessionStorage.getItem(JSON.parse(sessionStorage.getItem('cart'))));
        console.log(cart);
        await setCurrentBook(sessionStorage.getItem(JSON.parse(sessionStorage.getItem('CurrentBook'))));
-       cart.push({ Book_ID : CurrentBook.Book_ID , quantity: Quantity, period: Period});
+       if (JSON.stringify(sessionStorage.getItem('cart')) == JSON.stringify(lel)){
+       cart[0] = { Book_ID : CurrentBook.Book_ID , quantity: Quantity, period: Period}}
+       else{
+       cart.push({ Book_ID : CurrentBook.Book_ID , quantity: Quantity, period: Period});}
        sessionStorage.setItem("cart",JSON.stringify(cart));
+       let config = {
+        headers: {
+            Authorization: "basic " + token
+        },
+        books: cart
+    }
+     await axios.patch('http://localhost:4000/users/getcartdetails', config, {
+        headers: {
+            Authorization: "basic " + token
+        },
+
+        books: cart 
+
+    }).then(async response => {
+
+       console.log(response.data.data.message.details)
+       sessionStorage.setItem("cartdetails",JSON.stringify(response.data.data.message.details));
+       setCartDetails(response.data.data.message.details);
+
+    }).catch(error => {
+
+    });
+
+    
+    sessionStorage.setItem("fulldetails",JSON.stringify(fulldetails));
         setOpen(false);
         setNotify({
             isOpen: true,
@@ -243,7 +275,7 @@ export default function ResponsiveDialog3(props) {
         })
         sessionStorage.setItem("CURRENTCARTLIBRARY", JSON.stringify(CurrentBook.Library_ID));
         setTimeout(function () {
-            window.location.reload(false);
+            // window.location.reload(false);
         }, 1000)
 
     } else if(flag)  {

@@ -41,6 +41,7 @@ const ViewLibraries = (props) => {
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const token = getToken();
     const classes = useStyles();
+
     useEffect(() => {
         const fetchPosts = async () => {
             setLoading(true);
@@ -84,6 +85,8 @@ const ViewLibraries = (props) => {
             }
         })
     }
+
+    
     return (
         <div>
             <div className='container mt-5'>

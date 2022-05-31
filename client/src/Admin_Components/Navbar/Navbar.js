@@ -27,6 +27,27 @@ class Navbar extends Component {
     const token = getToken();
     
 
+    
+
+    const handleCart = async () => {
+      let array = [];
+      let cart = JSON.parse(sessionStorage.getItem('cart'));
+      let cartDetails = JSON.parse(sessionStorage.getItem('cartdetails'));
+
+      for (let i =0 ; i<cart.length;i++){
+      array[i] = {
+          ...cartDetails[i],
+          ...cart[i]
+      }
+  
+     }
+
+     await sessionStorage.setItem('fulldetails', JSON.stringify(array));
+     
+     window.location.assign('/Cart')
+    }
+
+
     const handleLogout = async () => {
   
       let config = {
@@ -45,16 +66,10 @@ class Navbar extends Component {
       })
       window.location.assign('/login');
     }
-    const handleOrders = async () => {
-      
-      console.log("You did it");
-     
-    }
-    const handleReviews = async () => {
-      
-      console.log("You did it");
-     
-    }
+
+
+
+    
     
 
 
@@ -113,7 +128,7 @@ class Navbar extends Component {
             this.token ? ( this.admin ?
               <Button onClick={() => window.location.assign('/admin/home')}>Home</Button> :
               this.manager ?  <nbsp></nbsp> : 
-              <Button onClick={() => window.location.assign('/cart')}>My Cart</Button>
+              <Button onClick={handleCart}>My Cart</Button>
             )
               : (
                 <Button onClick={() => window.location.assign('/login')}>Login</Button>
