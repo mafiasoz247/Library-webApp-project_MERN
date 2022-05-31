@@ -42,49 +42,10 @@ export default function ResponsiveDialog3(props) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const token = getToken();
     const Book_ID = props.Book_ID;
-    //const request = props.request;
-    //const Flag = props.flag;
-    //console.log(request);
-    //console.log(Library);
-
-    // JSON.parse(sessionStorage.getItem('CurrentBook'))
-    // CurrentBook.Title
-    // CurrentBook.Author
-    // CurrentBook.CategoryID
-    // CurrentBook.Description
-    // CurrentBook.ISBN
-    // CurrentBook.Quantity
-    // CurrentBook.Price
+   
 
     React.useEffect(() => {
-    //     const fetchBook = async () => {
-    //         setLoading(true);
-    //         let config = {
-    //             headers: {
-    //                 Authorization: "basic " + token
-    //             },
-    //             book: 1,
-                
-    //         }
-    //         await axios.get('http://localhost:4000/users/getOneBookLibrary', config, {
-    //             headers: {
-    //                 Authorization: "basic " + token
-    //             },
-    //             book: 1,
-    //         }).then(async response => {
-    //             setCurrentBook(response.data.data.result.data);
-    //             sessionStorage.setItem('CurrentBook', JSON.stringify(response.data.data.result.data));
-    //             setLoading(false);
-    //             //window.location.assign('/manager/Books');
-                
-    //         }).catch(error => {
-          
-    //         });
-    
-          
-    //       };
-
-    //     fetchBook();
+  
     }, []);
 
     const handleClickOpen = async () => {

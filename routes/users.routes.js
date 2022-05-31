@@ -28,7 +28,7 @@ router.get("/getBooks", customerController.getBooks);
 
 
 router.post("/order", customerController.order);
-router.patch("/getOrdersCustomer", customerController.getOrdersCustomer);
+router.get("/getOrdersCustomer", customerController.getOrdersCustomer);
 router.patch("/getOrder_ItemsCustomer", customerController.getOrder_ItemsCustomer);
 router.get("/getOrdersLibrary", managerController.getOrdersLibrary);
 
@@ -57,7 +57,7 @@ router.get("/getBooksLibrary", managerController.getBooksLibrary);
 
 router.post("/RequestCategory", managerController.RequestCategory);
 
-
+router.patch("/getcartdetails", customerController.getCartDetails);
 router.get("/getMyReviews", customerController.getMyReviews);
 router.patch("/getreviewsinglebook", customerController.getReviews);
 router.post("/giveReview",customerController.giveReview);
