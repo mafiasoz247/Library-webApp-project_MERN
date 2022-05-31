@@ -115,7 +115,6 @@ async function getCartDetails({ req, token }, callback) {
 async function order({ req, token }, callback) {
 
 
-
     if (req.body.books === undefined) {
         return callback({ message: "Books Required!" });
     }
@@ -455,15 +454,13 @@ async function CustomerContact({ req, token }, callback) {
     if (req.body.subject === undefined) {
         return callback({ message: "Subject is Required!" });
     }
-    if (req.body.name === undefined) {
-        return callback({ message: "Name is Required!" });
-    }
+   
     if (req.body.description === undefined) {
         return callback({ message: "Description is Required!" });
     }
 
-    let selectQuery = 'SELECT COUNT(*) as "total", B.?? FROM ?? as A INNER JOIN ?? as B on A.?? = B.?? WHERE ?? = ? ';
-    let query = mysql.format(selectQuery, ["Email", "TOKENS_USER", "USERS", "User_ID", "User_ID", "Token", token]);
+    let selectQuery = 'SELECT COUNT(*) as "total", B.??, B.?? FROM ?? as A INNER JOIN ?? as B on A.?? = B.?? WHERE ?? = ? ';
+    let query = mysql.format(selectQuery, ["Email","Name", "TOKENS_USER", "USERS", "User_ID", "User_ID", "Token", token]);
     db.query(query, (err, data) => {
         if (err) {
             return callback(err);
@@ -493,6 +490,7 @@ async function CustomerContact({ req, token }, callback) {
                 else {
 
                     email = data[0].Email;
+                    cname = data[0].Name
                     // Check if Library_ID actually exists
                     let lib = 'SELECT COUNT(*) as "total" from ?? where ?? = ?';
                     let querylib = mysql.format(lib, ["Libraries", "Library_ID", req.body.library]);
@@ -510,7 +508,7 @@ async function CustomerContact({ req, token }, callback) {
                             let q = '0';
                             let flag = '0';
                             db.query('INSERT INTO CONTACT_US(Subject, Description, Name, Email, Library_ID, Viewed_Flag, Manager_Query) VALUES (?,?, ?, ?, ?, ?, ?)'
-                                , [req.body.subject, req.body.description, req.body.name, email, req.body.library, flag, query],   //Inserting into database
+                                , [req.body.subject, req.body.description, cname, email, req.body.library, flag, q],   //Inserting into database
                                 (error, results, fields) => {
                                     if (error) {
                                         return callback(error);

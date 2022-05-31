@@ -5,7 +5,7 @@ import {getToken } from "../Utils/Common";
 import useTable from '../Admin_Components/useTable';
 import { makeStyles,TableBody, TableRow, TableCell } from '@material-ui/core';
 import CheckIcon from '@mui/icons-material/Check';
-import ResponsiveDialog from '../Admin_Components/Popup_3';
+import ResponsiveDialog from '../Admin_Components/Popup_remove';
 import { Toolbar,InputAdornment } from '@material-ui/core';
 import Input from '../Admin_Components/Input';
 import { Search } from '@material-ui/icons';
@@ -27,6 +27,7 @@ const headCells = [
     { id: 'Title', label: 'Name' },
     { id: 'Price', label: 'Price' },
     { id: 'Quantity', label: 'Quantity' },
+    { id: 'Period', label: 'Period' },
     { id: 'Line_Total', label: 'Line Total' },
     { id: 'actions', label: 'Remove' }
     
@@ -35,14 +36,52 @@ const headCells = [
 const Cart = (props) => {
     
     const [cart, setCart] = useState(JSON.parse(sessionStorage.getItem('cart')));
-    const [cartDetails, setCartDetails] = useState("");
-
+    const [cartDetails, setCartDetails] = useState(JSON.parse(sessionStorage.getItem('cartdetails')));
     const [loading, setLoading] = useState(false);
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     //const [records,setRecords] = useState(requests)
     const classes = useStyles();
     const token = getToken();
+    const [fulldetails, setfulldetails] = React.useState(JSON.parse(sessionStorage.getItem('fulldetails')));
 
+
+    React.useEffect (() => {
+       console.log( cart != "lol")
+        let config = {
+            headers: {
+                Authorization: "basic " + token
+            },
+            books: cart
+        }
+         axios.patch('http://localhost:4000/users/getcartdetails', config, {
+            headers: {
+                Authorization: "basic " + token
+            },
+    
+            books: cart 
+    
+        }).then(async response => {
+    
+        //    console.log(response.data.data.message.details)
+           sessionStorage.setItem("cartdetails",JSON.stringify(response.data.data.message.details));
+    
+        }).catch(error => {
+    
+        });
+        
+        let array = [];
+      
+        for (let i =0 ; i<cart.length;i++){
+        array[i] = {
+            ...cartDetails[i],
+            ...cart[i]
+        }
+
+       }
+        setfulldetails(array);
+        console.log(fulldetails);
+       
+    },[])
     var arrayLength = cart.length;
     console.log(Cart.length)
 
@@ -57,8 +96,22 @@ const Cart = (props) => {
             headers: {
                 Authorization: "basic " + token
             },
-            //books: books
+            books: cart
         }
+        await axios.patch('http://localhost:4000/users/getcartdetails', config, {
+            headers: {
+                Authorization: "basic " + token
+            },
+
+            books: cart 
+
+        }).then(async response => {
+
+            // Order Placed Succusfully Notification & then Home Page
+
+        }).catch(error => {
+
+        });
         await axios.post('http://localhost:4000/users/order', config, {
             headers: {
                 Authorization: "basic " + token
@@ -73,6 +126,7 @@ const Cart = (props) => {
         }).catch(error => {
 
         });
+        
 
     }
     const handleSearch = e => {
@@ -93,7 +147,7 @@ const Cart = (props) => {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting,
-    } = useTable(cart, headCells, filterFn);
+    } = useTable(fulldetails, headCells, filterFn);
 
     return (
         <div>
@@ -118,24 +172,30 @@ const Cart = (props) => {
                 <TblContainer>
                     <TblHead />
                     <TableBody>
-                        {recordsAfterPagingAndSorting().map(item => (
+                        {
+                        cart != "lol" && recordsAfterPagingAndSorting().map(item => (
                             <TableRow key={item.Book_ID}>
                                 <TableCell> {item.Book_ID} </TableCell>
+                                <TableCell> <img src={item.Book_Image} width="160px" height="228px"></img> </TableCell>
                                 <TableCell> {item.Title} </TableCell>
                                 <TableCell> {item.Price} </TableCell>
+                                <TableCell> {item.quantity} </TableCell>
+                                <TableCell> {item.period} </TableCell>
+                                <TableCell> {item.period * item.Price * item.quantity} </TableCell>
                                 {/* <TableCell> {books.Quantity} </TableCell>
                                 <TableCell> {books.Line_Total} </TableCell> */}
                                 <TableCell>
                                     <ResponsiveDialog
                                     // hmm how to deal with this
-
+                                    book= {item.Book_ID}
                                     
                                     >
                                         <CheckIcon fontSize="small" />
                                     </ResponsiveDialog>
                                 </TableCell>
                             </TableRow>
-                        ))}
+                        ))
+                        }
                     </TableBody>
                 </TblContainer>
                 <br />

@@ -32,7 +32,7 @@ import ViewProfile from './manager_pages/ViewProfile';
 import ViewBook from './customer_pages/ViewBook';
 import Cart from './customer_pages/Cart';
 import MyReviews from './customer_pages/MyReviews';
-
+import Contact from './customer_pages/Contact';
 import OrderHistory from './customer_pages/OrderHistory';
 import OrderHistoryItems from './customer_pages/OrderHistoryItems';
 // const Home = lazy(() => import("./pages/Home"));
@@ -152,6 +152,7 @@ function App(props) {
               <PrivateRoute exact path='/MyReviews' component={MyReviews} />
               <PrivateRoute exact path='/OrderHistory' component={OrderHistory} />
               <PrivateRoute exact path='/OrderHistoryItems' component={OrderHistoryItems} />
+              <PrivateRoute exact path='/Contact' component={Contact} />
               <Route exact path='/events' component={Events} />
               <Route  path="*" component={PageNotFound} />
               </Switch>

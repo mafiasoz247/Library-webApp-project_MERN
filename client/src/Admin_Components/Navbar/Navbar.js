@@ -27,6 +27,27 @@ class Navbar extends Component {
     const token = getToken();
     
 
+    
+
+    const handleCart = async () => {
+      let array = [];
+      let cart = JSON.parse(sessionStorage.getItem('cart'));
+      let cartDetails = JSON.parse(sessionStorage.getItem('cartdetails'));
+
+      for (let i =0 ; i<cart.length;i++){
+      array[i] = {
+          ...cartDetails[i],
+          ...cart[i]
+      }
+  
+     }
+
+     await sessionStorage.setItem('fulldetails', JSON.stringify(array));
+     
+     window.location.assign('/Cart')
+    }
+
+
     const handleLogout = async () => {
   
       let config = {
@@ -48,35 +69,7 @@ class Navbar extends Component {
 
 
 
-    const handleOrders = async () => {
-      
-      console.log("You did it");
-     
-    }
-    const handleReviews = async () => {
-
-    const [loading, setLoading] = this.setState(false);
-    const [myReviews, setmyReviews] = this.setState("");
     
-      setLoading(true);
-      let config = {
-          headers: {
-              Authorization: "basic " + token
-          }
-      }
-      await axios.get('http://localhost:4000/users/getMyReviews', config, {
-      }).then(async response => {
-
-          setmyReviews(response.data.data.message.Reviews);
-          sessionStorage.setItem('myReviews', JSON.stringify(response.data.data.message.Reviews));
-          
-          console.table(response.data.data.message.Reviews)
-          setLoading(false);
-
-      }).catch(error => {
-
-      });
-    }
     
 
 
@@ -135,7 +128,7 @@ class Navbar extends Component {
             this.token ? ( this.admin ?
               <Button onClick={() => window.location.assign('/admin/home')}>Home</Button> :
               this.manager ?  <nbsp></nbsp> : 
-              <Button onClick={() => window.location.assign('/Cart')}>My Cart</Button>
+              <Button onClick={handleCart}>My Cart</Button>
             )
               : (
                 <Button onClick={() => window.location.assign('/login')}>Login</Button>
