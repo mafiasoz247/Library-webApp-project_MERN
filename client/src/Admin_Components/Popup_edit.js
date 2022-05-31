@@ -298,7 +298,7 @@ export default function ResponsiveDialog3(props) {
                 </DialogTitle>
                 <DialogContent>
                 
-                <Toolbar> <div className='bookimg'><img src={BookImage}></img></div></Toolbar>
+                <Toolbar> <div className='bookimg2'><img src={BookImage}></img></div></Toolbar>
                     <div className='Titlee'>
                     <Toolbar>
                         <TextField id="outlined-search" label="Book Title" type="search"  InputLabelProps={{shrink: true, }} onChange={handleChangeTitle}value={Title} />
