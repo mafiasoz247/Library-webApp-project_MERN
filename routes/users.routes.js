@@ -63,7 +63,7 @@ router.patch("/getreviewsinglebook", customerController.getReviews);
 router.post("/giveReview",customerController.giveReview);
 router.get("/seeReviewsLibrary", managerController.seeReviews);
 router.delete("/deleteReviewLibrary", managerController.deleteReview);
-router.patch("/updateReview", customerController.updateReview);
+
 router.delete("/deleteReview", customerController.deleteReview);
 
 router.get("/getQueries", managerController.getQueries);

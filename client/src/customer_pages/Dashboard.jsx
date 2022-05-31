@@ -24,6 +24,7 @@ import ResponsiveDialog from '../Admin_Components/Popup_password.js';
 
 const Dashboard = (props) => {
     const [myOrders, setmyOrders] = React.useState(JSON.parse(sessionStorage.getItem('myOrders')));
+    const [myReviews, setmyReviews] = React.useState(JSON.parse(sessionStorage.getItem('myReviews')));
     const [notify, setNotify] = React.useState({ isOpen: false, message: '', type: '' });
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
@@ -123,7 +124,25 @@ const Dashboard = (props) => {
         
     };
     const handleReviews = async () => {
+        setLoading(true);
+        let config = {
+            headers: {
+                Authorization: "basic " + token
+            }
+        }
+        await axios.get('http://localhost:4000/users/getMyReviews', config, {
+        }).then(async response => {
 
+            setmyReviews(response.data.data.message.Reviews);
+            sessionStorage.setItem('myReviews', JSON.stringify(response.data.data.message.Reviews));
+            
+            console.table(response.data.data.message.Reviews)
+            setLoading(false);
+            window.location.assign('/MyReviews');
+
+        }).catch(error => {
+
+        });
         
     };
     const handleUpdate = async () => {

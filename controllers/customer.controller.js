@@ -142,23 +142,7 @@ exports.giveReview = (req, res, next) => {
     });
 };
 
-exports.updateReview = (req, res, next) => {
 
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(' ')[1];
-
-    customerService.updateReview({ req, token }, (error, result) => {
-        if (error) {
-            return next(error);
-        }
-        return res.status(200).send({
-            Status: "Success",
-            data: {
-                message: result
-            },
-        });
-    });
-};
 
 exports.deleteReview = (req, res, next) => {
 

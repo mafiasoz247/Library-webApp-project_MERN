@@ -11,7 +11,7 @@ async function getBooks({ req }, callback) {
 
 
     let selectQuery = `SELECT ??,??, ??, ??, ??, ??, ?? FROM ??`
-    let query = mysql.format(selectQuery, ["Book_ID", "Category_ID", "Title", "Author","Library_ID", "Price", "Book_Image", "BOOKS"]);
+    let query = mysql.format(selectQuery, ["Book_ID", "Category_ID", "Title", "Author", "Library_ID", "Price", "Book_Image", "BOOKS"]);
 
 
     db.query(query, (err, data) => {
@@ -376,7 +376,7 @@ async function getOrder_ItemsCustomer({ req, token }, callback) {
 
 
                                     let selectQuery = 'SELECT B.??,B.??,B.??,B.??,A.??,A.??,A.?? FROM ?? as A INNER JOIN ?? as B ON A.?? = B.??  WHERE A.?? = ?';
-                                    let query = mysql.format(selectQuery, ["Book_Image","Title", "Author", "Price", "Quantity", "Period", "Line_Total", "ORDER_ITEMS", "BOOKS", "Book_ID", "Book_ID", "Order_ID", req.body.order]);
+                                    let query = mysql.format(selectQuery, ["Book_Image", "Title", "Author", "Price", "Quantity", "Period", "Line_Total", "ORDER_ITEMS", "BOOKS", "Book_ID", "Book_ID", "Order_ID", req.body.order]);
 
                                     db.query(query, (err, order_items) => {
                                         if (err) {
@@ -674,33 +674,18 @@ async function getMyReviews({ req, token }, callback) {
 
                             let User_ID = data[0].User_ID;
 
-                            let selectQuery3 = 'SELECT  COUNT(*) as "total",??, ?? FROM ?? WHERE ?? = ?';
-                            let query3 = mysql.format(selectQuery3, ["Review", "Rating", "REVIEWS", "User_ID", User_ID]);
-                            db.query(query3, (err, Reviews) => {
+
+                            let selectQuery4 = 'SELECT  R.??, R.?? ,R.??, B.??,B.?? FROM ?? AS R INNER JOIN ?? AS B on R.?? = B.??  WHERE R.?? = ?';
+                            let query4 = mysql.format(selectQuery4, ["Review", "Rating", "Book_ID", "Title", "Book_Image", "REVIEWS", "Books", "Book_ID", "Book_ID", "User_ID", User_ID]);
+                            db.query(query4, (err, Reviews) => {
                                 if (err) {
                                     return callback(err);
                                 }
-
-                                if (Reviews[0].total == 0) {
-                                    return callback({
-                                        message: "No Reviews to show!"
-                                    });
-                                }
-                                else {
-
-                                    let selectQuery4 = 'SELECT  R.??, R.?? , B.??,B.?? FROM ?? AS R INNER JOIN ?? AS B on R.?? = B.??  WHERE R.?? = ?';
-                                    let query4 = mysql.format(selectQuery4, ["Review", "Rating", "Title", "Book_Image", "REVIEWS", "Books", "Book_ID", "Book_ID", "User_ID", User_ID]);
-                                    db.query(query4, (err, Reviews) => {
-                                        if (err) {
-                                            return callback(err);
-                                        }
-                                        return callback(null, { Reviews });
+                                return callback(null, { Reviews });
 
 
 
-                                    })
 
-                                }
 
                             })
 
@@ -714,109 +699,7 @@ async function getMyReviews({ req, token }, callback) {
 }
 
 
-async function updateReview({ req, token }, callback) {
 
-    if (req.body.review === undefined) {
-        return callback({ message: "review is Required!" });
-    }
-    if (req.body.rating === undefined) {
-        return callback({ message: "rating is Required!" });
-    }
-    if (req.body.Book_ID === undefined) {
-        return callback({ message: "Book_ID is Required!" });
-    }
-
-    let selectQuery = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? LIMIT 1';
-    let query = mysql.format(selectQuery, ["TOKENS_USER", "Token", token]);
-    db.query(query, (err, data) => {
-        if (err) {
-            return callback(err);
-        }
-        if (data[0].total == 0) {
-            return callback({
-                message: "Deleted Token, Cannot access Order"
-            });
-        }
-        else {
-
-            let selectQuery = 'SELECT ??, A1.?? FROM ?? as A1 INNER JOIN ??  as A2 ON A1.??= A2.??  WHERE ?? = ?';
-            let query = mysql.format(selectQuery, ["Type", "User_ID", "USERS", "TOKENS_USER", "User_ID", "User_ID", "Token", token]);
-
-            db.query(query, (err, info) => {
-                if (err) {
-                    return callback(err);
-                }
-
-                if (info[0].Type != 2) {
-                    return callback({
-                        message: "Access Violation!"
-                    });
-
-                }
-                else {
-                    let lib = 'SELECT COUNT(*) as "total" FROM ?? where ?? = ?';
-                    let querylib3 = mysql.format(lib, ["Books", "Book_ID", req.body.Book_ID]);
-
-                    db.query(querylib3, (err, info) => {
-                        if (err) {
-                            return callback(err);
-                        }
-                        if (info[0].total != 1) {
-                            return callback({
-                                message: "Invalid Book ID"
-                            });
-                        }
-                        else {
-                            let selectQuery1 = 'SELECT User_ID FROM ?? WHERE ?? = ? LIMIT 1';
-                            let query1 = mysql.format(selectQuery1, ["TOKENS_USER", "Token", token]);
-
-                            db.query(query1, (err, data) => {
-                                if (err) {
-                                    return callback(err);
-                                }
-                                else {
-                                    let User_ID = data[0].User_ID;
-
-                                    let q = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? AND ?? = ? LIMIT 1';
-                                    let q2 = mysql.format(q, ["REVIEWS", "User_ID", User_ID, "Book_ID", req.body.Book_ID])
-                                    db.query(q2, (err, ans) => {
-                                        if (err) {
-                                            return callback(err);
-                                        }
-                                        if (ans[0].total == 0) {
-                                            return callback({
-                                                message: "No such review exists"
-                                            })
-                                        }
-                                        else {
-
-                                            // UPDATE Query
-                                            let updateQuery = 'UPDATE ?? SET  ?? = ? , ?? = ? WHERE ?? = ? AND ?? = ?';
-                                            let query = mysql.format(updateQuery, ["REVIEWS", "Review", req.body.review, "Rating", req.body.rating, "User_ID", User_ID, "Book_ID", req.body.Book_ID]);
-
-                                            db.query(query, (err, info) => {
-                                                if (err) {
-                                                    return callback(err);
-                                                }
-
-                                                return callback(null, "Review Updated Successfully!")
-                                            });
-                                        }
-                                    })
-                                }
-                            });
-                        }
-
-                    })
-
-
-                }
-            })
-        }
-
-
-    });
-};
 
 async function deleteReview({ req, token }, callback) {
 
@@ -875,31 +758,20 @@ async function deleteReview({ req, token }, callback) {
                                 else {
                                     let User_ID = data[0].User_ID;
 
-                                    let q = 'SELECT COUNT(*) as "total" FROM ?? WHERE ?? = ? AND ?? = ? LIMIT 1';
-                                    let q2 = mysql.format(q, ["REVIEWS", "User_ID", User_ID, "Book_ID", req.body.Book_ID])
-                                    db.query(q2, (err, ans) => {
-                                        if (err) {
-                                            return callback(err);
-                                        }
-                                        if (ans[0].total == 0) {
-                                            return callback({
-                                                message: "No such review exists"
-                                            })
-                                        }
-                                        else {
-                                            db.query('DELETE FROM ?? WHERE ?? = ? AND ?? = ?', ["REVIEWS", "User_ID", User_ID, "Book_ID", req.body.Book_ID],
-                                                (error, results, fields) => {
-                                                    if (error) {
-                                                        return callback(error);
-                                                    }
-                                                    return callback(null, { message: 'Review deleted successfully!' });
-                                                });
+
+                                    db.query('DELETE FROM ?? WHERE ?? = ? AND ?? = ?', ["REVIEWS", "User_ID", User_ID, "Book_ID", req.body.Book_ID],
+                                        (error, results, fields) => {
+                                            if (error) {
+                                                return callback(error);
+                                            }
+                                            return callback(null, { message: 'Review deleted successfully!' });
+                                        });
 
 
-                                        }
-                                    })
                                 }
-                            });
+                            })
+
+
                         }
 
                     })
@@ -954,7 +826,6 @@ module.exports = {
     getOrder_ItemsCustomer,
     CustomerContact,
     deleteReview,
-    updateReview,
     giveReview,
     getReviews,
     getMyReviews,

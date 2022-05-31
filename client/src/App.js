@@ -32,6 +32,7 @@ import ViewProfile from './manager_pages/ViewProfile';
 import ViewBook from './customer_pages/ViewBook';
 import OrderHistory from './customer_pages/OrderHistory';
 import OrderHistoryItems from './customer_pages/OrderHistoryItems';
+import MyReviews from './customer_pages/MyReviews';
 // const Home = lazy(() => import("./pages/Home"));
 // const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
@@ -147,6 +148,7 @@ function App(props) {
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
               <PrivateRoute exact path='/ViewBook' component={ViewBook} />
               <PrivateRoute exact path='/OrderHistory' component={OrderHistory} />
+              <PrivateRoute exact path='/MyReviews' component={MyReviews} />
               <PrivateRoute exact path='/OrderHistoryItems' component={OrderHistoryItems} />
               <Route exact path='/events' component={Events} />
               <Route  path="*" component={PageNotFound} />
