@@ -23,7 +23,7 @@ export default function ResponsiveDialog(props) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const token = getToken();
     const Book = props.book;
-    
+    const CURRENTCARTLIBRARY = "empty";
     const Flag = props.flag;
     //console.log(Library);
 
@@ -54,6 +54,9 @@ export default function ResponsiveDialog(props) {
         sessionStorage.setItem("cart", JSON.stringify(cart));
         sessionStorage.setItem("cartdetails", JSON.stringify(cartDetails));
         sessionStorage.setItem("fulldetails", JSON.stringify(fulldetails));
+        if (cart.length < 1){
+            sessionStorage.setItem("CURRENTCARTLIBRARY",JSON.stringify(CURRENTCARTLIBRARY))
+        }
 
         window.location.assign("/Home");
     };

@@ -9,6 +9,7 @@ import ResponsiveDialog from '../Admin_Components/Popup_remove';
 import { Toolbar,InputAdornment } from '@material-ui/core';
 import Input from '../Admin_Components/Input';
 import { Search } from '@material-ui/icons';
+import ResponsiveDialog2 from '../Admin_Components/Popup_order';
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 const headCells = [
     { id: 'Book_ID', label: 'Book ID' },
     { id: 'Book_Image', label: 'Book' },
-    { id: 'Title', label: 'Name' },
+    { id: 'Title', label: 'Title' },
     { id: 'Price', label: 'Price' },
     { id: 'Quantity', label: 'Quantity' },
     { id: 'Period', label: 'Period' },
@@ -168,7 +169,8 @@ const Cart = (props) => {
                     onChange={handleSearch}
                     /></div>
                 </Toolbar>
-                           
+                <TblPagination />  
+                
                 <TblContainer>
                     <TblHead />
                     <TableBody>
@@ -192,6 +194,7 @@ const Cart = (props) => {
                                     >
                                         <CheckIcon fontSize="small" />
                                     </ResponsiveDialog>
+
                                 </TableCell>
                             </TableRow>
                         ))
@@ -199,7 +202,9 @@ const Cart = (props) => {
                     </TableBody>
                 </TblContainer>
                 <br />
-                <TblPagination />
+                
+
+               <div className="ord"> <ResponsiveDialog2></ResponsiveDialog2></div>
             </div>
         </div>
     )
